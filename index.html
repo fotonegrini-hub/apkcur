@@ -49,6 +49,9 @@
             --busca-focus: #2a7de1;
             --obs-bg: #fef9e7;
             --obs-border: #f0d060;
+            --sugestao-bg: #ffffff;
+            --sugestao-hover: #e8f0fe;
+            --sugestao-border: #d8e2ed;
         }
 
         body.dark {
@@ -85,6 +88,9 @@
             --busca-focus: #4a8df0;
             --obs-bg: #2a2a1a;
             --obs-border: #6a5a20;
+            --sugestao-bg: #253244;
+            --sugestao-hover: #2a3f5a;
+            --sugestao-border: #3a4c62;
         }
 
         body {
@@ -464,6 +470,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            position: relative;
         }
 
         .campo-modern label {
@@ -499,6 +506,84 @@
         .campo-modern textarea {
             resize: vertical;
             min-height: 70px;
+        }
+
+        /* ===== CAMPO COM SUGESTÕES ===== */
+        .campo-sugestoes {
+            position: relative;
+            width: 100%;
+        }
+
+        .campo-sugestoes input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--input-border);
+            border-radius: 20px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: 0.15s;
+            outline: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+
+        .campo-sugestoes input:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.10);
+        }
+
+        .sugestoes-lista {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--sugestao-bg);
+            border: 1px solid var(--sugestao-border);
+            border-radius: 16px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            margin-top: 4px;
+            padding: 6px 0;
+        }
+
+        .sugestoes-lista.visivel {
+            display: block;
+        }
+
+        .sugestoes-lista .sugestao-item {
+            padding: 8px 18px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            border-radius: 8px;
+            margin: 2px 6px;
+        }
+
+        .sugestoes-lista .sugestao-item:hover {
+            background: var(--sugestao-hover);
+        }
+
+        .sugestoes-lista .sugestao-item.destaque {
+            background: var(--sugestao-hover);
+            font-weight: 500;
+        }
+
+        .sugestoes-lista::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sugestoes-lista::-webkit-scrollbar-track {
+            background: var(--card-bg);
+            border-radius: 10px;
+        }
+
+        .sugestoes-lista::-webkit-scrollbar-thumb {
+            background: var(--input-border);
+            border-radius: 10px;
         }
 
         .badge-opcional-modern {
@@ -547,7 +632,6 @@
             flex: 1 0 180px;
         }
 
-        /* ESTILO PARA EXIBIÇÃO HORIZONTAL DA EXPERIÊNCIA - UMA LINHA ÚNICA */
         .exp-linha-horizontal {
             display: flex;
             align-items: center;
@@ -586,7 +670,6 @@
             margin: 0 2px;
         }
 
-        /* OBSERVAÇÃO DA EXPERIÊNCIA */
         .exp-obs-container {
             margin: 6px 0 8px 14px;
             padding: 8px 14px;
@@ -616,19 +699,6 @@
             color: var(--obs-border);
         }
 
-        .exp-obs-container .obs-texto {
-            margin-top: 2px;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .exp-obs-container .obs-texto-vazio {
-            color: var(--text-muted);
-            font-style: italic;
-            font-size: 0.8rem;
-        }
-
-        /* BOTÃO OBS */
         .btn-obs-toggle {
             background: transparent;
             border: none;
@@ -656,7 +726,6 @@
             color: var(--obs-border);
         }
 
-        /* CABEÇALHO DA EXPERIÊNCIA - UMA ÚNICA VEZ */
         .exp-cabecalho {
             display: flex;
             gap: 18px;
@@ -679,7 +748,6 @@
         .exp-cabecalho .cabecalho-cargo { flex: 1; min-width: 100px; }
         .exp-cabecalho .cabecalho-periodo { flex: 1; min-width: 100px; }
 
-        /* LINHA DE DIZERES ABAIXO DO TÍTULO - UMA ÚNICA VEZ */
         .exp-dizeres {
             display: flex;
             gap: 18px;
@@ -705,7 +773,6 @@
             color: var(--input-focus);
         }
 
-        /* BOTÕES DE AÇÃO DA EXPERIÊNCIA */
         .exp-acoes {
             display: flex;
             gap: 8px;
@@ -1134,6 +1201,32 @@
             box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.10);
         }
 
+        /* ===== ABA OBSERVAÇÃO ===== */
+        .obs-geral-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px 20px;
+            border: 2px solid var(--input-border);
+            border-radius: 20px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: 0.15s;
+            outline: none;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        .obs-geral-textarea:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.10);
+        }
+
+        .obs-geral-textarea::placeholder {
+            color: var(--placeholder);
+        }
+
         /* ===== ESTILO PARA O CURRÍCULO GERADO (WORD/PDF) ===== */
         .curriculo-gerado {
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
@@ -1311,6 +1404,16 @@
             color: #0b1f33;
         }
 
+        .curriculo-gerado .obs-geral-print {
+            background: #f5f8fe;
+            padding: 14px 20px;
+            border-radius: 18px;
+            border-left: 6px solid #2a7de1;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
         @media print {
             .app-wrapper {
                 box-shadow: none;
@@ -1350,7 +1453,6 @@
                     <span id="cidadeDisplay"><i class="fas fa-map-marker-alt"></i> São Paulo - SP</span>
                     <span class="contato-destaque" id="contatoDisplay"><i class="fas fa-phone-alt"></i> (11) 99999-8888</span>
                 </div>
-                <!-- CARGO PRETENDIDO CENTRALIZADO ABAIXO -->
                 <div class="header-cargo-central">
                     <div class="header-cargo-destaque">
                         <i class="fas fa-bullseye"></i>
@@ -1396,6 +1498,7 @@
         <button class="aba-btn-modern" data-aba="edicao"><i class="fas fa-pen-square"></i> Edição</button>
         <button class="aba-btn-modern" data-aba="formacao"><i class="fas fa-graduation-cap"></i> Formação</button>
         <button class="aba-btn-modern" data-aba="experiencia"><i class="fas fa-briefcase"></i> Experiência</button>
+        <button class="aba-btn-modern" data-aba="observacao"><i class="fas fa-sticky-note"></i> Observação</button>
         <button class="aba-btn-modern" data-aba="curriculosSalvos"><i class="fas fa-folder-open"></i> Currículos Salvos</button>
     </div>
 
@@ -1412,7 +1515,10 @@
             </div>
             <div class="campo-modern">
                 <label><i class="fas fa-city"></i> Cidade</label>
-                <input type="text" id="cidadeModern" value="São Paulo - SP">
+                <div class="campo-sugestoes">
+                    <input type="text" id="cidadeModern" value="São Paulo - SP" placeholder="Digite ou escolha uma cidade...">
+                    <div class="sugestoes-lista" id="sugestoesCidade"></div>
+                </div>
             </div>
             <div class="campo-modern">
                 <label><i class="fas fa-phone-alt"></i> Contato (telefone)</label>
@@ -1422,7 +1528,13 @@
 
         <div class="subtitulo-secao"><i class="fas fa-id-card"></i> Dados pessoais</div>
         <div class="grid-duplo">
-            <div class="campo-modern"><label>Estado Civil</label><input type="text" id="estadoCivilModern" value="Solteira"></div>
+            <div class="campo-modern">
+                <label>Estado Civil</label>
+                <div class="campo-sugestoes">
+                    <input type="text" id="estadoCivilModern" value="Solteira" placeholder="Digite ou escolha...">
+                    <div class="sugestoes-lista" id="sugestoesEstadoCivil"></div>
+                </div>
+            </div>
             <div class="campo-modern"><label>Nacionalidade</label><input type="text" id="nacionalidadeModern" value="Brasileira"></div>
             <div class="campo-modern"><label>Data de Nascimento</label><input type="date" id="dataNascModern" value="1995-06-15"></div>
             <div class="campo-modern"><label>Naturalidade</label><input type="text" id="naturalidadeModern" value="São Paulo/SP"></div>
@@ -1446,7 +1558,10 @@
         <div class="grid-duplo-edit">
             <div class="campo-modern campo-edit-destaque" style="grid-column: 1 / -1;">
                 <label><i class="fas fa-bullseye"></i> Cargo Pretendido</label>
-                <input type="text" id="cargoPretendidoEdit" value="Desenvolvedor Front-end Sênior" placeholder="Digite o cargo desejado...">
+                <div class="campo-sugestoes">
+                    <input type="text" id="cargoPretendidoEdit" value="Desenvolvedor Front-end Sênior" placeholder="Digite ou escolha um cargo...">
+                    <div class="sugestoes-lista" id="sugestoesCargo"></div>
+                </div>
                 <div style="margin-top: 8px; font-size: 0.75rem; color: var(--text-muted);">
                     <i class="fas fa-info-circle"></i> Este campo atualiza automaticamente o cargo exibido no cabeçalho do currículo.
                 </div>
@@ -1472,14 +1587,12 @@ Certificação Scrum Master (2023)</textarea>
             <button class="btn-acao-modern primary" id="addExperienciaModern"><i class="fas fa-plus-circle"></i> Adicionar +</button>
         </div>
         
-        <!-- LINHA DE DIZERES ABAIXO DO TÍTULO - UMA ÚNICA VEZ -->
         <div class="exp-dizeres">
             <span><i class="fas fa-building"></i> <span class="dizer-destaque">Empresa</span></span>
             <span><i class="fas fa-briefcase"></i> <span class="dizer-destaque">Cargo ocupado</span></span>
             <span><i class="fas fa-calendar-alt"></i> <span class="dizer-destaque">Período</span></span>
         </div>
         
-        <!-- CABEÇALHO DA EXPERIÊNCIA - UMA ÚNICA VEZ -->
         <div class="exp-cabecalho">
             <span class="cabecalho-empresa">Empresa</span>
             <span class="cabecalho-cargo">Cargo Ocupado</span>
@@ -1487,9 +1600,7 @@ Certificação Scrum Master (2023)</textarea>
         </div>
         
         <div id="experienciasContainerModern">
-            <!-- item exemplo com novo formato horizontal em linha única -->
             <div class="experiencia-card" data-idx="0">
-                <!-- LINHA HORIZONTAL ÚNICA COM AS INFORMAÇÕES: Empresa • Cargo • Período -->
                 <div class="exp-linha-horizontal">
                     <span class="exp-item-info">
                         <span class="exp-label-info">Empresa</span>
@@ -1510,7 +1621,6 @@ Certificação Scrum Master (2023)</textarea>
                     </span>
                 </div>
                 
-                <!-- ÁREA DE OBSERVAÇÃO -->
                 <div class="exp-obs-container">
                     <div class="obs-label"><i class="fas fa-sticky-note"></i> Observação</div>
                     <textarea class="exp-obs-textarea" rows="2" placeholder="Informações complementares sobre esta experiência..." style="width:100%; padding:8px 12px; border-radius:12px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text-primary); font-size:0.85rem; resize:vertical; margin-top:4px;"></textarea>
@@ -1532,6 +1642,18 @@ Certificação Scrum Master (2023)</textarea>
         <div style="margin-top: 12px; color: var(--text-muted); font-size: 0.85rem;"><i class="fas fa-arrow-right"></i> Use os botões <strong>↑</strong> e <strong>↓</strong> para reordenar as experiências. Clique em <strong>OBS</strong> para adicionar informações complementares.</div>
     </div>
 
+    <!-- ========== ABA OBSERVAÇÃO ========== -->
+    <div id="aba-observacao" class="aba-conteudo-modern hidden">
+        <div class="subtitulo-secao"><i class="fas fa-sticky-note"></i> Observação Geral</div>
+        <div class="campo-modern" style="max-width: 100%;">
+            <label><i class="fas fa-info-circle"></i> Informações extras sobre o currículo</label>
+            <textarea id="obsGeralModern" class="obs-geral-textarea" rows="6" placeholder="Adicione aqui informações complementares que não se encaixam nas outras seções...&#10;Ex: Disponibilidade para viagens, pretensão salarial, cursos complementares, etc."></textarea>
+            <div style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);">
+                <i class="fas fa-info-circle"></i> Esta observação aparecerá no final do currículo gerado (Word/PDF).
+            </div>
+        </div>
+    </div>
+
     <!-- ========== ABA CURRÍCULOS SALVOS ========== -->
     <div id="aba-curriculosSalvos" class="aba-conteudo-modern hidden">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
@@ -1544,7 +1666,6 @@ Certificação Scrum Master (2023)</textarea>
             </div>
         </div>
 
-        <!-- BUSCADOR POR NOME -->
         <div class="busca-container">
             <div class="campo-modern">
                 <label><i class="fas fa-search"></i> Buscar por nome</label>
@@ -1554,9 +1675,7 @@ Certificação Scrum Master (2023)</textarea>
             <span class="contador-resultados" id="contadorResultados">0 encontrados</span>
         </div>
 
-        <div id="listaCurriculosContainer" class="lista-curriculos">
-            <!-- Lista gerada dinamicamente -->
-        </div>
+        <div id="listaCurriculosContainer" class="lista-curriculos"></div>
         <div style="margin-top: 12px; color: var(--text-muted); font-size: 0.85rem;">
             <i class="fas fa-info-circle"></i> Clique em <strong>Editar</strong> para carregar o currículo e modificá-lo.
             <i class="fas fa-trash-alt" style="margin-left: 12px;"></i> Use o ícone de lixeira para excluir.
@@ -1574,6 +1693,132 @@ Certificação Scrum Master (2023)</textarea>
 
 <script>
     (function() {
+        // ===== SUGESTÕES PRÉ-DEFINIDAS =====
+        const sugestoes = {
+            cidade: [
+                'Espírito Santo do Turvo', 'Bauru', 'Paulitânia', 'São Paulo - SP',
+                'Campinas - SP', 'Ribeirão Preto - SP', 'Sorocaba - SP', 'Santos - SP',
+                'São José dos Campos - SP', 'Piracicaba - SP', 'Jundiaí - SP', 'Franca - SP'
+            ],
+            estadoCivil: [
+                'Casado', 'Casada', 'Solteiro', 'Solteira', 'União estável',
+                'Divorciado', 'Divorciada', 'Viúvo', 'Viúva'
+            ],
+            cargo: [
+                'Tratorista', 'Motorista', 'Motorista ônibus', 'A Disposição da empresa',
+                'Motorista carreteiro', 'Motorista entregador', 'Operador de máquinas',
+                'Vigilante', 'Porteiro', 'Auxiliar administrativo', 'Assistente administrativo',
+                'Analista de sistemas', 'Desenvolvedor Front-end', 'Desenvolvedor Back-end',
+                'Desenvolvedor Full Stack', 'Engenheiro civil', 'Arquiteto', 'Designer gráfico'
+            ]
+        };
+
+        // ===== FUNÇÃO PARA CRIAR CAMPO COM SUGESTÕES =====
+        function criarCampoSugestoes(inputId, listaId, sugestoesArray) {
+            const input = document.getElementById(inputId);
+            const lista = document.getElementById(listaId);
+            if (!input || !lista) return;
+
+            let itemSelecionado = -1;
+
+            function filtrarSugestoes(texto) {
+                const termo = texto.toLowerCase().trim();
+                if (!termo) return sugestoesArray;
+                return sugestoesArray.filter(item => 
+                    item.toLowerCase().includes(termo)
+                );
+            }
+
+            function mostrarSugestoes(texto) {
+                const filtrados = filtrarSugestoes(texto);
+                lista.innerHTML = '';
+                itemSelecionado = -1;
+
+                if (filtrados.length === 0 || texto.trim() === '') {
+                    lista.classList.remove('visivel');
+                    return;
+                }
+
+                filtrados.forEach((sug, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'sugestao-item';
+                    div.textContent = sug;
+                    div.dataset.index = index;
+                    div.addEventListener('click', function() {
+                        input.value = this.textContent;
+                        lista.classList.remove('visivel');
+                        input.dispatchEvent(new Event('input'));
+                        input.dispatchEvent(new Event('change'));
+                        input.focus();
+                    });
+                    lista.appendChild(div);
+                });
+
+                lista.classList.add('visivel');
+                if (filtrados.length > 0) {
+                    const primeiro = lista.querySelector('.sugestao-item');
+                    if (primeiro) primeiro.classList.add('destaque');
+                }
+            }
+
+            input.addEventListener('input', function() {
+                mostrarSugestoes(this.value);
+            });
+
+            input.addEventListener('focus', function() {
+                if (this.value.trim() !== '') {
+                    mostrarSugestoes(this.value);
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                setTimeout(() => {
+                    lista.classList.remove('visivel');
+                }, 200);
+            });
+
+            input.addEventListener('keydown', function(e) {
+                const items = lista.querySelectorAll('.sugestao-item');
+                if (items.length === 0) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    itemSelecionado = Math.min(itemSelecionado + 1, items.length - 1);
+                    items.forEach((item, idx) => {
+                        item.classList.toggle('destaque', idx === itemSelecionado);
+                    });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    itemSelecionado = Math.max(itemSelecionado - 1, -1);
+                    items.forEach((item, idx) => {
+                        item.classList.toggle('destaque', idx === itemSelecionado);
+                    });
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (itemSelecionado >= 0 && items[itemSelecionado]) {
+                        input.value = items[itemSelecionado].textContent;
+                        lista.classList.remove('visivel');
+                        input.dispatchEvent(new Event('input'));
+                        input.dispatchEvent(new Event('change'));
+                    }
+                } else if (e.key === 'Escape') {
+                    lista.classList.remove('visivel');
+                }
+            });
+
+            // Fechar lista ao clicar fora
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.campo-sugestoes')) {
+                    lista.classList.remove('visivel');
+                }
+            });
+        }
+
+        // ===== INICIALIZAR CAMPOS COM SUGESTÕES =====
+        criarCampoSugestoes('cidadeModern', 'sugestoesCidade', sugestoes.cidade);
+        criarCampoSugestoes('estadoCivilModern', 'sugestoesEstadoCivil', sugestoes.estadoCivil);
+        criarCampoSugestoes('cargoPretendidoEdit', 'sugestoesCargo', sugestoes.cargo);
+
         // ===== TEMA CLARO/ESCURO =====
         const toggle = document.getElementById('themeToggle');
         const body = document.body;
@@ -1603,6 +1848,7 @@ Certificação Scrum Master (2023)</textarea>
             edicao: document.getElementById('aba-edicao'),
             formacao: document.getElementById('aba-formacao'),
             experiencia: document.getElementById('aba-experiencia'),
+            observacao: document.getElementById('aba-observacao'),
             curriculosSalvos: document.getElementById('aba-curriculosSalvos')
         };
 
@@ -1616,6 +1862,7 @@ Certificação Scrum Master (2023)</textarea>
                 else if (aba === 'edicao') conteudos.edicao.classList.remove('hidden');
                 else if (aba === 'formacao') conteudos.formacao.classList.remove('hidden');
                 else if (aba === 'experiencia') conteudos.experiencia.classList.remove('hidden');
+                else if (aba === 'observacao') conteudos.observacao.classList.remove('hidden');
                 else if (aba === 'curriculosSalvos') {
                     conteudos.curriculosSalvos.classList.remove('hidden');
                     renderizarListaCurriculos();
@@ -1958,6 +2205,7 @@ Certificação Scrum Master (2023)</textarea>
             const cnh = document.getElementById('cnhModern').value;
             const obs = document.getElementById('obsModern').value;
             const formacao = document.getElementById('formacaoEscolarModern').value;
+            const obsGeral = document.getElementById('obsGeralModern').value;
 
             const experiencias = [];
             document.querySelectorAll('.experiencia-card').forEach(item => {
@@ -1975,7 +2223,7 @@ Certificação Scrum Master (2023)</textarea>
                 fotoBase64 = fotoPreview.src;
             }
 
-            return { nome, endereco, email, cidade, contato, cargo, estadoCivil, nacionalidade, dataNasc, naturalidade, cnh, obs, formacao, experiencias, fotoBase64 };
+            return { nome, endereco, email, cidade, contato, cargo, estadoCivil, nacionalidade, dataNasc, naturalidade, cnh, obs, formacao, experiencias, fotoBase64, obsGeral };
         }
 
         // ===== BACKUP =====
@@ -2017,6 +2265,7 @@ Certificação Scrum Master (2023)</textarea>
             document.getElementById('cnhModern').value = dados.cnh || '';
             document.getElementById('obsModern').value = dados.obs || '';
             document.getElementById('formacaoEscolarModern').value = dados.formacao || '';
+            document.getElementById('obsGeralModern').value = dados.obsGeral || '';
 
             if (dados.fotoBase64) {
                 fotoPreview.src = dados.fotoBase64;
@@ -2203,7 +2452,7 @@ Certificação Scrum Master (2023)</textarea>
             const cabecalho = [
                 'Nome', 'Endereco', 'Email', 'Cidade', 'Contato', 'Cargo', 
                 'EstadoCivil', 'Nacionalidade', 'DataNasc', 'Naturalidade', 
-                'CNH', 'Observacao', 'Formacao', 'Experiencias', 'FotoBase64', 'DataSalvo'
+                'CNH', 'Observacao', 'Formacao', 'Experiencias', 'FotoBase64', 'DataSalvo', 'ObsGeral'
             ];
 
             const linhas = lista.map(item => {
@@ -2225,7 +2474,8 @@ Certificação Scrum Master (2023)</textarea>
                     (item.dados.formacao || '').replace(/\n/g, '\\n'),
                     expString,
                     foto,
-                    new Date(item.dataSalvo).toISOString()
+                    new Date(item.dataSalvo).toISOString(),
+                    (item.dados.obsGeral || '').replace(/\n/g, '\\n')
                 ];
             });
 
@@ -2283,7 +2533,8 @@ Certificação Scrum Master (2023)</textarea>
                             obs: valores[11] || '',
                             formacao: (valores[12] || '').replace(/\\n/g, '\n'),
                             experiencias: [],
-                            fotoBase64: valores[14] || ''
+                            fotoBase64: valores[14] || '',
+                            obsGeral: (valores[16] || '').replace(/\\n/g, '\n')
                         };
 
                         try {
@@ -2378,7 +2629,7 @@ Certificação Scrum Master (2023)</textarea>
             }, 10000);
         });
 
-        // ===== GERAR HTML DO CURRÍCULO (SEM RODAPÉ) =====
+        // ===== GERAR HTML DO CURRÍCULO =====
         function gerarHtmlCurriculo(dados) {
             const nascFormat = dados.dataNasc ? new Date(dados.dataNasc).toLocaleDateString('pt-BR') : '';
             
@@ -2410,6 +2661,7 @@ Certificação Scrum Master (2023)</textarea>
                 .obs-text { background:#f5f8fe; padding:8px 16px; border-radius:30px; display:inline-block; }
                 .cnh-destaque { background:#f5f9ff; padding:6px 18px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; font-weight:600; color:#0b1f33; }
                 .endereco-destaque { background:#f5f9ff; padding:6px 18px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; font-weight:600; color:#0b1f33; }
+                .obs-geral-print { background:#f5f8fe; padding:14px 20px; border-radius:18px; border-left:6px solid #2a7de1; margin-top:10px; white-space:pre-wrap; line-height:1.6; }
                 @media print { body { background:white; padding:10px; } .curriculo { box-shadow:none; } }
                 @media (max-width: 600px) { .header-curriculo { flex-direction:column; align-items:center; text-align:center; } .header-destaques-print { align-items:center; } .cidade-contato { justify-content:center; } }
             </style>
@@ -2454,7 +2706,6 @@ Certificação Scrum Master (2023)</textarea>
 
             if (dados.experiencias && dados.experiencias.length) {
                 html += `<div class="secao-titulo"><i class="fas fa-briefcase"></i> Experiência Profissional</div>`;
-                // Cabeçalho único para experiências
                 html += `<div style="display:flex; gap:20px; font-weight:600; font-size:0.85rem; color:#4f6a85; border-bottom:2px solid #eaf0f7; padding:6px 0; margin-bottom:6px; flex-wrap:wrap;">
                     <span style="flex:1; min-width:100px;">Empresa</span>
                     <span style="flex:1; min-width:100px;">Cargo Ocupado</span>
@@ -2479,7 +2730,12 @@ Certificação Scrum Master (2023)</textarea>
                 });
             }
 
-            // SEM RODAPÉ - removido completamente
+            // OBSERVAÇÃO GERAL
+            if (dados.obsGeral && dados.obsGeral.trim() !== '') {
+                html += `<div class="secao-titulo"><i class="fas fa-sticky-note"></i> Observações Gerais</div>`;
+                html += `<div class="obs-geral-print">${dados.obsGeral}</div>`;
+            }
+
             html += `</div></body></html>`;
             return html;
         }
@@ -2522,6 +2778,7 @@ Certificação Scrum Master (2023)</textarea>
         .obs-text { background: #f5f8fe; padding: 8px 16px; border-radius: 30px; display: inline-block; }
         .cnh-destaque { background: #f5f9ff; padding: 6px 18px; border-radius: 40px; border: 2px solid #d8e2ed; display: inline-block; font-weight: 600; color: #0b1f33; }
         .endereco-destaque { background: #f5f9ff; padding: 6px 18px; border-radius: 40px; border: 2px solid #d8e2ed; display: inline-block; font-weight: 600; color: #0b1f33; }
+        .obs-geral-print { background: #f5f8fe; padding: 14px 20px; border-radius: 18px; border-left: 6px solid #2a7de1; margin-top: 10px; white-space: pre-wrap; line-height: 1.6; }
         @media print { body { margin: 0; padding: 10px; } }
     </style>
 </head>
