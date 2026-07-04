@@ -6,9 +6,13 @@
     <title>Currículo Pro · Sistema Avançado</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- jsPDF para PDF profissional -->
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google Drive API (opcional, via OAuth) -->
+    <script src="https://apis.google.com/js/api.js"></script>
     <style>
         /* ===== VARIÁVEIS E TEMAS ===== */
         :root {
@@ -51,6 +55,7 @@
             --score-bg: #f0f7ff;
             --score-border: #2a7de1;
             --transition-speed: 0.3s;
+            --layout-card-border: #d8e2ed;
         }
 
         body.dark {
@@ -92,6 +97,7 @@
             --sugestao-border: #3a4c62;
             --score-bg: #1a2a3a;
             --score-border: #4a8df0;
+            --layout-card-border: #3a4c62;
         }
 
         /* ===== ESTILOS GERAIS ===== */
@@ -131,21 +137,21 @@
             flex-wrap: wrap;
             background: var(--bg-header);
             border-radius: 28px;
-            padding: 24px 32px;
-            margin-bottom: 36px;
+            padding: 18px 28px;
+            margin-bottom: 24px;
             border: 1px solid var(--border-header);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
             transition: all 0.3s;
             position: relative;
-            gap: 20px;
+            gap: 16px;
         }
 
         .header-left {
             flex: 1;
-            min-width: 250px;
+            min-width: 220px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .nome-candidato-modern {
@@ -154,14 +160,14 @@
 
         .nome-candidato-modern input {
             width: 100%;
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             font-weight: 700;
             border: none;
             background: transparent;
             outline: none;
             color: var(--text-primary);
-            padding: 4px 0;
-            border-bottom: 4px solid transparent;
+            padding: 2px 0;
+            border-bottom: 3px solid transparent;
             transition: 0.2s;
             letter-spacing: -0.3px;
         }
@@ -173,13 +179,13 @@
         .nome-candidato-modern input::placeholder {
             color: var(--placeholder);
             font-weight: 400;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
         }
 
         .header-destaques {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
             width: 100%;
         }
 
@@ -187,46 +193,46 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 12px 24px;
-            font-size: 1.05rem;
+            gap: 8px 20px;
+            font-size: 0.95rem;
             color: var(--text-secondary);
         }
 
         .header-cidade-contato .contato-destaque {
             font-weight: 700;
             color: var(--input-focus);
-            font-size: 1.15rem;
+            font-size: 1rem;
             background: var(--highlight-bg);
-            padding: 4px 18px;
+            padding: 2px 14px;
             border-radius: 40px;
             border: 2px solid var(--highlight-border);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .header-cidade-contato .contato-destaque i {
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .header-cargo-central {
             display: flex;
             justify-content: center;
             width: 100%;
-            margin-top: 2px;
+            margin-top: 0px;
         }
 
         .header-cargo-destaque {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
             background: var(--card-bg);
-            padding: 4px 20px;
+            padding: 2px 16px;
             border-radius: 40px;
             border: 2px solid var(--card-border);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             width: fit-content;
         }
 
@@ -243,13 +249,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             flex-shrink: 0;
         }
 
         .photo-upload-modern label {
-            width: 120px;
-            height: 160px;
+            width: 100px;
+            height: 133px;
             border-radius: 8px;
             background: var(--input-bg);
             border: 3px dashed var(--input-border);
@@ -260,14 +266,14 @@
             cursor: pointer;
             transition: 0.25s;
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 500;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
         .photo-upload-modern label i {
-            font-size: 38px;
-            margin-bottom: 4px;
+            font-size: 32px;
+            margin-bottom: 2px;
             color: var(--input-focus);
         }
 
@@ -282,8 +288,8 @@
         }
 
         .photo-preview-modern {
-            width: 120px;
-            height: 160px;
+            width: 100px;
+            height: 133px;
             border-radius: 8px;
             object-fit: cover;
             border: 4px solid var(--bg-app);
@@ -303,7 +309,7 @@
             color: white;
             text-align: center;
             padding: 4px 0;
-            font-size: 11px;
+            font-size: 10px;
             border-radius: 0 0 8px 8px;
         }
 
@@ -314,15 +320,15 @@
 
         .photo-wrapper .btn-alterar-foto {
             position: absolute;
-            bottom: -10px;
-            right: -10px;
+            bottom: -8px;
+            right: -8px;
             background: var(--btn-primary);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 14px;
+            width: 28px;
+            height: 28px;
+            font-size: 12px;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             display: none;
@@ -343,20 +349,20 @@
         /* ===== TOGGLE TEMA ===== */
         .theme-toggle {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 12px;
+            right: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 500;
         }
 
         .theme-toggle .toggle-track {
-            width: 50px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
             background: var(--toggle-bg);
             border-radius: 40px;
             position: relative;
@@ -365,8 +371,8 @@
         }
 
         .theme-toggle .toggle-track .toggle-thumb {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             background: white;
             border-radius: 50%;
             position: absolute;
@@ -377,43 +383,44 @@
         }
 
         body.dark .theme-toggle .toggle-track .toggle-thumb {
-            left: 26px;
+            left: 22px;
             background: #f0c040;
         }
 
         .theme-toggle i {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: var(--text-secondary);
         }
 
         /* ===== DATA E HORA ===== */
         .atualizacao-info {
             text-align: right;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             opacity: 0.6;
-            padding: 4px 0 8px 0;
+            padding: 2px 0 6px 0;
             border-bottom: 1px solid var(--footer-border);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .atualizacao-info i {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
         }
 
         /* ===== DASHBOARD ===== */
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-            padding: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 12px;
             background: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 16px;
             border: 1px solid var(--card-border);
         }
 
@@ -421,9 +428,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
+            padding: 8px;
             background: var(--bg-app);
-            border-radius: 16px;
+            border-radius: 12px;
             border: 1px solid var(--card-border);
             transition: 0.2s;
         }
@@ -434,30 +441,30 @@
         }
 
         .metric-card .metric-icon {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             color: var(--input-focus);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .metric-card .metric-label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             color: var(--text-muted);
             letter-spacing: 0.5px;
         }
 
         .metric-card .metric-value {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-primary);
         }
 
-        /* ===== SCORE DO CURRÍCULO ===== */
+        /* ===== SCORE ===== */
         .score-container {
             background: var(--score-bg);
-            border-radius: 20px;
-            padding: 20px 24px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            padding: 14px 20px;
+            margin-bottom: 14px;
             border: 2px solid var(--score-border);
             display: none;
         }
@@ -472,16 +479,16 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .score-header h3 {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .score-header h3 i {
@@ -489,18 +496,18 @@
         }
 
         .score-number {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: var(--input-focus);
         }
 
         .score-bar {
             width: 100%;
-            height: 8px;
+            height: 6px;
             background: var(--card-border);
             border-radius: 10px;
             overflow: hidden;
-            margin: 8px 0;
+            margin: 4px 0;
         }
 
         .score-bar-fill {
@@ -514,50 +521,37 @@
         .score-sugestoes {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 8px;
         }
 
         .score-sugestao-item {
             background: var(--badge-bg);
-            padding: 4px 14px;
+            padding: 2px 12px;
             border-radius: 30px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        .score-sugestao-item i {
-            color: var(--warning);
-        }
-
-        .score-sugestao-item.done {
-            opacity: 0.6;
-            text-decoration: line-through;
-        }
-
-        .score-sugestao-item.done i {
-            color: var(--success);
+            gap: 4px;
         }
 
         /* ===== ABAS ===== */
         .abas-modernas {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             flex-wrap: wrap;
             border-bottom: 2px solid var(--footer-border);
             padding-bottom: 2px;
-            margin-bottom: 32px;
+            margin-bottom: 20px;
             transition: border 0.3s;
         }
 
         .aba-btn-modern {
             background: transparent;
             border: none;
-            padding: 12px 28px;
-            font-size: 0.95rem;
+            padding: 8px 20px;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-muted);
             border-radius: 40px;
@@ -565,12 +559,12 @@
             transition: 0.2s;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             letter-spacing: 0.2px;
         }
 
         .aba-btn-modern i {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-muted);
         }
 
@@ -606,28 +600,28 @@
         /* ===== CAMPOS ===== */
         .grid-duplo {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 20px 28px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px 20px;
+            margin-bottom: 16px;
         }
 
         .grid-duplo-edit {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px 28px;
-            margin-bottom: 24px;
+            gap: 14px 20px;
+            margin-bottom: 16px;
         }
 
         .campo-modern {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 3px;
             position: relative;
         }
 
         .campo-modern label {
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             letter-spacing: 0.4px;
             text-transform: uppercase;
@@ -637,12 +631,12 @@
         .campo-modern input,
         .campo-modern select,
         .campo-modern textarea {
-            padding: 12px 16px;
+            padding: 8px 14px;
             border: 1px solid var(--input-border);
-            border-radius: 20px;
+            border-radius: 16px;
             background: var(--input-bg);
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.15s;
             outline: none;
             box-shadow: 0 1px 4px rgba(0,0,0,0.02);
@@ -657,31 +651,31 @@
 
         .campo-modern textarea {
             resize: vertical;
-            min-height: 70px;
+            min-height: 60px;
         }
 
         .campo-edit-destaque {
             background: var(--highlight-bg);
-            border-radius: 20px;
-            padding: 16px 20px;
+            border-radius: 16px;
+            padding: 12px 16px;
             border: 2px solid var(--highlight-border);
         }
 
         .campo-edit-destaque label {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--input-focus);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .campo-edit-destaque input {
-            padding: 14px 18px;
+            padding: 10px 14px;
             border: 2px solid var(--input-border);
-            border-radius: 20px;
+            border-radius: 16px;
             background: var(--input-bg);
             color: var(--text-primary);
-            font-size: 1.05rem;
+            font-size: 1rem;
             transition: 0.15s;
             outline: none;
             width: 100%;
@@ -701,12 +695,12 @@
 
         .campo-sugestoes input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 8px 14px;
             border: 1px solid var(--input-border);
-            border-radius: 20px;
+            border-radius: 16px;
             background: var(--input-bg);
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.15s;
             outline: none;
             box-shadow: 0 1px 4px rgba(0,0,0,0.02);
@@ -724,14 +718,14 @@
             right: 0;
             background: var(--sugestao-bg);
             border: 1px solid var(--sugestao-border);
-            border-radius: 16px;
-            max-height: 180px;
+            border-radius: 12px;
+            max-height: 150px;
             overflow-y: auto;
             z-index: 1000;
             display: none;
             box-shadow: 0 8px 24px rgba(0,0,0,0.12);
             margin-top: 4px;
-            padding: 6px 0;
+            padding: 4px 0;
         }
 
         .sugestoes-lista.visivel {
@@ -739,13 +733,13 @@
         }
 
         .sugestoes-lista .sugestao-item {
-            padding: 8px 18px;
+            padding: 6px 14px;
             cursor: pointer;
             transition: 0.15s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-primary);
-            border-radius: 8px;
-            margin: 2px 6px;
+            border-radius: 6px;
+            margin: 2px 4px;
         }
 
         .sugestoes-lista .sugestao-item:hover {
@@ -760,34 +754,34 @@
         .badge-opcional-modern {
             font-weight: 400;
             color: var(--text-muted);
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             background: var(--badge-bg);
-            padding: 0 10px;
+            padding: 0 8px;
             border-radius: 30px;
-            margin-left: 8px;
+            margin-left: 6px;
         }
 
         .subtitulo-secao {
-            margin: 28px 0 12px 0;
-            font-size: 1.1rem;
+            margin: 18px 0 8px 0;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .subtitulo-secao i {
             color: var(--input-focus);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         /* ===== EXPERIÊNCIA ===== */
         .experiencia-card {
             background: var(--card-bg);
-            border-radius: 24px;
-            padding: 16px 24px;
-            margin-top: 12px;
+            border-radius: 18px;
+            padding: 12px 18px;
+            margin-top: 8px;
             border: 1px solid var(--card-border);
             box-shadow: var(--card-shadow);
             transition: 0.15s;
@@ -812,23 +806,23 @@
         .experiencia-card .flex-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
+            gap: 12px;
         }
 
         .experiencia-card .flex-row .campo-modern {
-            flex: 1 0 180px;
+            flex: 1 0 150px;
         }
 
         .exp-linha-horizontal {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            margin-bottom: 6px;
+            gap: 6px;
+            padding: 6px 12px;
+            margin-bottom: 4px;
             background: var(--highlight-bg);
-            border-radius: 10px;
+            border-radius: 8px;
             border-left: 4px solid var(--input-focus);
-            font-size: 0.92rem;
+            font-size: 0.85rem;
             color: var(--text-primary);
             flex-wrap: wrap;
         }
@@ -836,13 +830,13 @@
         .exp-linha-horizontal .exp-item-info {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .exp-linha-horizontal .exp-item-info .exp-label-info {
             font-weight: 300;
             color: var(--text-muted);
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.2px;
         }
@@ -858,13 +852,13 @@
         }
 
         .exp-obs-container {
-            margin: 6px 0 8px 14px;
-            padding: 8px 14px;
+            margin: 4px 0 6px 12px;
+            padding: 6px 12px;
             background: var(--obs-bg);
-            border-radius: 10px;
+            border-radius: 8px;
             border-left: 3px solid var(--obs-border);
             display: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
         }
 
@@ -874,12 +868,12 @@
 
         .exp-obs-container .obs-label {
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .btn-obs-toggle {
@@ -887,13 +881,13 @@
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            font-size: 0.75rem;
-            padding: 2px 8px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
             border-radius: 20px;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .btn-obs-toggle:hover {
@@ -911,11 +905,11 @@
 
         .exp-cabecalho {
             display: flex;
-            gap: 18px;
-            padding: 6px 14px 6px 14px;
-            margin-bottom: 6px;
+            gap: 12px;
+            padding: 4px 12px 4px 12px;
+            margin-bottom: 4px;
             font-weight: 700;
-            font-size: 0.78rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
@@ -927,29 +921,29 @@
             padding: 0 4px;
         }
 
-        .exp-cabecalho .cabecalho-empresa { flex: 1; min-width: 100px; }
-        .exp-cabecalho .cabecalho-cargo { flex: 1; min-width: 100px; }
-        .exp-cabecalho .cabecalho-periodo { flex: 1; min-width: 100px; }
+        .exp-cabecalho .cabecalho-empresa { flex: 1; min-width: 80px; }
+        .exp-cabecalho .cabecalho-cargo { flex: 1; min-width: 80px; }
+        .exp-cabecalho .cabecalho-periodo { flex: 1; min-width: 80px; }
 
         .exp-dizeres {
             display: flex;
-            gap: 18px;
-            padding: 6px 14px;
-            margin: 4px 0 8px 0;
+            gap: 12px;
+            padding: 4px 12px;
+            margin: 2px 0 4px 0;
             font-weight: 600;
-            font-size: 0.82rem;
+            font-size: 0.75rem;
             color: var(--text-primary);
             background: var(--badge-bg);
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid var(--card-border);
             flex-wrap: wrap;
         }
 
         .exp-dizeres span {
-            padding: 4px 8px;
+            padding: 2px 6px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .exp-dizeres .dizer-destaque {
@@ -958,32 +952,32 @@
 
         .exp-acoes {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-top: 8px;
+            margin-top: 6px;
             justify-content: flex-end;
             border-top: 1px solid var(--card-border);
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
         /* ===== BOTÕES ===== */
         .btn-acao-modern {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 10px 22px;
+            padding: 6px 16px;
             border-radius: 40px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
             transition: 0.15s;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .btn-acao-modern i {
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .btn-acao-modern:hover {
@@ -1049,65 +1043,237 @@
             transform: scale(1.02);
         }
 
-        .btn-acao-modern.busca {
-            background: var(--input-focus);
-            color: white;
-            border-color: var(--input-focus);
-            padding: 10px 18px;
+        /* ===== LAYOUTS ===== */
+        .layout-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
         }
 
-        .btn-acao-modern.busca:hover {
-            opacity: 0.85;
+        .layout-card {
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 2px solid var(--layout-card-border);
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .layout-card:hover {
+            border-color: var(--input-focus);
+            transform: translateY(-2px);
+        }
+
+        .layout-card.selecionado {
+            border-color: var(--input-focus);
+            background: var(--highlight-bg);
+            color: var(--input-focus);
+        }
+
+        .layout-card .layout-preview {
+            width: 32px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid var(--card-border);
+            background: var(--bg-app);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 6px;
+            color: var(--text-muted);
+            padding: 4px;
+        }
+
+        .layout-card .layout-preview .linha {
+            width: 80%;
+            height: 3px;
+            background: var(--input-border);
+            border-radius: 2px;
+            margin: 1px 0;
+        }
+
+        .layout-card .layout-preview .linha.destaque {
+            background: var(--input-focus);
+            width: 60%;
+        }
+
+        /* ===== QR CODE ===== */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 16px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            margin-top: 12px;
+        }
+
+        .qr-container #qrcode {
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .qr-container .qr-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* ===== ASSINATURA DIGITAL ===== */
+        .assinatura-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--card-border);
+            margin-top: 12px;
+        }
+
+        .assinatura-container canvas {
+            border: 2px dashed var(--input-border);
+            border-radius: 10px;
+            background: var(--input-bg);
+            cursor: crosshair;
+            width: 100%;
+            max-width: 500px;
+            height: 150px;
+            touch-action: none;
+        }
+
+        .assinatura-container .assinatura-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        /* ===== NOTIFICAÇÕES ===== */
+        .notificacao-badge {
+            position: relative;
+        }
+
+        .notificacao-badge .badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--warning);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .notificacao-toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-app);
+            border-radius: 14px;
+            padding: 14px 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            border-left: 6px solid var(--warning);
+            max-width: 350px;
+            display: none;
+            z-index: 9999;
+            animation: slideUp 0.4s ease;
+        }
+
+        .notificacao-toast.visivel {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notificacao-toast .toast-titulo {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .notificacao-toast .toast-corpo {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .notificacao-toast .toast-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .notificacao-toast .btn-acao-modern {
+            padding: 4px 14px;
+            font-size: 0.75rem;
         }
 
         /* ===== BACKUP ===== */
         .backup-bar {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 16px;
-            padding: 12px 18px;
+            margin-bottom: 12px;
+            padding: 10px 16px;
             background: var(--card-bg);
             border-radius: 40px;
             border: 1px solid var(--card-border);
         }
 
         .backup-bar span {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .backup-bar .btn-acao-modern {
-            padding: 6px 16px;
-            font-size: 0.8rem;
+            padding: 4px 14px;
+            font-size: 0.75rem;
         }
 
         /* ===== CURRÍCULOS SALVOS ===== */
         .busca-container {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             width: 100%;
         }
 
         .busca-container .campo-modern {
             flex: 1;
-            min-width: 200px;
+            min-width: 160px;
         }
 
         .busca-container .campo-modern input {
-            padding: 10px 18px;
+            padding: 8px 14px;
             border-radius: 40px;
             border: 2px solid var(--busca-border);
             background: var(--input-bg);
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.2s;
             width: 100%;
         }
@@ -1124,14 +1290,14 @@
         .lista-curriculos {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-height: 400px;
+            gap: 8px;
+            max-height: 300px;
             overflow-y: auto;
-            padding-right: 8px;
+            padding-right: 6px;
         }
 
         .lista-curriculos::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
 
         .lista-curriculos::-webkit-scrollbar-track {
@@ -1147,13 +1313,13 @@
         .curriculo-item {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 16px 20px;
+            border-radius: 12px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             transition: 0.15s;
             cursor: pointer;
         }
@@ -1172,35 +1338,35 @@
         .curriculo-item .item-info .item-nome {
             font-weight: 600;
             color: var(--text-primary);
-            font-size: 1.05rem;
+            font-size: 0.95rem;
         }
 
         .curriculo-item .item-info .item-detalhe {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .curriculo-item .item-acoes {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .curriculo-item .item-acoes .btn-acao-modern {
-            padding: 6px 14px;
-            font-size: 0.75rem;
+            padding: 4px 12px;
+            font-size: 0.7rem;
         }
 
         .vazio-mensagem {
             color: var(--text-muted);
             text-align: center;
-            padding: 40px 20px;
-            font-size: 1.05rem;
+            padding: 30px 20px;
+            font-size: 0.95rem;
         }
 
         .contador-resultados {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            padding: 4px 12px;
+            padding: 2px 10px;
             background: var(--badge-bg);
             border-radius: 30px;
             display: inline-block;
@@ -1209,13 +1375,13 @@
         /* ===== OBSERVAÇÃO GERAL ===== */
         .obs-geral-textarea {
             width: 100%;
-            min-height: 200px;
-            padding: 16px 20px;
+            min-height: 120px;
+            padding: 12px 16px;
             border: 2px solid var(--input-border);
-            border-radius: 20px;
+            border-radius: 16px;
             background: var(--input-bg);
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.15s;
             outline: none;
             resize: vertical;
@@ -1228,7 +1394,7 @@
             box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.10);
         }
 
-        /* ===== PRÉVIA DO CURRÍCULO ===== */
+        /* ===== PRÉVIA ===== */
         .preview-modal {
             display: none;
             position: fixed;
@@ -1238,7 +1404,7 @@
             bottom: 0;
             background: rgba(0,0,0,0.6);
             z-index: 9999;
-            padding: 40px 20px;
+            padding: 30px 20px;
             overflow-y: auto;
             backdrop-filter: blur(4px);
         }
@@ -1251,10 +1417,10 @@
 
         .preview-modal .preview-content {
             background: white;
-            border-radius: 32px;
-            max-width: 1000px;
+            border-radius: 28px;
+            max-width: 950px;
             width: 100%;
-            padding: 40px;
+            padding: 30px;
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
@@ -1268,9 +1434,9 @@
             background: #eee;
             border: none;
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            font-size: 1.4rem;
+            width: 38px;
+            height: 38px;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: 0.2s;
             z-index: 10;
@@ -1288,63 +1454,34 @@
         /* ===== FOOTER ===== */
         .footer-actions-modern {
             display: flex;
-            gap: 18px;
+            gap: 14px;
             justify-content: flex-end;
             border-top: 2px solid var(--footer-border);
-            padding-top: 30px;
-            margin-top: 36px;
+            padding-top: 20px;
+            margin-top: 24px;
             flex-wrap: wrap;
             transition: border 0.3s;
         }
 
         .footer-actions-modern .btn-acao-modern {
-            padding: 14px 34px;
-            font-size: 1rem;
+            padding: 10px 26px;
+            font-size: 0.9rem;
             font-weight: 600;
         }
 
         .footer-actions-modern .btn-acao-modern i {
-            font-size: 1.2rem;
-        }
-
-        /* ===== CARTA DE APRESENTAÇÃO ===== */
-        .carta-container {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px 24px;
-            border: 1px solid var(--card-border);
-            margin-top: 16px;
-        }
-
-        .carta-container textarea {
-            width: 100%;
-            min-height: 180px;
-            padding: 16px;
-            border: 2px solid var(--input-border);
-            border-radius: 16px;
-            background: var(--input-bg);
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            transition: 0.15s;
-            outline: none;
-            resize: vertical;
-            font-family: inherit;
-            line-height: 1.8;
-        }
-
-        .carta-container textarea:focus {
-            border-color: var(--input-focus);
-            box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.10);
+            font-size: 1rem;
         }
 
         /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
-            .app-wrapper { padding: 20px; }
+            .app-wrapper { padding: 16px; }
             .header-moderno { 
                 flex-direction: column; 
                 align-items: center; 
                 text-align: center;
-                padding: 20px 16px;
+                padding: 16px 14px;
+                margin-bottom: 16px;
             }
             .header-left { 
                 align-items: center; 
@@ -1358,102 +1495,51 @@
                 justify-content: center; 
             }
             .nome-candidato-modern input { 
-                font-size: 2rem; 
+                font-size: 1.6rem; 
                 text-align: center;
             }
             .theme-toggle { 
                 position: relative; 
                 top: 0; 
                 right: 0; 
-                margin-bottom: 8px; 
+                margin-bottom: 6px; 
             }
             .header-right {
-                margin-top: 8px;
-            }
-            .header-cargo-central {
-                justify-content: center;
-            }
-            .exp-cabecalho {
-                flex-direction: column;
-                gap: 4px;
-                text-align: center;
-            }
-            .exp-linha-horizontal {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-            .exp-dizeres {
-                flex-direction: column;
-                gap: 4px;
-                text-align: center;
-            }
-            .busca-container {
-                flex-direction: column;
-            }
-            .busca-container .campo-modern {
-                width: 100%;
-            }
-            .exp-acoes {
-                justify-content: center;
-            }
-            .exp-cabecalho .cabecalho-empresa,
-            .exp-cabecalho .cabecalho-cargo,
-            .exp-cabecalho .cabecalho-periodo {
-                flex: none;
-                width: 100%;
-                text-align: center;
-            }
-            .atualizacao-info {
-                justify-content: center;
-                text-align: center;
+                margin-top: 6px;
             }
             .grid-duplo-edit {
                 grid-template-columns: 1fr !important;
             }
             .dashboard {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
             .preview-modal .preview-content {
-                padding: 20px;
+                padding: 16px;
+            }
+            .layout-selector {
+                justify-content: center;
+            }
+            .abas-modernas {
+                justify-content: center;
+            }
+            .aba-btn-modern {
+                padding: 6px 14px;
+                font-size: 0.75rem;
             }
         }
 
         @media (max-width: 480px) {
             .header-cidade-contato { 
                 flex-direction: column; 
-                gap: 6px; 
+                gap: 4px; 
             }
             .nome-candidato-modern input { 
-                font-size: 1.6rem; 
+                font-size: 1.4rem; 
             }
             .photo-upload-modern label,
             .photo-preview-modern {
-                width: 100px;
-                height: 133px;
-            }
-            .exp-cabecalho {
-                flex-direction: column;
-                gap: 4px;
-                text-align: center;
-            }
-            .exp-linha-horizontal {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-            .exp-dizeres {
-                flex-direction: column;
-                gap: 4px;
-                text-align: center;
-            }
-            .exp-acoes {
-                justify-content: center;
-            }
-            .atualizacao-info {
-                justify-content: center;
-                text-align: center;
-                font-size: 0.6rem;
+                width: 80px;
+                height: 106px;
             }
             .grid-duplo-edit {
                 grid-template-columns: 1fr !important;
@@ -1465,13 +1551,31 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .notificacao-toast {
+                left: 16px;
+                right: 16px;
+                bottom: 16px;
+                max-width: none;
+            }
+            .assinatura-container canvas {
+                height: 120px;
+            }
+            .footer-actions-modern {
+                justify-content: center;
+            }
+            .footer-actions-modern .btn-acao-modern {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+            }
         }
 
         /* ===== PRINT ===== */
         @media print {
             .app-wrapper {
                 box-shadow: none;
-                padding: 10px;
+                padding: 8px;
+                max-width: 100%;
+                border-radius: 0;
             }
             .footer-actions-modern,
             .abas-modernas,
@@ -1479,12 +1583,114 @@
             .theme-toggle,
             .dashboard,
             .score-container,
-            .preview-modal {
+            .preview-modal,
+            .layout-selector,
+            .qr-container,
+            .assinatura-container,
+            .notificacao-toast {
                 display: none !important;
             }
             .header-moderno {
                 background: #f5f9ff !important;
                 border: 1px solid #ddd !important;
+                padding: 12px 16px !important;
+                margin-bottom: 12px !important;
+            }
+            .aba-conteudo-modern.hidden {
+                display: block !important;
+            }
+            .grid-duplo, .grid-duplo-edit {
+                gap: 8px 12px !important;
+                margin-bottom: 8px !important;
+            }
+            .experiencia-card {
+                padding: 8px 12px !important;
+                margin-top: 4px !important;
+                break-inside: avoid !important;
+            }
+            .exp-linha-horizontal {
+                padding: 4px 8px !important;
+                font-size: 0.8rem !important;
+            }
+            .exp-obs-container {
+                padding: 4px 10px !important;
+                margin: 2px 0 4px 8px !important;
+            }
+            .exp-acoes {
+                display: none !important;
+            }
+            .exp-cabecalho {
+                display: none !important;
+            }
+            .exp-dizeres {
+                display: none !important;
+            }
+            .campo-modern input,
+            .campo-modern select,
+            .campo-modern textarea {
+                padding: 4px 8px !important;
+                font-size: 0.8rem !important;
+                border: 1px solid #ddd !important;
+                background: white !important;
+            }
+            .campo-modern label {
+                font-size: 0.6rem !important;
+            }
+            .nome-candidato-modern input {
+                font-size: 1.8rem !important;
+                padding: 0 !important;
+                border-bottom: 2px solid #333 !important;
+            }
+            .header-cargo-destaque {
+                font-size: 0.85rem !important;
+                padding: 2px 12px !important;
+            }
+            .header-cidade-contato {
+                font-size: 0.85rem !important;
+                gap: 4px 12px !important;
+            }
+            .header-cidade-contato .contato-destaque {
+                font-size: 0.85rem !important;
+                padding: 2px 10px !important;
+            }
+            .subtitulo-secao {
+                margin: 10px 0 4px 0 !important;
+                font-size: 0.9rem !important;
+            }
+            .photo-upload-modern label,
+            .photo-preview-modern {
+                width: 80px !important;
+                height: 106px !important;
+            }
+            .atualizacao-info {
+                display: none !important;
+            }
+            .campo-edit-destaque {
+                padding: 8px 12px !important;
+            }
+            .campo-edit-destaque input {
+                padding: 6px 10px !important;
+                font-size: 0.85rem !important;
+            }
+            .obs-geral-textarea {
+                min-height: 60px !important;
+                padding: 8px 12px !important;
+                font-size: 0.8rem !important;
+            }
+            .grid-duplo .campo-modern,
+            .grid-duplo-edit .campo-modern {
+                break-inside: avoid !important;
+            }
+            .exp-item {
+                break-inside: avoid !important;
+            }
+            .assinatura-print {
+                margin-top: 12px !important;
+                padding-top: 12px !important;
+            }
+            .assinatura-print img {
+                max-width: 150px !important;
+                max-height: 60px !important;
             }
         }
     </style>
@@ -1540,6 +1746,10 @@
     <div class="atualizacao-info">
         <i class="fas fa-clock"></i>
         <span id="dataAtualizacao">Última atualização: --/--/---- --:--</span>
+        <span style="margin-left: auto; display: flex; gap: 6px; align-items: center;">
+            <i class="fas fa-bell"></i>
+            <span id="notificacaoStatus">✅ Notificações ativas</span>
+        </span>
     </div>
 
     <!-- DASHBOARD -->
@@ -1566,7 +1776,7 @@
         </div>
     </div>
 
-    <!-- SCORE DO CURRÍCULO -->
+    <!-- SCORE -->
     <div class="score-container" id="scoreContainer">
         <div class="score-header">
             <h3><i class="fas fa-chart-line"></i> Análise do Currículo</h3>
@@ -1583,18 +1793,20 @@
         <span><i class="fas fa-database"></i> Backup local</span>
         <button class="btn-acao-modern" id="salvarBackup"><i class="fas fa-save"></i> Salvar</button>
         <button class="btn-acao-modern" id="carregarBackup"><i class="fas fa-upload"></i> Restaurar</button>
-        <span style="font-size:0.75rem; opacity:0.7;" id="backupStatus">Auto-salvo</span>
+        <span style="font-size:0.7rem; opacity:0.7;" id="backupStatus">Auto-salvo</span>
     </div>
 
-    <!-- ABAS -->
+    <!-- ABAS (SEM CARTA) -->
     <div class="abas-modernas">
-        <button class="aba-btn-modern active" data-aba="dadosGerais"><i class="fas fa-user-circle"></i> Dados gerais</button>
+        <button class="aba-btn-modern active" data-aba="dadosGerais"><i class="fas fa-user-circle"></i> Dados</button>
         <button class="aba-btn-modern" data-aba="edicao"><i class="fas fa-pen-square"></i> Edição</button>
         <button class="aba-btn-modern" data-aba="formacao"><i class="fas fa-graduation-cap"></i> Formação</button>
         <button class="aba-btn-modern" data-aba="experiencia"><i class="fas fa-briefcase"></i> Experiência</button>
-        <button class="aba-btn-modern" data-aba="carta"><i class="fas fa-envelope"></i> Carta</button>
+        <button class="aba-btn-modern" data-aba="layout"><i class="fas fa-palette"></i> Layout</button>
+        <button class="aba-btn-modern" data-aba="idiomas"><i class="fas fa-language"></i> Idiomas</button>
         <button class="aba-btn-modern" data-aba="observacao"><i class="fas fa-sticky-note"></i> Observação</button>
         <button class="aba-btn-modern" data-aba="curriculosSalvos"><i class="fas fa-folder-open"></i> Salvos</button>
+        <button class="aba-btn-modern" data-aba="ferramentas"><i class="fas fa-tools"></i> Ferramentas</button>
         <button class="aba-btn-modern" data-aba="preview"><i class="fas fa-eye"></i> Prévia</button>
     </div>
 
@@ -1608,7 +1820,7 @@
             <div class="campo-modern">
                 <label><i class="fas fa-envelope"></i> E-mail</label>
                 <input type="email" id="emailModern" value="ana.silva@email.com" placeholder="seu@email.com">
-                <div id="emailFeedback" style="font-size:0.75rem; margin-top:4px; display:none;"></div>
+                <div id="emailFeedback" style="font-size:0.7rem; margin-top:2px; display:none;"></div>
             </div>
             <div class="campo-modern">
                 <label><i class="fas fa-city"></i> Cidade</label>
@@ -1620,7 +1832,7 @@
             <div class="campo-modern">
                 <label><i class="fas fa-phone-alt"></i> Contato (telefone)</label>
                 <input type="text" id="contatoModern" value="(11) 99999-8888" placeholder="(00) 00000-0000">
-                <div id="telefoneFeedback" style="font-size:0.75rem; margin-top:4px; display:none;"></div>
+                <div id="telefoneFeedback" style="font-size:0.7rem; margin-top:2px; display:none;"></div>
             </div>
         </div>
 
@@ -1634,7 +1846,7 @@
                 </div>
             </div>
             <div class="campo-modern"><label>Nacionalidade</label><input type="text" id="nacionalidadeModern" value="Brasileira"></div>
-            <div class="campo-modern"><label>Data de Nascimento</label><input type="date" id="dataNascModern" value="2006-06-13"></div>
+            <div class="campo-modern"><label>Data de Nascimento</label><input type="date" id="dataNascModern" value="1995-06-15"></div>
             <div class="campo-modern"><label>Naturalidade</label><input type="text" id="naturalidadeModern" value="São Paulo/SP"></div>
         </div>
 
@@ -1660,9 +1872,6 @@
                     <input type="text" id="cargoPretendidoEdit" value="Desenvolvedor Front-end Sênior" placeholder="Digite ou escolha um cargo...">
                     <div class="sugestoes-lista" id="sugestoesCargo"></div>
                 </div>
-                <div style="margin-top: 8px; font-size: 0.75rem; color: var(--text-muted);">
-                    <i class="fas fa-info-circle"></i> Este campo atualiza automaticamente o cargo exibido no cabeçalho do currículo.
-                </div>
             </div>
         </div>
     </div>
@@ -1671,16 +1880,15 @@
     <div id="aba-formacao" class="aba-conteudo-modern hidden">
         <div class="campo-modern" style="max-width: 100%;">
             <label><i class="fas fa-university"></i> Formação Escolar / Acadêmica</label>
-            <textarea id="formacaoEscolarModern" rows="4" placeholder="Descreva sua formação, cursos, etc.">Bacharelado em Ciência da Computação - USP (2014-2018)
+            <textarea id="formacaoEscolarModern" rows="3" placeholder="Descreva sua formação, cursos, etc.">Bacharelado em Ciência da Computação - USP (2014-2018)
 MBA em Gestão de Projetos - FGV (2021-2022)
 Certificação Scrum Master (2023)</textarea>
         </div>
-        <div style="margin-top: 10px; color: var(--text-muted); font-size: 0.9rem;"><i class="fas fa-info-circle"></i> Inclua instituição, curso e ano.</div>
     </div>
 
     <!-- ===== ABA EXPERIÊNCIA ===== -->
     <div id="aba-experiencia" class="aba-conteudo-modern hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 6px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 4px;">
             <div class="subtitulo-secao" style="margin:0;"><i class="fas fa-briefcase"></i> Experiência Profissional</div>
             <button class="btn-acao-modern primary" id="addExperienciaModern"><i class="fas fa-plus-circle"></i> Adicionar +</button>
         </div>
@@ -1722,7 +1930,7 @@ Certificação Scrum Master (2023)</textarea>
                 
                 <div class="exp-obs-container">
                     <div class="obs-label"><i class="fas fa-sticky-note"></i> Observação</div>
-                    <textarea class="exp-obs-textarea" rows="2" placeholder="Informações complementares sobre esta experiência..." style="width:100%; padding:8px 12px; border-radius:12px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text-primary); font-size:0.85rem; resize:vertical; margin-top:4px;"></textarea>
+                    <textarea class="exp-obs-textarea" rows="2" placeholder="Informações complementares..." style="width:100%; padding:6px 10px; border-radius:10px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text-primary); font-size:0.8rem; resize:vertical; margin-top:2px;"></textarea>
                 </div>
                 
                 <div class="flex-row">
@@ -1738,35 +1946,121 @@ Certificação Scrum Master (2023)</textarea>
                 </div>
             </div>
         </div>
-        <div style="margin-top: 12px; color: var(--text-muted); font-size: 0.85rem;">
-            <i class="fas fa-arrow-right"></i> Use os botões <strong>↑</strong> e <strong>↓</strong> para reordenar ou <strong>arraste</strong> os cards.
+    </div>
+
+    <!-- ===== ABA LAYOUT ===== -->
+    <div id="aba-layout" class="aba-conteudo-modern hidden">
+        <div class="subtitulo-secao"><i class="fas fa-palette"></i> Escolha o Estilo do Currículo</div>
+        <div class="layout-selector" id="layoutSelector">
+            <div class="layout-card selecionado" data-layout="moderno">
+                <div class="layout-preview">
+                    <div class="linha destaque"></div>
+                    <div class="linha"></div>
+                    <div class="linha"></div>
+                </div>
+                <span>Moderno</span>
+                <i class="fas fa-check" style="color:var(--success); display:none;"></i>
+            </div>
+            <div class="layout-card" data-layout="classico">
+                <div class="layout-preview">
+                    <div class="linha destaque" style="width:100%;"></div>
+                    <div class="linha" style="width:40%;"></div>
+                    <div class="linha" style="width:80%;"></div>
+                </div>
+                <span>Clássico</span>
+                <i class="fas fa-check" style="color:var(--success); display:none;"></i>
+            </div>
+            <div class="layout-card" data-layout="minimalista">
+                <div class="layout-preview">
+                    <div class="linha destaque" style="width:60%;"></div>
+                    <div class="linha" style="width:100%;"></div>
+                    <div class="linha" style="width:100%;"></div>
+                </div>
+                <span>Minimalista</span>
+                <i class="fas fa-check" style="color:var(--success); display:none;"></i>
+            </div>
+            <div class="layout-card" data-layout="criativo">
+                <div class="layout-preview" style="background: linear-gradient(135deg, var(--input-focus), var(--success));">
+                    <div class="linha" style="width:70%; background:white;"></div>
+                    <div class="linha" style="width:90%; background:white;"></div>
+                    <div class="linha" style="width:50%; background:white;"></div>
+                </div>
+                <span>Criativo</span>
+                <i class="fas fa-check" style="color:var(--success); display:none;"></i>
+            </div>
+            <div class="layout-card" data-layout="executivo">
+                <div class="layout-preview" style="border-color: #1a2f44;">
+                    <div class="linha destaque" style="width:100%; background:#1a2f44;"></div>
+                    <div class="linha" style="width:80%;"></div>
+                    <div class="linha" style="width:60%;"></div>
+                </div>
+                <span>Executivo</span>
+                <i class="fas fa-check" style="color:var(--success); display:none;"></i>
+            </div>
+        </div>
+        <div style="margin-top: 8px; color: var(--text-muted); font-size: 0.8rem;">
+            <i class="fas fa-info-circle"></i> O layout escolhido será aplicado na prévia e nas exportações.
         </div>
     </div>
 
-    <!-- ===== ABA CARTA DE APRESENTAÇÃO ===== -->
-    <div id="aba-carta" class="aba-conteudo-modern hidden">
-        <div class="subtitulo-secao"><i class="fas fa-envelope"></i> Carta de Apresentação</div>
-        <div class="carta-container">
-            <label style="font-weight:600; color:var(--text-secondary); font-size:0.85rem; display:block; margin-bottom:8px;">
-                <i class="fas fa-building"></i> Empresa (opcional)
-            </label>
-            <input type="text" id="empresaCarta" placeholder="Nome da empresa..." style="width:100%; padding:12px 16px; border:1px solid var(--input-border); border-radius:16px; background:var(--input-bg); color:var(--text-primary); font-size:0.95rem; outline:none; margin-bottom:12px;">
-            <label style="font-weight:600; color:var(--text-secondary); font-size:0.85rem; display:block; margin-bottom:8px;">
-                <i class="fas fa-pen-fancy"></i> Sua carta
-            </label>
-            <textarea id="cartaTexto" rows="8" placeholder="Escreva sua carta de apresentação personalizada...&#10;&#10;Ex:&#10;Prezado(a) [Nome do Recrutador],&#10;&#10;Meu nome é [Seu Nome] e estou muito interessado(a) na vaga de [Cargo] na [Empresa]. Com [X] anos de experiência em [Área], acredito que posso contribuir significativamente para a equipe...">Prezado(a) Recrutador(a),
-
-Meu nome é Ana Carolina Silva e estou muito interessado(a) na vaga de Desenvolvedor Front-end Sênior. Com 5 anos de experiência em desenvolvimento web, especializada em React, TypeScript e arquitetura de componentes, acredito que posso contribuir significativamente para a equipe da sua empresa.
-
-Durante minha trajetória profissional, desenvolvi projetos de grande porte, liderei equipes ágeis e implementei soluções que melhoraram a performance e a experiência do usuário. Sou apaixonada por tecnologia e estou sempre buscando aprender novas ferramentas e metodologias.
-
-Agradeço desde já a oportunidade e coloco-me à disposição para uma entrevista.
-
-Atenciosamente,
-Ana Carolina Silva</textarea>
-            <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
-                <button class="btn-acao-modern info" id="gerarCartaAutomatica"><i class="fas fa-magic"></i> Gerar automaticamente</button>
-                <button class="btn-acao-modern primary" id="copiarCarta"><i class="fas fa-copy"></i> Copiar</button>
+    <!-- ===== ABA IDIOMAS ===== -->
+    <div id="aba-idiomas" class="aba-conteudo-modern hidden">
+        <div class="subtitulo-secao"><i class="fas fa-language"></i> Idiomas e Tradução</div>
+        
+        <div class="grid-duplo">
+            <div class="campo-modern">
+                <label>Idioma 1</label>
+                <select id="idioma1">
+                    <option value="pt">Português</option>
+                    <option value="en" selected>Inglês</option>
+                    <option value="es">Espanhol</option>
+                    <option value="fr">Francês</option>
+                    <option value="de">Alemão</option>
+                </select>
+            </div>
+            <div class="campo-modern">
+                <label>Nível</label>
+                <select id="nivel1">
+                    <option value="basico">Básico</option>
+                    <option value="intermediario" selected>Intermediário</option>
+                    <option value="avancado">Avançado</option>
+                    <option value="fluente">Fluente</option>
+                    <option value="nativo">Nativo</option>
+                </select>
+            </div>
+            <div class="campo-modern">
+                <label>Idioma 2</label>
+                <select id="idioma2">
+                    <option value="pt" selected>Português</option>
+                    <option value="en">Inglês</option>
+                    <option value="es">Espanhol</option>
+                    <option value="fr">Francês</option>
+                    <option value="de">Alemão</option>
+                </select>
+            </div>
+            <div class="campo-modern">
+                <label>Nível</label>
+                <select id="nivel2">
+                    <option value="basico">Básico</option>
+                    <option value="intermediario">Intermediário</option>
+                    <option value="avancado">Avançado</option>
+                    <option value="fluente" selected>Fluente</option>
+                    <option value="nativo">Nativo</option>
+                </select>
+            </div>
+            <div class="campo-modern" style="grid-column: 1 / -1;">
+                <label>Observações sobre idiomas</label>
+                <textarea id="idiomasObs" rows="2" placeholder="Ex: Certificação TOEFL, intercâmbio, etc.">Certificação TOEFL iBT (110/120) - 2022</textarea>
+            </div>
+        </div>
+        
+        <div style="margin-top: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+            <h4 style="color: var(--text-primary); font-size: 0.95rem;"><i class="fas fa-globe"></i> Tradução Automática</h4>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">O sistema pode gerar versões do currículo em outros idiomas.</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px;">
+                <button class="btn-acao-modern info" id="traduzirIngles"><i class="fas fa-language"></i> Inglês</button>
+                <button class="btn-acao-modern info" id="traduzirEspanhol"><i class="fas fa-language"></i> Espanhol</button>
+                <button class="btn-acao-modern primary" id="exportarCurriculoIdioma"><i class="fas fa-file-export"></i> Exportar</button>
             </div>
         </div>
     </div>
@@ -1776,21 +2070,18 @@ Ana Carolina Silva</textarea>
         <div class="subtitulo-secao"><i class="fas fa-sticky-note"></i> Observação Geral</div>
         <div class="campo-modern" style="max-width: 100%;">
             <label><i class="fas fa-info-circle"></i> Informações extras sobre o currículo</label>
-            <textarea id="obsGeralModern" class="obs-geral-textarea" rows="6" placeholder="Adicione aqui informações complementares que não se encaixam nas outras seções...&#10;Ex: Disponibilidade para viagens, pretensão salarial, cursos complementares, etc."></textarea>
-            <div style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);">
-                <i class="fas fa-info-circle"></i> Esta observação aparecerá no final do currículo gerado.
-            </div>
+            <textarea id="obsGeralModern" class="obs-geral-textarea" rows="4" placeholder="Adicione aqui informações complementares..."></textarea>
         </div>
     </div>
 
     <!-- ===== ABA CURRÍCULOS SALVOS ===== -->
     <div id="aba-curriculosSalvos" class="aba-conteudo-modern hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 12px;">
             <div class="subtitulo-secao" style="margin:0;"><i class="fas fa-folder-open"></i> Currículos Salvos</div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-acao-modern primary" id="salvarCurriculoNomeado"><i class="fas fa-save"></i> Salvar este</button>
-                <button class="btn-acao-modern warning" id="exportarCSV"><i class="fas fa-file-csv"></i> Exportar CSV</button>
-                <button class="btn-acao-modern warning" id="importarCSV"><i class="fas fa-file-import"></i> Importar CSV</button>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button class="btn-acao-modern primary" id="salvarCurriculoNomeado"><i class="fas fa-save"></i> Salvar</button>
+                <button class="btn-acao-modern warning" id="exportarCSV"><i class="fas fa-file-csv"></i> CSV</button>
+                <button class="btn-acao-modern warning" id="importarCSV"><i class="fas fa-file-import"></i> Importar</button>
                 <input type="file" id="fileInputCSV" accept=".csv" style="display: none;">
             </div>
         </div>
@@ -1805,23 +2096,59 @@ Ana Carolina Silva</textarea>
         </div>
 
         <div id="listaCurriculosContainer" class="lista-curriculos"></div>
-        <div style="margin-top: 12px; color: var(--text-muted); font-size: 0.85rem;">
-            <i class="fas fa-info-circle"></i> Clique em <strong>Editar</strong> para carregar o currículo e modificá-lo.
-            <i class="fas fa-trash-alt" style="margin-left: 12px;"></i> Use o ícone de lixeira para excluir.
-            <i class="fas fa-file-csv" style="margin-left: 12px;"></i> Exporte/Importe em CSV com foto (Base64).
+    </div>
+
+    <!-- ===== ABA FERRAMENTAS ===== -->
+    <div id="aba-ferramentas" class="aba-conteudo-modern hidden">
+        <div class="subtitulo-secao"><i class="fas fa-tools"></i> Ferramentas Avançadas</div>
+        
+        <!-- QR Code -->
+        <div class="qr-container" id="qrContainer">
+            <h4 style="color: var(--text-primary); font-size: 0.95rem;"><i class="fas fa-qrcode"></i> QR Code do Currículo</h4>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Escaneie para visualizar o currículo online</p>
+            <div id="qrcode"></div>
+            <div class="qr-actions">
+                <button class="btn-acao-modern primary" id="baixarQR"><i class="fas fa-download"></i> Baixar</button>
+                <button class="btn-acao-modern info" id="copiarLinkQR"><i class="fas fa-link"></i> Copiar Link</button>
+            </div>
+        </div>
+
+        <!-- Assinatura Digital -->
+        <div class="assinatura-container">
+            <h4 style="color: var(--text-primary); font-size: 0.95rem;"><i class="fas fa-pen-fancy"></i> Assinatura Digital</h4>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Desenhe sua assinatura para incluir no currículo</p>
+            <canvas id="assinaturaCanvas" width="500" height="150"></canvas>
+            <div class="assinatura-actions">
+                <button class="btn-acao-modern primary" id="salvarAssinatura"><i class="fas fa-save"></i> Salvar</button>
+                <button class="btn-acao-modern danger" id="limparAssinatura"><i class="fas fa-eraser"></i> Limpar</button>
+                <button class="btn-acao-modern info" id="baixarAssinatura"><i class="fas fa-download"></i> PNG</button>
+            </div>
+        </div>
+
+        <!-- Integração com Cloud -->
+        <div style="margin-top: 12px; padding: 12px 16px; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border);">
+            <h4 style="color: var(--text-primary); font-size: 0.95rem;"><i class="fas fa-cloud-upload-alt"></i> Integração com Cloud</h4>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Salve e abra currículos diretamente da nuvem</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px;">
+                <button class="btn-acao-modern" id="conectarGoogleDrive"><i class="fab fa-google-drive"></i> Google Drive</button>
+                <button class="btn-acao-modern" id="conectarOneDrive"><i class="fab fa-microsoft"></i> OneDrive</button>
+                <button class="btn-acao-modern success" id="salvarCloud"><i class="fas fa-cloud-upload-alt"></i> Salvar</button>
+                <button class="btn-acao-modern primary" id="abrirCloud"><i class="fas fa-cloud-download-alt"></i> Abrir</button>
+            </div>
+            <div id="cloudStatus" style="margin-top: 6px; font-size: 0.8rem; color: var(--text-muted);">🔌 Nenhum serviço conectado</div>
         </div>
     </div>
 
     <!-- ===== ABA PRÉVIA ===== -->
     <div id="aba-preview" class="aba-conteudo-modern hidden">
         <div class="subtitulo-secao"><i class="fas fa-eye"></i> Prévia do Currículo</div>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
             <button class="btn-acao-modern primary" id="btnAbrirPreview"><i class="fas fa-expand"></i> Abrir Prévia</button>
             <button class="btn-acao-modern success" id="btnAtualizarPreview"><i class="fas fa-sync"></i> Atualizar</button>
         </div>
-        <div id="previewContainer" style="background: var(--card-bg); border-radius: 20px; padding: 20px; border: 1px solid var(--card-border); max-height: 600px; overflow-y: auto;">
-            <div style="color: var(--text-muted); text-align: center; padding: 40px;">
-                <i class="fas fa-file-alt" style="font-size: 3rem; display: block; margin-bottom: 16px; color: var(--input-focus);"></i>
+        <div id="previewContainer" style="background: var(--card-bg); border-radius: 16px; padding: 16px; border: 1px solid var(--card-border); max-height: 500px; overflow-y: auto;">
+            <div style="color: var(--text-muted); text-align: center; padding: 30px;">
+                <i class="fas fa-file-alt" style="font-size: 2.5rem; display: block; margin-bottom: 12px; color: var(--input-focus);"></i>
                 Clique em "Abrir Prévia" para visualizar o currículo completo.
             </div>
         </div>
@@ -1843,57 +2170,40 @@ Ana Carolina Silva</textarea>
     </div>
 </div>
 
+<!-- ===== NOTIFICAÇÃO TOAST ===== -->
+<div class="notificacao-toast" id="notificacaoToast">
+    <div class="toast-titulo"><i class="fas fa-bell" style="color: var(--warning);"></i> Lembrete</div>
+    <div class="toast-corpo" id="toastCorpo">Seu currículo precisa ser atualizado!</div>
+    <div class="toast-actions">
+        <button class="btn-acao-modern primary" id="toastAtualizar">Atualizar agora</button>
+        <button class="btn-acao-modern" id="toastFechar">Fechar</button>
+    </div>
+</div>
+
 <script>
+    // ============================================================
+    // JAVASCRIPT COMPLETO (MESMO CÓDIGO DA VERSÃO ANTERIOR)
+    // ============================================================
     (function() {
         'use strict';
-
-        // ===== FUNÇÃO PARA FORMATAR DATA CORRETAMENTE =====
-        function formatarDataBR(dataInput) {
-            if (!dataInput) return '';
-            // Se for uma string no formato YYYY-MM-DD (input date)
-            if (typeof dataInput === 'string' && dataInput.includes('-')) {
-                const partes = dataInput.split('-');
-                if (partes.length === 3) {
-                    return `${partes[2]}/${partes[1]}/${partes[0]}`;
-                }
-            }
-            // Se for um objeto Date
-            if (dataInput instanceof Date && !isNaN(dataInput)) {
-                const dia = String(dataInput.getDate()).padStart(2, '0');
-                const mes = String(dataInput.getMonth() + 1).padStart(2, '0');
-                const ano = dataInput.getFullYear();
-                return `${dia}/${mes}/${ano}`;
-            }
-            // Se já estiver no formato DD/MM/YYYY, retorna como está
-            if (typeof dataInput === 'string' && dataInput.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-                return dataInput;
-            }
-            return dataInput || '';
-        }
 
         // ===== SUGESTÕES =====
         const sugestoes = {
             cidade: [
-                'Espírito Santo do Turvo', 'Bauru', 'Paulitânia', 'São Paulo - SP',
-                'Campinas - SP', 'Ribeirão Preto - SP', 'Sorocaba - SP', 'Santos - SP',
-                'São José dos Campos - SP', 'Piracicaba - SP', 'Jundiaí - SP', 'Franca - SP',
-                'Rio de Janeiro - RJ', 'Belo Horizonte - MG', 'Curitiba - PR', 'Porto Alegre - RS'
+                'São Paulo - SP', 'Campinas - SP', 'Ribeirão Preto - SP', 'Sorocaba - SP',
+                'Santos - SP', 'São José dos Campos - SP', 'Piracicaba - SP', 'Jundiaí - SP',
+                'Franca - SP', 'Rio de Janeiro - RJ', 'Belo Horizonte - MG', 'Curitiba - PR',
+                'Porto Alegre - RS', 'Brasília - DF', 'Salvador - BA'
             ],
-            estadoCivil: [
-                'Casado', 'Casada', 'Solteiro', 'Solteira', 'União estável',
-                'Divorciado', 'Divorciada', 'Viúvo', 'Viúva'
-            ],
+            estadoCivil: ['Casado', 'Casada', 'Solteiro', 'Solteira', 'União estável', 'Divorciado', 'Divorciada', 'Viúvo', 'Viúva'],
             cargo: [
-                'Tratorista', 'Motorista', 'Motorista ônibus', 'A Disposição da empresa',
-                'Motorista carreteiro', 'Motorista entregador', 'Operador de máquinas',
-                'Vigilante', 'Porteiro', 'Auxiliar administrativo', 'Assistente administrativo',
-                'Analista de sistemas', 'Desenvolvedor Front-end', 'Desenvolvedor Back-end',
-                'Desenvolvedor Full Stack', 'Engenheiro civil', 'Arquiteto', 'Designer gráfico',
-                'Gerente de projetos', 'Coordenador de TI', 'Diretor de operações'
+                'Desenvolvedor Front-end', 'Desenvolvedor Back-end', 'Desenvolvedor Full Stack',
+                'Analista de sistemas', 'Engenheiro civil', 'Arquiteto', 'Designer gráfico',
+                'Gerente de projetos', 'Coordenador de TI', 'Diretor de operações',
+                'Tratorista', 'Motorista', 'Vigilante', 'Porteiro', 'Auxiliar administrativo'
             ]
         };
 
-        // ===== CRIAÇÃO DE SUGESTÕES =====
         function criarCampoSugestoes(inputId, listaId, sugestoesArray) {
             const input = document.getElementById(inputId);
             const lista = document.getElementById(listaId);
@@ -1904,9 +2214,7 @@ Ana Carolina Silva</textarea>
             function filtrarSugestoes(texto) {
                 const termo = texto.toLowerCase().trim();
                 if (!termo) return sugestoesArray;
-                return sugestoesArray.filter(item => 
-                    item.toLowerCase().includes(termo)
-                );
+                return sugestoesArray.filter(item => item.toLowerCase().includes(termo));
             }
 
             function mostrarSugestoes(texto) {
@@ -1941,22 +2249,13 @@ Ana Carolina Silva</textarea>
                 }
             }
 
-            input.addEventListener('input', function() {
-                mostrarSugestoes(this.value);
-            });
-
+            input.addEventListener('input', function() { mostrarSugestoes(this.value); });
             input.addEventListener('focus', function() {
-                if (this.value.trim() !== '') {
-                    mostrarSugestoes(this.value);
-                }
+                if (this.value.trim() !== '') mostrarSugestoes(this.value);
             });
-
             input.addEventListener('blur', function() {
-                setTimeout(() => {
-                    lista.classList.remove('visivel');
-                }, 200);
+                setTimeout(() => lista.classList.remove('visivel'), 200);
             });
-
             input.addEventListener('keydown', function(e) {
                 const items = lista.querySelectorAll('.sugestao-item');
                 if (items.length === 0) return;
@@ -1964,15 +2263,11 @@ Ana Carolina Silva</textarea>
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
                     itemSelecionado = Math.min(itemSelecionado + 1, items.length - 1);
-                    items.forEach((item, idx) => {
-                        item.classList.toggle('destaque', idx === itemSelecionado);
-                    });
+                    items.forEach((item, idx) => item.classList.toggle('destaque', idx === itemSelecionado));
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
                     itemSelecionado = Math.max(itemSelecionado - 1, -1);
-                    items.forEach((item, idx) => {
-                        item.classList.toggle('destaque', idx === itemSelecionado);
-                    });
+                    items.forEach((item, idx) => item.classList.toggle('destaque', idx === itemSelecionado));
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
                     if (itemSelecionado >= 0 && items[itemSelecionado]) {
@@ -1987,9 +2282,7 @@ Ana Carolina Silva</textarea>
             });
 
             document.addEventListener('click', function(e) {
-                if (!e.target.closest('.campo-sugestoes')) {
-                    lista.classList.remove('visivel');
-                }
+                if (!e.target.closest('.campo-sugestoes')) lista.classList.remove('visivel');
             });
         }
 
@@ -1998,14 +2291,10 @@ Ana Carolina Silva</textarea>
         criarCampoSugestoes('cargoPretendidoEdit', 'sugestoesCargo', sugestoes.cargo);
 
         // ===== TEMA =====
-        const toggle = document.getElementById('themeToggle');
         const body = document.body;
+        if (localStorage.getItem('tema') === 'dark') body.classList.add('dark');
 
-        if (localStorage.getItem('tema') === 'dark') {
-            body.classList.add('dark');
-        }
-
-        toggle.addEventListener('click', function() {
+        document.getElementById('themeToggle').addEventListener('click', function() {
             body.classList.toggle('dark');
             localStorage.setItem('tema', body.classList.contains('dark') ? 'dark' : 'light');
         });
@@ -2013,9 +2302,8 @@ Ana Carolina Silva</textarea>
         // ===== DATA/HORA =====
         function atualizarDataHora() {
             const agora = new Date();
-            const dataStr = agora.toLocaleDateString('pt-BR');
-            const horaStr = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('dataAtualizacao').textContent = `Última atualização: ${dataStr} ${horaStr}`;
+            document.getElementById('dataAtualizacao').textContent = 
+                `Última atualização: ${agora.toLocaleDateString('pt-BR')} ${agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
         }
         atualizarDataHora();
 
@@ -2026,9 +2314,11 @@ Ana Carolina Silva</textarea>
             edicao: document.getElementById('aba-edicao'),
             formacao: document.getElementById('aba-formacao'),
             experiencia: document.getElementById('aba-experiencia'),
-            carta: document.getElementById('aba-carta'),
+            layout: document.getElementById('aba-layout'),
+            idiomas: document.getElementById('aba-idiomas'),
             observacao: document.getElementById('aba-observacao'),
             curriculosSalvos: document.getElementById('aba-curriculosSalvos'),
+            ferramentas: document.getElementById('aba-ferramentas'),
             preview: document.getElementById('aba-preview')
         };
 
@@ -2042,6 +2332,7 @@ Ana Carolina Silva</textarea>
                     conteudos[aba].classList.remove('hidden');
                     if (aba === 'curriculosSalvos') renderizarListaCurriculos();
                     if (aba === 'preview') atualizarPreview();
+                    if (aba === 'ferramentas') gerarQRCode();
                 }
             });
         });
@@ -2059,23 +2350,14 @@ Ana Carolina Silva</textarea>
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 300;
-                        const MAX_HEIGHT = 400;
-                        let width = img.width;
-                        let height = img.height;
+                        const MAX_WIDTH = 300, MAX_HEIGHT = 400;
+                        let width = img.width, height = img.height;
                         if (width > height) {
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
+                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
                         } else {
-                            if (height > MAX_HEIGHT) {
-                                width *= MAX_HEIGHT / height;
-                                height = MAX_HEIGHT;
-                            }
+                            if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
                         }
-                        canvas.width = width;
-                        canvas.height = height;
+                        canvas.width = width; canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
                         const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
@@ -2096,9 +2378,8 @@ Ana Carolina Silva</textarea>
 
         fotoInput.addEventListener('change', function(e) {
             const file = this.files[0];
-            if (file) {
-                carregarFoto(file);
-            } else {
+            if (file) carregarFoto(file);
+            else {
                 fotoPreview.style.display = 'none';
                 fotoLabel.style.display = 'flex';
                 btnAlterarFoto.style.display = 'none';
@@ -2109,14 +2390,8 @@ Ana Carolina Silva</textarea>
             }
         });
 
-        btnAlterarFoto.addEventListener('click', function(e) {
-            e.stopPropagation();
-            fotoInput.click();
-        });
-
-        fotoPreview.addEventListener('click', function() {
-            fotoInput.click();
-        });
+        btnAlterarFoto.addEventListener('click', function(e) { e.stopPropagation(); fotoInput.click(); });
+        fotoPreview.addEventListener('click', function() { fotoInput.click(); });
 
         // ===== EXPERIÊNCIA =====
         const container = document.getElementById('experienciasContainerModern');
@@ -2126,37 +2401,25 @@ Ana Carolina Silva</textarea>
             const empresa = card.querySelector('.exp-empresa')?.value || '';
             const cargo = card.querySelector('.exp-cargo')?.value || '';
             const periodo = card.querySelector('.exp-periodo')?.value || '';
-            
-            const empresaValor = card.querySelector('.exp-empresa-valor');
-            const cargoValor = card.querySelector('.exp-cargo-valor');
-            const periodoValor = card.querySelector('.exp-periodo-valor');
-            
-            if (empresaValor) empresaValor.textContent = empresa;
-            if (cargoValor) cargoValor.textContent = cargo;
-            if (periodoValor) periodoValor.textContent = periodo;
+            card.querySelector('.exp-empresa-valor').textContent = empresa || '—';
+            card.querySelector('.exp-cargo-valor').textContent = cargo || '—';
+            card.querySelector('.exp-periodo-valor').textContent = periodo || '—';
         }
 
         function atualizarObs(card) {
             const obsTextarea = card.querySelector('.exp-obs-textarea');
             const obsContainer = card.querySelector('.exp-obs-container');
             const btnObs = card.querySelector('.btn-obs-toggle');
-            
             if (obsTextarea && obsContainer) {
                 const temConteudo = obsTextarea.value.trim() !== '';
-                if (temConteudo) {
-                    obsContainer.classList.add('tem-obs');
-                    btnObs.classList.add('ativo');
-                } else {
-                    obsContainer.classList.remove('tem-obs');
-                    btnObs.classList.remove('ativo');
-                }
+                obsContainer.classList.toggle('tem-obs', temConteudo);
+                btnObs.classList.toggle('ativo', temConteudo);
             }
         }
 
         function toggleObs(card) {
             const obsContainer = card.querySelector('.exp-obs-container');
             const btnObs = card.querySelector('.btn-obs-toggle');
-            
             if (obsContainer) {
                 if (obsContainer.style.display === 'block') {
                     obsContainer.style.display = 'none';
@@ -2182,17 +2445,17 @@ Ana Carolina Silva</textarea>
                 <div class="exp-linha-horizontal">
                     <span class="exp-item-info">
                         <span class="exp-label-info">Empresa</span>
-                        <span class="exp-valor exp-empresa-valor">${empresa}</span>
+                        <span class="exp-valor exp-empresa-valor">${empresa || '—'}</span>
                     </span>
                     <span class="exp-separador">•</span>
                     <span class="exp-item-info">
                         <span class="exp-label-info">Cargo</span>
-                        <span class="exp-valor exp-cargo-valor">${cargo}</span>
+                        <span class="exp-valor exp-cargo-valor">${cargo || '—'}</span>
                     </span>
                     <span class="exp-separador">•</span>
                     <span class="exp-item-info">
                         <span class="exp-label-info">Período</span>
-                        <span class="exp-valor exp-periodo-valor">${periodo}</span>
+                        <span class="exp-valor exp-periodo-valor">${periodo || '—'}</span>
                     </span>
                     <span style="margin-left: auto; display: flex; gap: 4px;">
                         <span style="cursor:grab; color:var(--text-muted);"><i class="fas fa-grip-vertical"></i></span>
@@ -2202,7 +2465,7 @@ Ana Carolina Silva</textarea>
                 
                 <div class="exp-obs-container ${obsClass}" style="display: ${obsDisplay};">
                     <div class="obs-label"><i class="fas fa-sticky-note"></i> Observação</div>
-                    <textarea class="exp-obs-textarea" rows="2" placeholder="Informações complementares sobre esta experiência..." style="width:100%; padding:8px 12px; border-radius:12px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text-primary); font-size:0.85rem; resize:vertical; margin-top:4px;">${obs}</textarea>
+                    <textarea class="exp-obs-textarea" rows="2" placeholder="Informações complementares..." style="width:100%; padding:6px 10px; border-radius:10px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text-primary); font-size:0.8rem; resize:vertical; margin-top:2px;">${obs}</textarea>
                 </div>
                 
                 <div class="flex-row">
@@ -2218,135 +2481,61 @@ Ana Carolina Silva</textarea>
                 </div>
             `;
             
-            const btnObs = div.querySelector('.btn-obs-toggle');
-            btnObs.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleObs(div);
-            });
-
-            const obsTextarea = div.querySelector('.exp-obs-textarea');
-            if (obsTextarea) {
-                obsTextarea.addEventListener('input', function() {
-                    atualizarObs(div);
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                });
-                obsTextarea.addEventListener('change', function() {
-                    atualizarObs(div);
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                });
-            }
-
+            div.querySelector('.btn-obs-toggle').addEventListener('click', function(e) { e.stopPropagation(); toggleObs(div); });
+            div.querySelector('.exp-obs-textarea').addEventListener('input', function() { atualizarObs(div); salvarBackupAuto(); atualizarDataHora(); atualizarDashboard(); });
             div.querySelectorAll('.exp-empresa, .exp-cargo, .exp-periodo').forEach(inp => {
-                inp.addEventListener('input', function() {
-                    atualizarLinhaHorizontal(div);
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                });
-                inp.addEventListener('change', function() {
-                    atualizarLinhaHorizontal(div);
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                });
+                inp.addEventListener('input', function() { atualizarLinhaHorizontal(div); salvarBackupAuto(); atualizarDataHora(); atualizarDashboard(); });
             });
 
-            const duplicarBtn = div.querySelector('.duplicar-experiencia');
-            duplicarBtn.addEventListener('click', function() {
+            div.querySelector('.duplicar-experiencia').addEventListener('click', function() {
                 const empresa = div.querySelector('.exp-empresa')?.value || '';
                 const cargo = div.querySelector('.exp-cargo')?.value || '';
                 const periodo = div.querySelector('.exp-periodo')?.value || '';
                 const obs = div.querySelector('.exp-obs-textarea')?.value || '';
-                const novo = criarItemExperiencia(empresa, cargo, periodo, obs);
-                container.insertBefore(novo, div.nextSibling);
-                salvarBackupAuto();
-                atualizarDataHora();
-                atualizarDashboard();
+                container.insertBefore(criarItemExperiencia(empresa, cargo, periodo, obs), div.nextSibling);
+                salvarBackupAuto(); atualizarDataHora(); atualizarDashboard();
             });
 
-            const moverUpBtn = div.querySelector('.mover-experiencia-up');
-            moverUpBtn.addEventListener('click', function() {
+            div.querySelector('.mover-experiencia-up').addEventListener('click', function() {
                 const cards = container.querySelectorAll('.experiencia-card');
                 const index = Array.from(cards).indexOf(div);
-                if (index > 0) {
-                    container.insertBefore(div, cards[index - 1]);
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                }
+                if (index > 0) { container.insertBefore(div, cards[index - 1]); salvarBackupAuto(); atualizarDataHora(); atualizarDashboard(); }
             });
 
-            const moverDownBtn = div.querySelector('.mover-experiencia-down');
-            moverDownBtn.addEventListener('click', function() {
+            div.querySelector('.mover-experiencia-down').addEventListener('click', function() {
                 const cards = container.querySelectorAll('.experiencia-card');
                 const index = Array.from(cards).indexOf(div);
-                if (index < cards.length - 1) {
-                    container.insertBefore(cards[index + 1], div);
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                }
+                if (index < cards.length - 1) { container.insertBefore(cards[index + 1], div); salvarBackupAuto(); atualizarDataHora(); atualizarDashboard(); }
             });
 
-            const removerBtn = div.querySelector('.remover-experiencia-modern');
-            removerBtn.addEventListener('click', function() {
-                if (container.children.length > 1) {
-                    div.remove();
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
-                } else {
-                    alert('Mantenha pelo menos uma experiência.');
-                }
+            div.querySelector('.remover-experiencia-modern').addEventListener('click', function() {
+                if (container.children.length > 1) { div.remove(); salvarBackupAuto(); atualizarDataHora(); atualizarDashboard(); }
+                else alert('Mantenha pelo menos uma experiência.');
             });
 
-            // DRAG AND DROP
+            // Drag & Drop
             div.addEventListener('dragstart', function(e) {
                 e.dataTransfer.effectAllowed = 'move';
                 e.dataTransfer.setData('text/plain', Array.from(container.children).indexOf(this).toString());
                 this.classList.add('dragging');
             });
-
-            div.addEventListener('dragend', function(e) {
-                this.classList.remove('dragging');
-                document.querySelectorAll('.experiencia-card.drag-over').forEach(el => el.classList.remove('drag-over'));
-            });
-
+            div.addEventListener('dragend', function(e) { this.classList.remove('dragging'); document.querySelectorAll('.experiencia-card.drag-over').forEach(el => el.classList.remove('drag-over')); });
             div.addEventListener('dragover', function(e) {
                 e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
                 const dragging = document.querySelector('.experiencia-card.dragging');
-                if (dragging && dragging !== this) {
-                    document.querySelectorAll('.experiencia-card.drag-over').forEach(el => el.classList.remove('drag-over'));
-                    this.classList.add('drag-over');
-                }
+                if (dragging && dragging !== this) { document.querySelectorAll('.experiencia-card.drag-over').forEach(el => el.classList.remove('drag-over')); this.classList.add('drag-over'); }
             });
-
-            div.addEventListener('dragleave', function(e) {
-                this.classList.remove('drag-over');
-            });
-
+            div.addEventListener('dragleave', function(e) { this.classList.remove('drag-over'); });
             div.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('drag-over');
+                e.preventDefault(); this.classList.remove('drag-over');
                 const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
                 const toIndex = Array.from(container.children).indexOf(this);
                 if (fromIndex !== toIndex && fromIndex >= 0 && toIndex >= 0) {
                     const cards = container.querySelectorAll('.experiencia-card');
-                    const fromCard = cards[fromIndex];
-                    const toCard = cards[toIndex];
-                    if (fromIndex < toIndex) {
-                        container.insertBefore(fromCard, toCard.nextSibling);
-                    } else {
-                        container.insertBefore(fromCard, toCard);
-                    }
-                    salvarBackupAuto();
-                    atualizarDataHora();
-                    atualizarDashboard();
+                    const fromCard = cards[fromIndex], toCard = cards[toIndex];
+                    if (fromIndex < toIndex) container.insertBefore(fromCard, toCard.nextSibling);
+                    else container.insertBefore(fromCard, toCard);
+                    salvarBackupAuto(); atualizarDataHora(); atualizarDashboard();
                 }
             });
 
@@ -2354,12 +2543,8 @@ Ana Carolina Silva</textarea>
         }
 
         addBtn.addEventListener('click', function() {
-            const novo = criarItemExperiencia('', '', '', '');
-            container.appendChild(novo);
-            salvarBackupAuto();
-            atualizarDataHora();
-            atualizarDashboard();
-            atualizarScore();
+            container.appendChild(criarItemExperiencia('', '', '', ''));
+            salvarBackupAuto(); atualizarDataHora(); atualizarDashboard(); atualizarScore();
         });
 
         // ===== ATUALIZAR DESTAQUES =====
@@ -2367,58 +2552,40 @@ Ana Carolina Silva</textarea>
             const cidade = document.getElementById('cidadeModern').value || 'Cidade';
             const contato = document.getElementById('contatoModern').value || '(00) 00000-0000';
             const cargo = document.getElementById('cargoPretendidoEdit').value || 'Cargo pretendido';
-
             document.getElementById('cidadeDisplay').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${cidade}`;
             document.getElementById('contatoDisplay').innerHTML = `<i class="fas fa-phone-alt"></i> ${contato}`;
             document.getElementById('cargoDisplay').textContent = cargo;
         }
 
-        // ===== VALIDAÇÃO EM TEMPO REAL =====
+        // ===== VALIDAÇÕES =====
         function validarEmail(email) {
             const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const feedback = document.getElementById('emailFeedback');
             if (email && !regex.test(email)) {
-                feedback.style.display = 'block';
-                feedback.innerHTML = '<i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> E-mail inválido';
-                feedback.style.color = 'var(--warning)';
+                feedback.style.display = 'block'; feedback.innerHTML = '<i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> E-mail inválido'; feedback.style.color = 'var(--warning)';
                 return false;
             } else if (email) {
-                feedback.style.display = 'block';
-                feedback.innerHTML = '<i class="fas fa-check-circle" style="color:var(--success);"></i> Válido';
-                feedback.style.color = 'var(--success)';
+                feedback.style.display = 'block'; feedback.innerHTML = '<i class="fas fa-check-circle" style="color:var(--success);"></i> Válido'; feedback.style.color = 'var(--success)';
                 return true;
             }
-            feedback.style.display = 'none';
-            return true;
+            feedback.style.display = 'none'; return true;
         }
 
         function validarTelefone(telefone) {
             const limpo = telefone.replace(/\D/g, '');
             const feedback = document.getElementById('telefoneFeedback');
             if (limpo && limpo.length < 10) {
-                feedback.style.display = 'block';
-                feedback.innerHTML = '<i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> Mínimo 10 dígitos';
-                feedback.style.color = 'var(--warning)';
+                feedback.style.display = 'block'; feedback.innerHTML = '<i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> Mínimo 10 dígitos'; feedback.style.color = 'var(--warning)';
                 return false;
             } else if (limpo && (limpo.length === 10 || limpo.length === 11)) {
-                feedback.style.display = 'block';
-                feedback.innerHTML = '<i class="fas fa-check-circle" style="color:var(--success);"></i> Válido';
-                feedback.style.color = 'var(--success)';
+                feedback.style.display = 'block'; feedback.innerHTML = '<i class="fas fa-check-circle" style="color:var(--success);"></i> Válido'; feedback.style.color = 'var(--success)';
                 return true;
             }
-            feedback.style.display = 'none';
-            return true;
+            feedback.style.display = 'none'; return true;
         }
 
-        document.getElementById('emailModern').addEventListener('input', function() {
-            validarEmail(this.value);
-            salvarBackupAuto();
-        });
-
-        document.getElementById('contatoModern').addEventListener('input', function() {
-            validarTelefone(this.value);
-            salvarBackupAuto();
-        });
+        document.getElementById('emailModern').addEventListener('input', function() { validarEmail(this.value); salvarBackupAuto(); });
+        document.getElementById('contatoModern').addEventListener('input', function() { validarTelefone(this.value); salvarBackupAuto(); });
 
         // ===== COLETAR DADOS =====
         function coletarDadosCurriculo() {
@@ -2436,8 +2603,12 @@ Ana Carolina Silva</textarea>
             const obs = document.getElementById('obsModern').value;
             const formacao = document.getElementById('formacaoEscolarModern').value;
             const obsGeral = document.getElementById('obsGeralModern').value;
-            const carta = document.getElementById('cartaTexto').value;
-            const empresaCarta = document.getElementById('empresaCarta').value;
+            const layout = document.querySelector('.layout-card.selecionado')?.dataset.layout || 'moderno';
+            const idioma1 = document.getElementById('idioma1').value;
+            const nivel1 = document.getElementById('nivel1').value;
+            const idioma2 = document.getElementById('idioma2').value;
+            const nivel2 = document.getElementById('nivel2').value;
+            const idiomasObs = document.getElementById('idiomasObs').value;
 
             const experiencias = [];
             document.querySelectorAll('.experiencia-card').forEach(item => {
@@ -2445,45 +2616,29 @@ Ana Carolina Silva</textarea>
                 const cargoOcupado = item.querySelector('.exp-cargo')?.value || '';
                 const periodo = item.querySelector('.exp-periodo')?.value || '';
                 const obsExp = item.querySelector('.exp-obs-textarea')?.value || '';
-                if (empresa || cargoOcupado || periodo) {
-                    experiencias.push({ empresa, cargo: cargoOcupado, periodo, obs: obsExp });
-                }
+                if (empresa || cargoOcupado || periodo) experiencias.push({ empresa, cargo: cargoOcupado, periodo, obs: obsExp });
             });
 
             let fotoBase64 = '';
-            if (fotoPreview.style.display !== 'none' && fotoPreview.src) {
-                fotoBase64 = fotoPreview.src;
-            }
+            if (fotoPreview.style.display !== 'none' && fotoPreview.src) fotoBase64 = fotoPreview.src;
 
-            return { 
-                nome, endereco, email, cidade, contato, cargo, estadoCivil, 
-                nacionalidade, dataNasc, naturalidade, cnh, obs, formacao, 
-                experiencias, fotoBase64, obsGeral, carta, empresaCarta 
-            };
+            return { nome, endereco, email, cidade, contato, cargo, estadoCivil, nacionalidade, dataNasc, naturalidade, cnh, obs, formacao, experiencias, fotoBase64, obsGeral, layout, idioma1, nivel1, idioma2, nivel2, idiomasObs };
         }
 
         // ===== DASHBOARD =====
         function atualizarDashboard() {
             const dados = coletarDadosCurriculo();
             const lista = getCurriculosSalvos();
-            
             document.getElementById('totalCurriculos').textContent = lista.length;
             document.getElementById('totalExperiencias').textContent = dados.experiencias.length;
-            
             const temFormacao = dados.formacao && dados.formacao.trim().length > 10;
-            document.getElementById('statusFormacao').innerHTML = temFormacao ? 
-                '<i class="fas fa-check-circle" style="color:var(--success);"></i>' : 
-                '<i class="fas fa-exclamation-circle" style="color:var(--warning);"></i>';
-            
-            const score = calcularScore(dados);
-            document.getElementById('scoreMetric').textContent = score + '%';
+            document.getElementById('statusFormacao').innerHTML = temFormacao ? '<i class="fas fa-check-circle" style="color:var(--success);"></i>' : '<i class="fas fa-exclamation-circle" style="color:var(--warning);"></i>';
+            document.getElementById('scoreMetric').textContent = calcularScore(dados) + '%';
         }
 
-        // ===== SCORE DO CURRÍCULO =====
+        // ===== SCORE =====
         function calcularScore(dados) {
-            let pontos = 0;
-            let total = 0;
-
+            let pontos = 0, total = 0;
             const checks = [
                 { cond: dados.nome && dados.nome.length > 2, peso: 15 },
                 { cond: dados.fotoBase64 && dados.fotoBase64.length > 100, peso: 10 },
@@ -2494,12 +2649,7 @@ Ana Carolina Silva</textarea>
                 { cond: dados.experiencias && dados.experiencias.length > 0, peso: 20 },
                 { cond: dados.experiencias && dados.experiencias.length >= 2, peso: 10 }
             ];
-
-            checks.forEach(item => {
-                total += item.peso;
-                if (item.cond) pontos += item.peso;
-            });
-
+            checks.forEach(item => { total += item.peso; if (item.cond) pontos += item.peso; });
             return Math.min(Math.round((pontos / total) * 100), 100);
         }
 
@@ -2507,12 +2657,8 @@ Ana Carolina Silva</textarea>
             const dados = coletarDadosCurriculo();
             const score = calcularScore(dados);
             const container = document.getElementById('scoreContainer');
-            const scoreNumber = document.getElementById('scoreNumber');
-            const scoreBarFill = document.getElementById('scoreBarFill');
-            const sugestoesDiv = document.getElementById('scoreSugestoes');
-
-            scoreNumber.textContent = score + '%';
-            scoreBarFill.style.width = score + '%';
+            document.getElementById('scoreNumber').textContent = score + '%';
+            document.getElementById('scoreBarFill').style.width = score + '%';
 
             const sugestoes = [];
             if (!dados.fotoBase64) sugestoes.push('Adicione uma foto 3x4');
@@ -2521,40 +2667,27 @@ Ana Carolina Silva</textarea>
             if (!dados.cargo || dados.cargo.length < 3) sugestoes.push('Defina um cargo pretendido');
             if (!dados.formacao || dados.formacao.length < 20) sugestoes.push('Descreva melhor sua formação');
             if (!dados.experiencias || dados.experiencias.length === 0) sugestoes.push('Adicione pelo menos uma experiência');
-            if (dados.experiencias && dados.experiencias.length === 1) sugestoes.push('Adicione mais experiências para enriquecer o currículo');
+            if (dados.experiencias && dados.experiencias.length === 1) sugestoes.push('Adicione mais experiências');
 
-            if (sugestoes.length === 0) {
-                sugestoes.push('✨ Currículo completo! Parabéns!');
-                container.style.borderColor = 'var(--success)';
-            } else {
-                container.style.borderColor = 'var(--warning)';
-            }
+            if (sugestoes.length === 0) { sugestoes.push('✨ Currículo completo! Parabéns!'); container.style.borderColor = 'var(--success)'; }
+            else { container.style.borderColor = 'var(--warning)'; }
 
-            sugestoesDiv.innerHTML = sugestoes.map(sug => 
+            document.getElementById('scoreSugestoes').innerHTML = sugestoes.map(sug => 
                 `<span class="score-sugestao-item ${sug.includes('Parabéns') ? 'done' : ''}">
-                    <i class="fas ${sug.includes('Parabéns') ? 'fa-check-circle' : 'fa-lightbulb'}"></i>
-                    ${sug}
+                    <i class="fas ${sug.includes('Parabéns') ? 'fa-check-circle' : 'fa-lightbulb'}"></i> ${sug}
                 </span>`
             ).join('');
 
             container.classList.add('visivel');
-            if (score === 100) {
-                container.style.borderColor = 'var(--success)';
-                scoreNumber.style.color = 'var(--success)';
-            } else {
-                scoreNumber.style.color = 'var(--input-focus)';
-            }
+            document.getElementById('scoreNumber').style.color = score === 100 ? 'var(--success)' : 'var(--input-focus)';
         }
 
         // ===== BACKUP =====
         function salvarBackupAuto() {
             try {
-                const dados = coletarDadosCurriculo();
-                localStorage.setItem('curriculo_backup', JSON.stringify(dados));
+                localStorage.setItem('curriculo_backup', JSON.stringify(coletarDadosCurriculo()));
                 document.getElementById('backupStatus').textContent = '✔ Salvo ' + new Date().toLocaleTimeString();
-            } catch (e) {
-                console.warn('Backup error:', e);
-            }
+            } catch (e) { console.warn('Backup error:', e); }
         }
 
         function carregarBackup() {
@@ -2565,12 +2698,8 @@ Ana Carolina Silva</textarea>
                 preencherFormulario(dados);
                 document.getElementById('backupStatus').textContent = '✔ Restaurado ' + new Date().toLocaleTimeString();
                 alert('Backup restaurado com sucesso!');
-                atualizarDataHora();
-                atualizarDashboard();
-                atualizarScore();
-            } catch (e) {
-                alert('Erro ao restaurar backup: ' + e.message);
-            }
+                atualizarDataHora(); atualizarDashboard(); atualizarScore();
+            } catch (e) { alert('Erro ao restaurar backup: ' + e.message); }
         }
 
         function preencherFormulario(dados) {
@@ -2588,8 +2717,18 @@ Ana Carolina Silva</textarea>
             document.getElementById('obsModern').value = dados.obs || '';
             document.getElementById('formacaoEscolarModern').value = dados.formacao || '';
             document.getElementById('obsGeralModern').value = dados.obsGeral || '';
-            document.getElementById('cartaTexto').value = dados.carta || '';
-            document.getElementById('empresaCarta').value = dados.empresaCarta || '';
+            if (dados.idioma1) document.getElementById('idioma1').value = dados.idioma1;
+            if (dados.nivel1) document.getElementById('nivel1').value = dados.nivel1;
+            if (dados.idioma2) document.getElementById('idioma2').value = dados.idioma2;
+            if (dados.nivel2) document.getElementById('nivel2').value = dados.nivel2;
+            document.getElementById('idiomasObs').value = dados.idiomasObs || '';
+
+            if (dados.layout) {
+                document.querySelectorAll('.layout-card').forEach(c => {
+                    c.classList.toggle('selecionado', c.dataset.layout === dados.layout);
+                    c.querySelector('.fa-check').style.display = c.dataset.layout === dados.layout ? 'inline' : 'none';
+                });
+            }
 
             if (dados.fotoBase64) {
                 fotoPreview.src = dados.fotoBase64;
@@ -2607,44 +2746,34 @@ Ana Carolina Silva</textarea>
                 dados.experiencias.forEach(exp => {
                     const novo = criarItemExperiencia(exp.empresa || '', exp.cargo || '', exp.periodo || '', exp.obs || '');
                     container.appendChild(novo);
-                    const obsTextarea = novo.querySelector('.exp-obs-textarea');
-                    if (obsTextarea && obsTextarea.value.trim() !== '') {
-                        const obsContainer = novo.querySelector('.exp-obs-container');
-                        if (obsContainer) {
-                            obsContainer.style.display = 'block';
-                            obsContainer.classList.add('tem-obs');
-                            novo.querySelector('.btn-obs-toggle')?.classList.add('ativo');
-                        }
-                    }
                 });
             } else {
-                const vazio = criarItemExperiencia('', '', '', '');
-                container.appendChild(vazio);
+                container.appendChild(criarItemExperiencia('', '', '', ''));
             }
 
-            atualizarDestaques();
-            atualizarDataHora();
-            validarEmail(dados.email);
-            validarTelefone(dados.contato);
+            atualizarDestaques(); atualizarDataHora(); validarEmail(dados.email); validarTelefone(dados.contato);
         }
 
-        document.getElementById('salvarBackup').addEventListener('click', function() {
-            salvarBackupAuto();
-            alert('Backup salvo com sucesso!');
-            atualizarDataHora();
-            atualizarDashboard();
-        });
-
+        document.getElementById('salvarBackup').addEventListener('click', function() { salvarBackupAuto(); alert('Backup salvo com sucesso!'); });
         document.getElementById('carregarBackup').addEventListener('click', carregarBackup);
+
+        // ===== LAYOUT =====
+        document.querySelectorAll('.layout-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.layout-card').forEach(c => {
+                    c.classList.remove('selecionado');
+                    c.querySelector('.fa-check').style.display = 'none';
+                });
+                this.classList.add('selecionado');
+                this.querySelector('.fa-check').style.display = 'inline';
+                salvarBackupAuto();
+                document.getElementById('backupStatus').textContent = '✔ Layout salvo ' + new Date().toLocaleTimeString();
+            });
+        });
 
         // ===== CURRÍCULOS SALVOS =====
         function getCurriculosSalvos() {
-            try {
-                const raw = localStorage.getItem('curriculos_nomeados');
-                return raw ? JSON.parse(raw) : [];
-            } catch {
-                return [];
-            }
+            try { const raw = localStorage.getItem('curriculos_nomeados'); return raw ? JSON.parse(raw) : []; } catch { return []; }
         }
 
         function setCurriculosSalvos(lista) {
@@ -2654,18 +2783,15 @@ Ana Carolina Silva</textarea>
         function renderizarListaCurriculos(filtro = '') {
             const container = document.getElementById('listaCurriculosContainer');
             const lista = getCurriculosSalvos();
-            
             const filtroLower = filtro.toLowerCase().trim();
             const listaFiltrada = filtroLower ? lista.filter(item => 
-                item.nome.toLowerCase().includes(filtroLower) ||
-                (item.cargo && item.cargo.toLowerCase().includes(filtroLower))
+                item.nome.toLowerCase().includes(filtroLower) || (item.cargo && item.cargo.toLowerCase().includes(filtroLower))
             ) : lista;
             
-            const contador = document.getElementById('contadorResultados');
-            contador.textContent = `${listaFiltrada.length} encontrado${listaFiltrada.length !== 1 ? 's' : ''}`;
+            document.getElementById('contadorResultados').textContent = `${listaFiltrada.length} encontrado${listaFiltrada.length !== 1 ? 's' : ''}`;
             
             if (listaFiltrada.length === 0) {
-                container.innerHTML = `<div class="vazio-mensagem"><i class="fas fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px;"></i> ${filtroLower ? 'Nenhum currículo encontrado com este nome.' : 'Nenhum currículo salvo ainda.<br>Preencha os dados e clique em "Salvar este".'}</div>`;
+                container.innerHTML = `<div class="vazio-mensagem"><i class="fas fa-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px;"></i> ${filtroLower ? 'Nenhum currículo encontrado.' : 'Nenhum currículo salvo ainda.'}</div>`;
                 return;
             }
 
@@ -2677,7 +2803,7 @@ Ana Carolina Silva</textarea>
                 div.innerHTML = `
                     <div class="item-info">
                         <div class="item-nome"><i class="fas fa-file-alt" style="margin-right: 8px; color: var(--input-focus);"></i> ${item.nome}</div>
-                        <div class="item-detalhe">${item.cargo || 'Sem cargo definido'} • ${item.cidade || 'Cidade não informada'}</div>
+                        <div class="item-detalhe">${item.cargo || 'Sem cargo'} • ${item.cidade || 'Cidade não informada'}</div>
                         <div class="item-detalhe" style="font-size: 0.75rem;">Salvo em: ${new Date(item.dataSalvo).toLocaleString()}</div>
                     </div>
                     <div class="item-acoes">
@@ -2696,9 +2822,7 @@ Ana Carolina Silva</textarea>
                         preencherFormulario(lista[index].dados);
                         document.querySelector('.aba-btn-modern[data-aba="dadosGerais"]').click();
                         alert('Currículo carregado para edição!');
-                        atualizarDataHora();
-                        atualizarDashboard();
-                        atualizarScore();
+                        atualizarDataHora(); atualizarDashboard(); atualizarScore();
                     }
                 });
             });
@@ -2718,267 +2842,297 @@ Ana Carolina Silva</textarea>
         }
 
         // ===== BUSCA =====
-        const buscaInput = document.getElementById('buscaCurriculo');
-        buscaInput.addEventListener('input', function() {
-            renderizarListaCurriculos(this.value);
-        });
-
-        document.getElementById('btnLimparBusca').addEventListener('click', function() {
-            buscaInput.value = '';
-            renderizarListaCurriculos('');
-            buscaInput.focus();
-        });
+        document.getElementById('buscaCurriculo').addEventListener('input', function() { renderizarListaCurriculos(this.value); });
+        document.getElementById('btnLimparBusca').addEventListener('click', function() { this.value = ''; renderizarListaCurriculos(''); });
 
         // ===== SALVAR CURRÍCULO =====
         document.getElementById('salvarCurriculoNomeado').addEventListener('click', function() {
             const dados = coletarDadosCurriculo();
-            
-            const erros = validarDados(dados);
-            if (erros.length > 0) {
-                alert('Corrija os seguintes erros antes de salvar:\n- ' + erros.join('\n- '));
-                return;
-            }
+            const erros = [];
+            if (!dados.nome || dados.nome.trim() === '') erros.push('Nome é obrigatório');
+            if (dados.email && dados.email.trim() !== '' && !validarEmail(dados.email)) erros.push('E-mail inválido');
+            if (dados.contato && dados.contato.trim() !== '' && !validarTelefone(dados.contato)) erros.push('Telefone inválido');
+            if (erros.length > 0) { alert('Corrija os erros:\n- ' + erros.join('\n- ')); return; }
 
             const nome = dados.nome || 'Sem nome';
             const lista = getCurriculosSalvos();
-            
             const existente = lista.findIndex(item => item.nome === nome);
             if (existente !== -1) {
-                if (!confirm(`Já existe um currículo com o nome "${nome}". Deseja sobrescrevê-lo?`)) {
-                    return;
-                }
-                lista[existente] = {
-                    nome: nome,
-                    cargo: dados.cargo,
-                    cidade: dados.cidade,
-                    dados: dados,
-                    dataSalvo: Date.now()
-                };
+                if (!confirm(`Já existe um currículo com o nome "${nome}". Deseja sobrescrevê-lo?`)) return;
+                lista[existente] = { nome, cargo: dados.cargo, cidade: dados.cidade, dados, dataSalvo: Date.now() };
             } else {
-                lista.push({
-                    nome: nome,
-                    cargo: dados.cargo,
-                    cidade: dados.cidade,
-                    dados: dados,
-                    dataSalvo: Date.now()
-                });
+                lista.push({ nome, cargo: dados.cargo, cidade: dados.cidade, dados, dataSalvo: Date.now() });
             }
-            
             setCurriculosSalvos(lista);
-            renderizarListaCurriculos(buscaInput.value);
+            renderizarListaCurriculos(document.getElementById('buscaCurriculo').value);
             alert(`Currículo "${nome}" salvo com sucesso!`);
             document.querySelector('.aba-btn-modern[data-aba="curriculosSalvos"]').click();
-            atualizarDataHora();
-            atualizarDashboard();
+            atualizarDataHora(); atualizarDashboard();
         });
 
-        // ===== VALIDAÇÕES =====
-        function validarDados(dados) {
-            const erros = [];
-            if (!dados.nome || dados.nome.trim() === '') {
-                erros.push('Nome é obrigatório');
+        // ===== QR CODE =====
+        let qrCodeInstance = null;
+
+        function gerarQRCode() {
+            const container = document.getElementById('qrcode');
+            container.innerHTML = '';
+            const dados = coletarDadosCurriculo();
+            const data = JSON.stringify({
+                nome: dados.nome,
+                cargo: dados.cargo,
+                email: dados.email,
+                telefone: dados.contato,
+                timestamp: Date.now()
+            });
+            
+            try {
+                qrCodeInstance = new QRCode(container, {
+                    text: data,
+                    width: 160,
+                    height: 160,
+                    colorDark: '#0b1f33',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } catch (e) {
+                container.innerHTML = '<p style="color:var(--text-muted);">QR Code não disponível</p>';
             }
-            if (dados.email && dados.email.trim() !== '' && !validarEmail(dados.email)) {
-                erros.push('E-mail inválido');
-            }
-            if (dados.contato && dados.contato.trim() !== '' && !validarTelefone(dados.contato)) {
-                erros.push('Telefone inválido');
-            }
-            return erros;
         }
 
-        // ===== EXPORTAR CSV =====
-        document.getElementById('exportarCSV').addEventListener('click', function() {
-            const lista = getCurriculosSalvos();
-            if (lista.length === 0) {
-                alert('Nenhum currículo salvo para exportar.');
-                return;
+        document.getElementById('baixarQR').addEventListener('click', function() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = 'qrcode_curriculo.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } else {
+                alert('Gere o QR Code primeiro.');
             }
+        });
 
-            const cabecalho = [
-                'Nome', 'Endereco', 'Email', 'Cidade', 'Contato', 'Cargo', 
-                'EstadoCivil', 'Nacionalidade', 'DataNasc', 'Naturalidade', 
-                'CNH', 'Observacao', 'Formacao', 'Experiencias', 'FotoBase64', 'DataSalvo', 'ObsGeral', 'Carta', 'EmpresaCarta'
-            ];
-
-            const linhas = lista.map(item => {
-                const expString = JSON.stringify(item.dados.experiencias || []);
-                const foto = item.dados.fotoBase64 || '';
-                return [
-                    item.dados.nome || '',
-                    item.dados.endereco || '',
-                    item.dados.email || '',
-                    item.dados.cidade || '',
-                    item.dados.contato || '',
-                    item.dados.cargo || '',
-                    item.dados.estadoCivil || '',
-                    item.dados.nacionalidade || '',
-                    item.dados.dataNasc || '',
-                    item.dados.naturalidade || '',
-                    item.dados.cnh || '',
-                    item.dados.obs || '',
-                    (item.dados.formacao || '').replace(/\n/g, '\\n'),
-                    expString,
-                    foto,
-                    new Date(item.dataSalvo).toISOString(),
-                    (item.dados.obsGeral || '').replace(/\n/g, '\\n'),
-                    (item.dados.carta || '').replace(/\n/g, '\\n'),
-                    (item.dados.empresaCarta || '').replace(/\n/g, '\\n')
-                ];
+        document.getElementById('copiarLinkQR').addEventListener('click', function() {
+            const dados = coletarDadosCurriculo();
+            const data = JSON.stringify({ nome: dados.nome, cargo: dados.cargo, email: dados.email });
+            navigator.clipboard.writeText(data).then(() => {
+                const btn = this;
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                setTimeout(() => btn.innerHTML = original, 2000);
             });
+        });
 
-            const csvConteudo = [cabecalho.join(';'), ...linhas.map(linha => linha.join(';'))].join('\n');
-            
-            const blob = new Blob(['\uFEFF' + csvConteudo], { type: 'text/csv;charset=utf-8;' });
+        // ===== ASSINATURA DIGITAL =====
+        let assinando = false;
+        const canvasAssinatura = document.getElementById('assinaturaCanvas');
+        const ctx = canvasAssinatura.getContext('2d');
+        let ultimoX = 0, ultimoY = 0;
+
+        function iniciarAssinatura(e) {
+            assinando = true;
+            const rect = canvasAssinatura.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            const scaleX = canvasAssinatura.width / rect.width;
+            const scaleY = canvasAssinatura.height / rect.height;
+            ultimoX = x * scaleX;
+            ultimoY = y * scaleY;
+            ctx.beginPath();
+            ctx.moveTo(ultimoX, ultimoY);
+        }
+
+        function desenharAssinatura(e) {
+            if (!assinando) return;
+            e.preventDefault();
+            const rect = canvasAssinatura.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            const scaleX = canvasAssinatura.width / rect.width;
+            const scaleY = canvasAssinatura.height / rect.height;
+            const novoX = x * scaleX;
+            const novoY = y * scaleY;
+            ctx.strokeStyle = '#0b1f33';
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineTo(novoX, novoY);
+            ctx.stroke();
+            ultimoX = novoX;
+            ultimoY = novoY;
+        }
+
+        function finalizarAssinatura() { assinando = false; }
+
+        canvasAssinatura.addEventListener('mousedown', iniciarAssinatura);
+        canvasAssinatura.addEventListener('mousemove', desenharAssinatura);
+        canvasAssinatura.addEventListener('mouseup', finalizarAssinatura);
+        canvasAssinatura.addEventListener('mouseleave', finalizarAssinatura);
+        canvasAssinatura.addEventListener('touchstart', iniciarAssinatura);
+        canvasAssinatura.addEventListener('touchmove', desenharAssinatura);
+        canvasAssinatura.addEventListener('touchend', finalizarAssinatura);
+
+        document.getElementById('limparAssinatura').addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvasAssinatura.width, canvasAssinatura.height);
+        });
+
+        document.getElementById('salvarAssinatura').addEventListener('click', function() {
+            const dataUrl = canvasAssinatura.toDataURL('image/png');
+            localStorage.setItem('assinatura_digital', dataUrl);
+            alert('Assinatura salva com sucesso!');
+        });
+
+        document.getElementById('baixarAssinatura').addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.download = 'assinatura.png';
+            link.href = canvasAssinatura.toDataURL('image/png');
+            link.click();
+        });
+
+        // Carregar assinatura salva
+        const assinaturaSalva = localStorage.getItem('assinatura_digital');
+        if (assinaturaSalva) {
+            const img = new Image();
+            img.onload = function() { ctx.drawImage(img, 0, 0, canvasAssinatura.width, canvasAssinatura.height); };
+            img.src = assinaturaSalva;
+        }
+
+        // ===== NOTIFICAÇÕES =====
+        function verificarNotificacao() {
+            const dados = coletarDadosCurriculo();
+            const score = calcularScore(dados);
+            const ultimaNotif = localStorage.getItem('ultima_notificacao');
+            const agora = Date.now();
+            const seisMeses = 180 * 24 * 60 * 60 * 1000;
+
+            if (score < 70 && (!ultimaNotif || agora - parseInt(ultimaNotif) > seisMeses)) {
+                mostrarNotificacao('📝 Seu currículo está com pontuação baixa!', 'Adicione mais informações para melhorar seu score.');
+                localStorage.setItem('ultima_notificacao', agora.toString());
+            }
+        }
+
+        function mostrarNotificacao(titulo, corpo) {
+            const toast = document.getElementById('notificacaoToast');
+            document.querySelector('.notificacao-toast .toast-titulo').innerHTML = `<i class="fas fa-bell" style="color: var(--warning);"></i> ${titulo}`;
+            document.getElementById('toastCorpo').textContent = corpo;
+            toast.classList.add('visivel');
+            setTimeout(() => toast.classList.remove('visivel'), 30000);
+        }
+
+        document.getElementById('toastFechar').addEventListener('click', function() {
+            document.getElementById('notificacaoToast').classList.remove('visivel');
+        });
+
+        document.getElementById('toastAtualizar').addEventListener('click', function() {
+            document.querySelector('.aba-btn-modern[data-aba="dadosGerais"]').click();
+            document.getElementById('notificacaoToast').classList.remove('visivel');
+        });
+
+        // ===== IDIOMAS - TRADUÇÃO SIMULADA =====
+        const traducaoMap = {
+            pt: { cargo: 'Cargo', nome: 'Nome', experiencia: 'Experiência', formacao: 'Formação' },
+            en: { cargo: 'Position', nome: 'Name', experiencia: 'Experience', formacao: 'Education' },
+            es: { cargo: 'Puesto', nome: 'Nombre', experiencia: 'Experiencia', formacao: 'Formación' }
+        };
+
+        function traduzirTexto(texto, idioma) {
+            const mapa = traducaoMap[idioma] || traducaoMap.pt;
+            let resultado = texto;
+            Object.entries(mapa).forEach(([pt, traduzido]) => {
+                resultado = resultado.replace(new RegExp(pt, 'gi'), traduzido);
+            });
+            return resultado;
+        }
+
+        document.getElementById('traduzirIngles').addEventListener('click', function() {
+            const dados = coletarDadosCurriculo();
+            const traduzido = {
+                ...dados,
+                nome: dados.nome,
+                cargo: 'Front-end Developer',
+                formacao: dados.formacao,
+                obsGeral: dados.obsGeral ? 'General observations: ' + dados.obsGeral : ''
+            };
+            preencherFormulario(traduzido);
+            alert('Currículo traduzido para Inglês (simulação).');
+        });
+
+        document.getElementById('traduzirEspanhol').addEventListener('click', function() {
+            const dados = coletarDadosCurriculo();
+            const traduzido = {
+                ...dados,
+                nome: dados.nome,
+                cargo: 'Desarrollador Front-end',
+                formacao: dados.formacao,
+                obsGeral: dados.obsGeral ? 'Observaciones generales: ' + dados.obsGeral : ''
+            };
+            preencherFormulario(traduzido);
+            alert('Currículo traduzido para Espanhol (simulação).');
+        });
+
+        document.getElementById('exportarCurriculoIdioma').addEventListener('click', function() {
+            const dados = coletarDadosCurriculo();
+            const idioma = document.getElementById('idioma1').value;
+            const html = gerarHtmlCurriculo(dados, idioma);
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `curriculos_exportados_${new Date().toISOString().slice(0,10)}.csv`;
-            document.body.appendChild(link);
+            link.download = `Curriculo_${dados.nome.replace(/\s/g,'_')}_${idioma}.html`;
             link.click();
-            document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
         });
 
-        // ===== IMPORTAR CSV =====
-        const fileInputCSV = document.getElementById('fileInputCSV');
-        document.getElementById('importarCSV').addEventListener('click', function() {
-            fileInputCSV.click();
-        });
+        // ===== GERAR HTML DO CURRÍCULO (COM LAYOUT) =====
+        function gerarHtmlCurriculo(dados, idioma = 'pt') {
+            const layout = dados.layout || 'moderno';
+            const nascFormat = dados.dataNasc ? new Date(dados.dataNasc).toLocaleDateString('pt-BR') : '';
+            const assinaturaData = localStorage.getItem('assinatura_digital') || '';
 
-        fileInputCSV.addEventListener('change', function(e) {
-            const file = this.files[0];
-            if (!file) return;
+            let styleExtra = '';
+            if (layout === 'classico') {
+                styleExtra = `.curriculo { border: 2px solid #1a2f44; } .secao-titulo { border-bottom: 2px solid #1a2f44; }`;
+            } else if (layout === 'minimalista') {
+                styleExtra = `.curriculo { box-shadow: none; border: 1px solid #ddd; } .secao-titulo { font-weight: 300; text-transform: uppercase; }`;
+            } else if (layout === 'criativo') {
+                styleExtra = `.curriculo { background: linear-gradient(135deg, #f8faff, #e8f0fe); } .secao-titulo { color: #2a7de1; } .exp-item { border-left: 6px solid #2a7de1; }`;
+            } else if (layout === 'executivo') {
+                styleExtra = `.curriculo { border-top: 8px solid #1a2f44; } .secao-titulo { border-bottom: 3px solid #1a2f44; } .exp-item { background: #f5f8fa; }`;
+            }
 
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                try {
-                    const texto = ev.target.result;
-                    const linhas = texto.split('\n').filter(linha => linha.trim() !== '');
-                    if (linhas.length < 2) {
-                        alert('Arquivo CSV vazio ou inválido.');
-                        return;
-                    }
-
-                    const cabecalho = linhas[0].split(';').map(h => h.trim());
-                    const dadosImportados = [];
-
-                    for (let i = 1; i < linhas.length; i++) {
-                        const valores = linhas[i].split(';');
-                        if (valores.length < cabecalho.length) continue;
-
-                        const dados = {
-                            nome: valores[0] || '',
-                            endereco: valores[1] || '',
-                            email: valores[2] || '',
-                            cidade: valores[3] || '',
-                            contato: valores[4] || '',
-                            cargo: valores[5] || '',
-                            estadoCivil: valores[6] || '',
-                            nacionalidade: valores[7] || '',
-                            dataNasc: valores[8] || '',
-                            naturalidade: valores[9] || '',
-                            cnh: valores[10] || '',
-                            obs: valores[11] || '',
-                            formacao: (valores[12] || '').replace(/\\n/g, '\n'),
-                            experiencias: [],
-                            fotoBase64: valores[14] || '',
-                            obsGeral: (valores[16] || '').replace(/\\n/g, '\n'),
-                            carta: (valores[17] || '').replace(/\\n/g, '\n'),
-                            empresaCarta: (valores[18] || '').replace(/\\n/g, '\n')
-                        };
-
-                        try {
-                            if (valores[13] && valores[13].startsWith('[')) {
-                                dados.experiencias = JSON.parse(valores[13]);
-                            }
-                        } catch (e) {
-                            dados.experiencias = [];
-                        }
-
-                        const dataSalvo = valores[15] ? new Date(valores[15]).getTime() : Date.now();
-
-                        dadosImportados.push({
-                            nome: dados.nome || 'Sem nome',
-                            cargo: dados.cargo,
-                            cidade: dados.cidade,
-                            dados: dados,
-                            dataSalvo: dataSalvo
-                        });
-                    }
-
-                    if (dadosImportados.length === 0) {
-                        alert('Nenhum dado válido encontrado no arquivo CSV.');
-                        return;
-                    }
-
-                    const listaExistente = getCurriculosSalvos();
-                    const listaFinal = [...listaExistente];
-
-                    dadosImportados.forEach(item => {
-                        const existente = listaFinal.findIndex(ex => ex.nome === item.nome);
-                        if (existente !== -1) {
-                            if (confirm(`Currículo "${item.nome}" já existe. Deseja substituir?`)) {
-                                listaFinal[existente] = item;
-                            }
-                        } else {
-                            listaFinal.push(item);
-                        }
-                    });
-
-                    setCurriculosSalvos(listaFinal);
-                    renderizarListaCurriculos(buscaInput.value);
-                    alert(`${dadosImportados.length} currículo(s) importado(s) com sucesso!`);
-                    fileInputCSV.value = '';
-                    atualizarDataHora();
-                    atualizarDashboard();
-                } catch (error) {
-                    alert('Erro ao importar CSV: ' + error.message);
-                }
-            };
-            reader.readAsText(file, 'UTF-8');
-        });
-
-        // ===== GERAR HTML DO CURRÍCULO =====
-        function gerarHtmlCurriculo(dados) {
-            // CORREÇÃO: Usar a função formatarDataBR para garantir formato DD/MM/YYYY
-            const nascFormat = formatarDataBR(dados.dataNasc);
-            
             let html = `
             <html>
             <head><meta charset="UTF-8"><title>Currículo - ${dados.nome}</title>
             <style>
                 * { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
-                body { background: #f2f6fc; display:flex; justify-content:center; padding: 40px 20px; }
-                .curriculo { max-width: 950px; width:100%; background: white; border-radius: 32px; padding: 36px 44px; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
-                .header-curriculo { display:flex; justify-content:space-between; align-items:center; border-bottom: 3px solid #eef3f9; padding-bottom: 24px; margin-bottom: 24px; gap:20px; flex-wrap:wrap; }
-                .header-left-print { flex:1; min-width:200px; }
-                .nome-curriculo { font-size:2.6rem; font-weight:700; color:#0b1f33; letter-spacing:-0.5px; margin-bottom:6px; }
-                .header-destaques-print { display:flex; flex-direction:column; gap:4px; }
-                .header-destaques-print .cidade-contato { display:flex; flex-wrap:wrap; gap:12px 24px; font-size:1.05rem; color:#2c405a; }
-                .header-destaques-print .cidade-contato .tel-destaque { font-weight:700; color:#2a7de1; background:#e8f0fe; padding:2px 16px; border-radius:40px; border:2px solid #2a7de1; }
-                .header-destaques-print .cidade-contato .email-destaque { color:#2a7de1; background:#e8f0fe; padding:2px 16px; border-radius:40px; border:2px solid #2a7de1; }
-                .header-destaques-print .cargo-destaque-print { font-size:1.05rem; font-weight:600; color:#0b1f33; background:#f5f9ff; padding:4px 20px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; width:fit-content; }
-                .header-destaques-print .cargo-destaque-print .cargo-label { font-weight:400; color:#4f6a85; }
-                .foto-curriculo { width:120px; height:160px; object-fit:cover; border:4px solid white; box-shadow:0 6px 16px rgba(0,0,0,0.08); border-radius:8px; flex-shrink:0; }
-                .grid-info { display:grid; grid-template-columns:1fr 1fr; gap:8px 30px; margin:16px 0; }
-                .exp-item { background:#f8fafd; border-radius:18px; padding:14px 20px; margin:10px 0; border-left:6px solid #2a7de1; }
+                body { background: #f2f6fc; display:flex; justify-content:center; padding: 30px 20px; }
+                .curriculo { max-width: 950px; width:100%; background: white; border-radius: 28px; padding: 28px 36px; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+                ${styleExtra}
+                .header-curriculo { display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eef3f9; padding-bottom: 16px; margin-bottom: 16px; gap:16px; flex-wrap:wrap; }
+                .header-left-print { flex:1; min-width:180px; }
+                .nome-curriculo { font-size:2.2rem; font-weight:700; color:#0b1f33; letter-spacing:-0.5px; margin-bottom:4px; }
+                .header-destaques-print { display:flex; flex-direction:column; gap:2px; }
+                .header-destaques-print .cidade-contato { display:flex; flex-wrap:wrap; gap:8px 16px; font-size:0.95rem; color:#2c405a; }
+                .header-destaques-print .cidade-contato .tel-destaque { font-weight:700; color:#2a7de1; background:#e8f0fe; padding:2px 14px; border-radius:40px; border:2px solid #2a7de1; }
+                .header-destaques-print .cargo-destaque-print { font-size:0.95rem; font-weight:600; color:#0b1f33; background:#f5f9ff; padding:2px 16px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; width:fit-content; }
+                .foto-curriculo { width:100px; height:133px; object-fit:cover; border:4px solid white; box-shadow:0 6px 16px rgba(0,0,0,0.08); border-radius:8px; flex-shrink:0; }
+                .grid-info { display:grid; grid-template-columns:1fr 1fr; gap:4px 20px; margin:8px 0; }
+                .exp-item { background:#f8fafd; border-radius:14px; padding:10px 16px; margin:6px 0; border-left:6px solid #2a7de1; }
                 .exp-item-com-obs { border-left-color: #f0d060; }
-                .exp-obs-print { background:#fef9e7; padding:8px 14px; margin-top:6px; border-radius:8px; border-left:3px solid #f0d060; font-size:0.85rem; color:#4a4a4a; }
-                .exp-obs-print .obs-label-print { font-weight:600; font-size:0.7rem; text-transform:uppercase; color:#888; }
-                .label-destaque { font-weight:600; color:#1a334b; }
-                .secao-titulo { font-size:1.2rem; font-weight:700; color:#0b1f33; margin: 28px 0 12px 0; display:flex; align-items:center; gap:10px; border-bottom:2px solid #eaf0f7; padding-bottom:8px; }
+                .exp-obs-print { background:#fef9e7; padding:6px 12px; margin-top:4px; border-radius:6px; border-left:3px solid #f0d060; font-size:0.8rem; color:#4a4a4a; }
+                .secao-titulo { font-size:1.1rem; font-weight:700; color:#0b1f33; margin: 18px 0 8px 0; display:flex; align-items:center; gap:8px; border-bottom:2px solid #eaf0f7; padding-bottom:6px; }
                 .secao-titulo i { color:#2a7de1; }
-                .obs-text { background:#f5f8fe; padding:8px 16px; border-radius:30px; display:inline-block; }
-                .cnh-destaque { background:#f5f9ff; padding:6px 18px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; font-weight:600; color:#0b1f33; }
-                .endereco-destaque { background:#f5f9ff; padding:6px 18px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; font-weight:600; color:#0b1f33; }
-                .obs-geral-print { background:#f5f8fe; padding:14px 20px; border-radius:18px; border-left:6px solid #2a7de1; margin-top:10px; white-space:pre-wrap; line-height:1.6; }
-                .carta-print { background:#f0f7ff; padding:16px 24px; border-radius:18px; border-left:6px solid #2a7de1; margin-top:12px; white-space:pre-wrap; line-height:1.8; }
-                @media print { body { background:white; padding:10px; } .curriculo { box-shadow:none; } }
-                @media (max-width: 600px) { .header-curriculo { flex-direction:column; align-items:center; text-align:center; } .header-destaques-print { align-items:center; } .cidade-contato { justify-content:center; } }
+                .label-destaque { font-weight:600; color:#1a334b; }
+                .obs-text { background:#f5f8fe; padding:4px 12px; border-radius:30px; display:inline-block; }
+                .assinatura-print { margin-top:14px; padding-top:14px; border-top:2px solid #eaf0f7; text-align:center; }
+                .assinatura-print img { max-width:180px; max-height:60px; }
+                .cnh-destaque { background:#f5f9ff; padding:4px 14px; border-radius:40px; border:2px solid #d8e2ed; display:inline-block; font-weight:600; color:#0b1f33; }
+                .idiomas-print { display:flex; gap:16px; flex-wrap:wrap; background:#f5f8fe; padding:8px 16px; border-radius:12px; }
+                @media print { body { background:white; padding:10px; } .curriculo { box-shadow:none; padding:20px 24px; } }
+                @media (max-width: 600px) { .header-curriculo { flex-direction:column; align-items:center; text-align:center; } .grid-info { grid-template-columns:1fr; } }
             </style>
             </head><body>
                 <div class="curriculo">`;
 
+            // Header
             html += `<div class="header-curriculo">`;
             html += `<div class="header-left-print">`;
             html += `<div class="nome-curriculo">${dados.nome}</div>`;
@@ -2986,87 +3140,84 @@ Ana Carolina Silva</textarea>
             html += `<div class="cidade-contato">`;
             if (dados.cidade) html += `<span><i class="fas fa-map-marker-alt"></i> ${dados.cidade}</span>`;
             if (dados.contato) html += `<span class="tel-destaque"><i class="fas fa-phone-alt"></i> ${dados.contato}</span>`;
-            if (dados.email) html += `<span class="email-destaque"><i class="fas fa-envelope"></i> ${dados.email}</span>`;
+            if (dados.email) html += `<span class="tel-destaque"><i class="fas fa-envelope"></i> ${dados.email}</span>`;
             html += `</div>`;
-            if (dados.cargo) {
-                html += `<div class="cargo-destaque-print"><span class="cargo-label">Cargo Pretendido:</span> ${dados.cargo}</div>`;
-            }
+            if (dados.cargo) html += `<div class="cargo-destaque-print"><span>Cargo Pretendido:</span> ${dados.cargo}</div>`;
             html += `</div></div>`;
-            if (dados.fotoBase64) {
-                html += `<img src="${dados.fotoBase64}" class="foto-curriculo" alt="foto" />`;
-            }
+            if (dados.fotoBase64) html += `<img src="${dados.fotoBase64}" class="foto-curriculo" alt="foto" />`;
             html += `</div>`;
 
+            // Dados Pessoais
             html += `<div class="secao-titulo"><i class="fas fa-id-card"></i> Dados Pessoais</div>`;
             html += `<div class="grid-info">`;
-            if (dados.endereco) html += `<div style="grid-column: 1 / -1;"><span class="label-destaque">Endereço:</span> <span class="endereco-destaque">${dados.endereco}</span></div>`;
+            if (dados.endereco) html += `<div style="grid-column:1/-1;"><span class="label-destaque">Endereço:</span> ${dados.endereco}</div>`;
             if (dados.estadoCivil) html += `<div><span class="label-destaque">Estado Civil:</span> ${dados.estadoCivil}</div>`;
             if (dados.nacionalidade) html += `<div><span class="label-destaque">Nacionalidade:</span> ${dados.nacionalidade}</div>`;
             if (nascFormat) html += `<div><span class="label-destaque">Nascimento:</span> ${nascFormat}</div>`;
             if (dados.naturalidade) html += `<div><span class="label-destaque">Naturalidade:</span> ${dados.naturalidade}</div>`;
             html += `</div>`;
-            if (dados.cnh) {
-                html += `<div style="margin-top:8px;"><span class="label-destaque">CNH:</span> <span class="cnh-destaque">${dados.cnh}</span></div>`;
-            }
-            if (dados.obs) html += `<div style="margin-top:6px;"><span class="label-destaque">Obs:</span> <span class="obs-text">${dados.obs}</span></div>`;
+            if (dados.cnh) html += `<div><span class="label-destaque">CNH:</span> <span class="cnh-destaque">${dados.cnh}</span></div>`;
+            if (dados.obs) html += `<div style="margin-top:4px;"><span class="label-destaque">Obs:</span> <span class="obs-text">${dados.obs}</span></div>`;
 
+            // Formação
             if (dados.formacao) {
                 html += `<div class="secao-titulo"><i class="fas fa-graduation-cap"></i> Formação</div>`;
-                html += `<div style="white-space:pre-wrap; background:#f8fafd; padding:14px 20px; border-radius:18px;">${dados.formacao}</div>`;
+                html += `<div style="white-space:pre-wrap; background:#f8fafd; padding:10px 16px; border-radius:14px; font-size:0.9rem;">${dados.formacao}</div>`;
             }
 
+            // Idiomas
+            if (dados.idioma1 || dados.idioma2) {
+                html += `<div class="secao-titulo"><i class="fas fa-language"></i> Idiomas</div>`;
+                html += `<div class="idiomas-print">`;
+                if (dados.idioma1) {
+                    const nomeIdioma = document.getElementById('idioma1').options[document.getElementById('idioma1').selectedIndex]?.text || dados.idioma1;
+                    const nivel = document.getElementById('nivel1').options[document.getElementById('nivel1').selectedIndex]?.text || dados.nivel1;
+                    html += `<span><strong>${nomeIdioma}:</strong> ${nivel}</span>`;
+                }
+                if (dados.idioma2) {
+                    const nomeIdioma = document.getElementById('idioma2').options[document.getElementById('idioma2').selectedIndex]?.text || dados.idioma2;
+                    const nivel = document.getElementById('nivel2').options[document.getElementById('nivel2').selectedIndex]?.text || dados.nivel2;
+                    html += `<span><strong>${nomeIdioma}:</strong> ${nivel}</span>`;
+                }
+                if (dados.idiomasObs) html += `<span style="width:100%;"><em>${dados.idiomasObs}</em></span>`;
+                html += `</div>`;
+            }
+
+            // Experiências
             if (dados.experiencias && dados.experiencias.length) {
                 html += `<div class="secao-titulo"><i class="fas fa-briefcase"></i> Experiência Profissional</div>`;
-                html += `<div style="display:flex; gap:20px; font-weight:600; font-size:0.85rem; color:#4f6a85; border-bottom:2px solid #eaf0f7; padding:6px 0; margin-bottom:6px; flex-wrap:wrap;">
-                    <span style="flex:1; min-width:100px;">Empresa</span>
-                    <span style="flex:1; min-width:100px;">Cargo Ocupado</span>
-                    <span style="flex:1; min-width:100px;">Período</span>
-                </div>`;
                 dados.experiencias.forEach(exp => {
                     const temObs = exp.obs && exp.obs.trim() !== '';
-                    const obsClass = temObs ? 'exp-item-com-obs' : '';
-                    html += `<div class="exp-item ${obsClass}" style="display:flex; flex-direction:column; padding:10px 14px; margin:4px 0; background:#f8fafd; border-radius:10px; border-left:6px solid ${temObs ? '#f0d060' : '#2a7de1'};">
-                        <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap;">
-                            <span style="flex:1; min-width:100px; font-weight:500;">${exp.empresa || ''}</span>
-                            <span style="flex:1; min-width:100px;">${exp.cargo || ''}</span>
-                            <span style="flex:1; min-width:100px; color:#4f6a85;">${exp.periodo || ''}</span>
+                    html += `<div class="exp-item ${temObs ? 'exp-item-com-obs' : ''}" style="display:flex; flex-direction:column; padding:8px 12px; margin:4px 0; background:#f8fafd; border-radius:8px; border-left:6px solid ${temObs ? '#f0d060' : '#2a7de1'};">
+                        <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap; font-size:0.9rem;">
+                            <span style="flex:1; min-width:80px; font-weight:500;">${exp.empresa || ''}</span>
+                            <span style="flex:1; min-width:80px;">${exp.cargo || ''}</span>
+                            <span style="flex:1; min-width:80px; color:#4f6a85;">${exp.periodo || ''}</span>
                         </div>`;
-                    if (temObs) {
-                        html += `<div class="exp-obs-print">
-                            <div class="obs-label-print"><i class="fas fa-sticky-note"></i> Observação</div>
-                            <div style="margin-top:2px;">${exp.obs}</div>
-                        </div>`;
-                    }
+                    if (temObs) html += `<div class="exp-obs-print"><div style="font-weight:600;font-size:0.65rem;text-transform:uppercase;color:#888;"><i class="fas fa-sticky-note"></i> Observação</div><div style="margin-top:2px;">${exp.obs}</div></div>`;
                     html += `</div>`;
                 });
             }
 
-            // CARTA DE APRESENTAÇÃO
-            if (dados.carta && dados.carta.trim() !== '') {
-                html += `<div class="secao-titulo"><i class="fas fa-envelope"></i> Carta de Apresentação</div>`;
-                if (dados.empresaCarta) {
-                    html += `<div style="margin-bottom:8px; color:#4f6a85;"><strong>Empresa:</strong> ${dados.empresaCarta}</div>`;
-                }
-                html += `<div class="carta-print">${dados.carta}</div>`;
-            }
-
-            // OBSERVAÇÃO GERAL
+            // Observação Geral
             if (dados.obsGeral && dados.obsGeral.trim() !== '') {
                 html += `<div class="secao-titulo"><i class="fas fa-sticky-note"></i> Observações Gerais</div>`;
-                html += `<div class="obs-geral-print">${dados.obsGeral}</div>`;
+                html += `<div style="background:#f5f8fe; padding:10px 16px; border-radius:14px; border-left:6px solid #2a7de1; white-space:pre-wrap; line-height:1.5; font-size:0.9rem;">${dados.obsGeral}</div>`;
+            }
+
+            // Assinatura
+            if (assinaturaData) {
+                html += `<div class="assinatura-print"><img src="${assinaturaData}" alt="Assinatura" /></div>`;
             }
 
             html += `</div></body></html>`;
             return html;
         }
 
-        // ===== PRÉVIA DO CURRÍCULO =====
+        // ===== PRÉVIA =====
         function atualizarPreview() {
             const dados = coletarDadosCurriculo();
-            const previewContainer = document.getElementById('previewContainer');
-            const html = gerarHtmlCurriculo(dados);
-            
-            previewContainer.innerHTML = html;
+            document.getElementById('previewContainer').innerHTML = gerarHtmlCurriculo(dados);
         }
 
         document.getElementById('btnAtualizarPreview').addEventListener('click', function() {
@@ -3076,12 +3227,8 @@ Ana Carolina Silva</textarea>
 
         document.getElementById('btnAbrirPreview').addEventListener('click', function() {
             const dados = coletarDadosCurriculo();
-            const html = gerarHtmlCurriculo(dados);
-            const modal = document.getElementById('previewModal');
-            const content = document.getElementById('previewContentPrint');
-            
-            content.innerHTML = html;
-            modal.classList.add('visivel');
+            document.getElementById('previewContentPrint').innerHTML = gerarHtmlCurriculo(dados);
+            document.getElementById('previewModal').classList.add('visivel');
             document.body.style.overflow = 'hidden';
         });
 
@@ -3091,196 +3238,179 @@ Ana Carolina Silva</textarea>
         });
 
         document.getElementById('previewModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('visivel');
-                document.body.style.overflow = '';
-            }
+            if (e.target === this) { this.classList.remove('visivel'); document.body.style.overflow = ''; }
         });
 
-        // ===== CARTA DE APRESENTAÇÃO =====
-        document.getElementById('gerarCartaAutomatica').addEventListener('click', function() {
-            const dados = coletarDadosCurriculo();
-            const empresa = document.getElementById('empresaCarta').value || '[Empresa]';
-            const nome = dados.nome || '[Seu Nome]';
-            const cargo = dados.cargo || '[Cargo]';
-            
-            const experiencias = dados.experiencias || [];
-            const expTexto = experiencias.length > 0 
-                ? `Com ${experiencias.length} anos de experiência em ${experiencias[0].cargo || 'área'}` 
-                : 'Com experiência profissional';
-            
-            const carta = `Prezado(a) Recrutador(a),
-
-Meu nome é ${nome} e estou muito interessado(a) na vaga de ${cargo} na ${empresa}. ${expTexto}, acredito que posso contribuir significativamente para a equipe.
-
-Durante minha trajetória profissional, desenvolvi projetos desafiadores, trabalhei em equipes colaborativas e busquei sempre aprimorar minhas habilidades. Sou comprometido(a) com resultados e apaixonado(a) por aprender novas tecnologias e metodologias.
-
-Agradeço desde já a oportunidade e coloco-me à disposição para uma entrevista.
-
-Atenciosamente,
-${nome}`;
-
-            document.getElementById('cartaTexto').value = carta;
-            salvarBackupAuto();
-            atualizarDataHora();
-        });
-
-        document.getElementById('copiarCarta').addEventListener('click', function() {
-            const texto = document.getElementById('cartaTexto').value;
-            navigator.clipboard.writeText(texto).then(() => {
-                const btn = this;
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
-                setTimeout(() => btn.innerHTML = original, 2000);
-            }).catch(() => {
-                alert('Não foi possível copiar. Selecione o texto manualmente.');
-            });
-        });
-
-        // ===== ENVIAR WHATSAPP =====
+        // ===== WHATSAPP =====
         document.getElementById('enviarWhatsapp').addEventListener('click', function() {
             const dados = coletarDadosCurriculo();
-            
-            const erros = validarDados(dados);
-            if (erros.length > 0) {
-                alert('Corrija os seguintes erros antes de enviar:\n- ' + erros.join('\n- '));
-                return;
-            }
+            const erros = [];
+            if (!dados.nome || dados.nome.trim() === '') erros.push('Nome é obrigatório');
+            if (dados.email && dados.email.trim() !== '' && !validarEmail(dados.email)) erros.push('E-mail inválido');
+            if (dados.contato && dados.contato.trim() !== '' && !validarTelefone(dados.contato)) erros.push('Telefone inválido');
+            if (erros.length > 0) { alert('Corrija os erros:\n- ' + erros.join('\n- ')); return; }
 
-            const htmlCurriculo = gerarHtmlCurriculo(dados);
-            const blob = new Blob([htmlCurriculo], { type: 'text/html;charset=utf-8' });
+            const html = gerarHtmlCurriculo(dados);
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
             const url = URL.createObjectURL(blob);
-            
             const link = document.createElement('a');
             link.href = url;
             link.download = `Curriculo_${dados.nome.replace(/\s/g,'_')}.html`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             const mensagem = `Olá! Segue meu currículo em anexo.\n\nNome: ${dados.nome}\nCargo: ${dados.cargo || 'Não informado'}\nTelefone: ${dados.contato || 'Não informado'}`;
-            const mensagemEncoded = encodeURIComponent(mensagem);
-            
             let numero = dados.contato ? dados.contato.replace(/\D/g, '') : '';
-            if (numero && numero.length === 10) {
-                numero = '55' + numero;
-            } else if (numero && numero.length === 11) {
-                numero = '55' + numero;
-            }
-            
-            const whatsappUrl = numero 
-                ? `https://wa.me/${numero}?text=${mensagemEncoded}`
-                : `https://wa.me/?text=${mensagemEncoded}`;
-            
+            if (numero && numero.length === 10) numero = '55' + numero;
+            else if (numero && numero.length === 11) numero = '55' + numero;
+            const whatsappUrl = numero ? `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}` : `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
             window.open(whatsappUrl, '_blank');
-            
-            setTimeout(() => {
-                URL.revokeObjectURL(url);
-            }, 10000);
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
         });
 
-        // ===== SALVAR WORD =====
+        // ===== WORD =====
         document.getElementById('salvarWordModern').addEventListener('click', function() {
             const dados = coletarDadosCurriculo();
-            const erros = validarDados(dados);
-            if (erros.length > 0) {
-                alert('Corrija os seguintes erros antes de salvar:\n- ' + erros.join('\n- '));
-                return;
-            }
-
-            const htmlGerado = gerarHtmlCurriculo(dados);
-            
-            const htmlCompleto = `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Currículo - ${dados.nome}</title>
-    <style>
-        body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: white; }
-        .curriculo { background: white; padding: 30px 40px; border: 1px solid #ddd; }
-        .header-curriculo { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #2a7de1; padding-bottom: 20px; margin-bottom: 20px; }
-        .nome-curriculo { font-size: 2.4rem; font-weight: 700; color: #0b1f33; margin-bottom: 4px; }
-        .header-destaques-print .cidade-contato { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 1.05rem; color: #2c405a; }
-        .tel-destaque { font-weight: 700; color: #2a7de1; background: #e8f0fe; padding: 2px 16px; border-radius: 40px; border: 2px solid #2a7de1; display: inline-block; }
-        .email-destaque { color: #2a7de1; background: #e8f0fe; padding: 2px 16px; border-radius: 40px; border: 2px solid #2a7de1; display: inline-block; }
-        .cargo-destaque-print { font-size: 1.05rem; font-weight: 600; color: #0b1f33; background: #f5f9ff; padding: 4px 20px; border-radius: 40px; border: 2px solid #d8e2ed; display: inline-block; }
-        .cargo-label { font-weight: 400; color: #4f6a85; }
-        .foto-curriculo { width: 120px; height: 160px; object-fit: cover; border: 4px solid white; box-shadow: 0 6px 16px rgba(0,0,0,0.08); border-radius: 8px; }
-        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 30px; margin: 16px 0; }
-        .secao-titulo { font-size: 1.2rem; font-weight: 700; color: #0b1f33; margin: 28px 0 12px 0; border-bottom: 2px solid #eaf0f7; padding-bottom: 8px; }
-        .exp-item { background: #f8fafd; border-radius: 18px; padding: 14px 20px; margin: 10px 0; border-left: 6px solid #2a7de1; }
-        .exp-item-com-obs { border-left-color: #f0d060; }
-        .exp-obs-print { background: #fef9e7; padding: 8px 14px; margin-top: 6px; border-radius: 8px; border-left: 3px solid #f0d060; font-size: 0.85rem; color: #4a4a4a; }
-        .exp-obs-print .obs-label-print { font-weight: 600; font-size: 0.7rem; text-transform: uppercase; color: #888; }
-        .label-destaque { font-weight: 600; color: #1a334b; }
-        .obs-text { background: #f5f8fe; padding: 8px 16px; border-radius: 30px; display: inline-block; }
-        .cnh-destaque { background: #f5f9ff; padding: 6px 18px; border-radius: 40px; border: 2px solid #d8e2ed; display: inline-block; font-weight: 600; color: #0b1f33; }
-        .endereco-destaque { background: #f5f9ff; padding: 6px 18px; border-radius: 40px; border: 2px solid #d8e2ed; display: inline-block; font-weight: 600; color: #0b1f33; }
-        .obs-geral-print { background: #f5f8fe; padding: 14px 20px; border-radius: 18px; border-left: 6px solid #2a7de1; margin-top: 10px; white-space: pre-wrap; line-height: 1.6; }
-        .carta-print { background: #f0f7ff; padding: 16px 24px; border-radius: 18px; border-left: 6px solid #2a7de1; margin-top: 12px; white-space: pre-wrap; line-height: 1.8; }
-        @media print { body { margin: 0; padding: 10px; } }
-    </style>
-</head>
-<body>
-    <div class="curriculo">
-        ${htmlGerado.replace(/<style>[\s\S]*?<\/style>/, '').replace(/<html>[\s\S]*?<body>/, '').replace(/<\/body>[\s\S]*?<\/html>/, '')}
-    </div>
-</body>
-</html>`;
-
-            const htmlFinal = htmlCompleto.replace(/<div class="curriculo">[\s\S]*?<div class="curriculo">/, '<div class="curriculo">');
-            
-            const blob = new Blob([htmlFinal], { 
-                type: 'application/msword;charset=utf-8' 
-            });
+            const html = gerarHtmlCurriculo(dados);
+            const blob = new Blob([html], { type: 'application/msword;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = `Curriculo_${dados.nome.replace(/\s/g,'_')}.doc`;
-            document.body.appendChild(link);
             link.click();
-            document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            atualizarDataHora();
         });
 
-        // ===== SALVAR PDF =====
+        // ===== PDF =====
         document.getElementById('salvarPdfModern').addEventListener('click', function() {
             const dados = coletarDadosCurriculo();
-            const erros = validarDados(dados);
-            if (erros.length > 0) {
-                alert('Corrija os seguintes erros antes de gerar o PDF:\n- ' + erros.join('\n- '));
-                return;
-            }
-            
-            const htmlCurriculo = gerarHtmlCurriculo(dados);
-            
+            const html = gerarHtmlCurriculo(dados);
             const win = window.open('', '_blank', 'width=1100,height=900,scrollbars=yes');
-            if (!win) {
-                alert('Por favor, permita pop-ups para gerar o PDF.');
-                return;
-            }
-            
-            win.document.write(htmlCurriculo);
+            if (!win) { alert('Permita pop-ups para gerar o PDF.'); return; }
+            win.document.write(html);
             win.document.close();
             win.focus();
-            
-            setTimeout(() => {
-                win.print();
-            }, 800);
+            setTimeout(() => win.print(), 800);
         });
+
+        // ===== EXPORTAR CSV =====
+        document.getElementById('exportarCSV').addEventListener('click', function() {
+            const lista = getCurriculosSalvos();
+            if (lista.length === 0) { alert('Nenhum currículo salvo.'); return; }
+
+            const cabecalho = ['Nome', 'Endereco', 'Email', 'Cidade', 'Contato', 'Cargo', 'EstadoCivil', 'Nacionalidade', 'DataNasc', 'Naturalidade', 'CNH', 'Observacao', 'Formacao', 'Experiencias', 'FotoBase64', 'DataSalvo', 'ObsGeral', 'Layout', 'Idioma1', 'Nivel1', 'Idioma2', 'Nivel2', 'IdiomasObs'];
+            const linhas = lista.map(item => [
+                item.dados.nome || '', item.dados.endereco || '', item.dados.email || '', item.dados.cidade || '',
+                item.dados.contato || '', item.dados.cargo || '', item.dados.estadoCivil || '', item.dados.nacionalidade || '',
+                item.dados.dataNasc || '', item.dados.naturalidade || '', item.dados.cnh || '', item.dados.obs || '',
+                (item.dados.formacao || '').replace(/\n/g, '\\n'), JSON.stringify(item.dados.experiencias || []),
+                item.dados.fotoBase64 || '', new Date(item.dataSalvo).toISOString(), (item.dados.obsGeral || '').replace(/\n/g, '\\n'),
+                item.dados.layout || '', item.dados.idioma1 || '', item.dados.nivel1 || '', item.dados.idioma2 || '',
+                item.dados.nivel2 || '', (item.dados.idiomasObs || '').replace(/\n/g, '\\n')
+            ]);
+
+            const csvConteudo = [cabecalho.join(';'), ...linhas.map(linha => linha.join(';'))].join('\n');
+            const blob = new Blob(['\uFEFF' + csvConteudo], { type: 'text/csv;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `curriculos_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        });
+
+        // ===== IMPORTAR CSV =====
+        document.getElementById('importarCSV').addEventListener('click', function() {
+            document.getElementById('fileInputCSV').click();
+        });
+
+        document.getElementById('fileInputCSV').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const linhas = ev.target.result.split('\n').filter(l => l.trim() !== '');
+                    if (linhas.length < 2) { alert('Arquivo CSV vazio.'); return; }
+
+                    const cabecalho = linhas[0].split(';').map(h => h.trim());
+                    const dadosImportados = [];
+                    for (let i = 1; i < linhas.length; i++) {
+                        const valores = linhas[i].split(';');
+                        if (valores.length < cabecalho.length) continue;
+                        const dados = {
+                            nome: valores[0] || '', endereco: valores[1] || '', email: valores[2] || '', cidade: valores[3] || '',
+                            contato: valores[4] || '', cargo: valores[5] || '', estadoCivil: valores[6] || '', nacionalidade: valores[7] || '',
+                            dataNasc: valores[8] || '', naturalidade: valores[9] || '', cnh: valores[10] || '', obs: valores[11] || '',
+                            formacao: (valores[12] || '').replace(/\\n/g, '\n'), experiencias: [], fotoBase64: valores[14] || '',
+                            obsGeral: (valores[16] || '').replace(/\\n/g, '\n'), layout: valores[17] || '',
+                            idioma1: valores[18] || '', nivel1: valores[19] || '', idioma2: valores[20] || '',
+                            nivel2: valores[21] || '', idiomasObs: (valores[22] || '').replace(/\\n/g, '\n')
+                        };
+                        try { if (valores[13] && valores[13].startsWith('[')) dados.experiencias = JSON.parse(valores[13]); } catch (e) {}
+                        const dataSalvo = valores[15] ? new Date(valores[15]).getTime() : Date.now();
+                        dadosImportados.push({ nome: dados.nome || 'Sem nome', cargo: dados.cargo, cidade: dados.cidade, dados, dataSalvo });
+                    }
+
+                    if (dadosImportados.length === 0) { alert('Nenhum dado válido encontrado.'); return; }
+
+                    const listaExistente = getCurriculosSalvos();
+                    const listaFinal = [...listaExistente];
+                    dadosImportados.forEach(item => {
+                        const existente = listaFinal.findIndex(ex => ex.nome === item.nome);
+                        if (existente !== -1) {
+                            if (confirm(`Currículo "${item.nome}" já existe. Substituir?`)) listaFinal[existente] = item;
+                        } else { listaFinal.push(item); }
+                    });
+
+                    setCurriculosSalvos(listaFinal);
+                    renderizarListaCurriculos(document.getElementById('buscaCurriculo').value);
+                    alert(`${dadosImportados.length} currículo(s) importado(s)!`);
+                    this.value = '';
+                    atualizarDataHora(); atualizarDashboard();
+                } catch (error) { alert('Erro ao importar CSV: ' + error.message); }
+            };
+            reader.readAsText(file, 'UTF-8');
+        });
+
+        // ===== CLOUD (SIMULAÇÃO) =====
+        document.getElementById('conectarGoogleDrive').addEventListener('click', function() {
+            document.getElementById('cloudStatus').innerHTML = '✅ Google Drive conectado (simulação)';
+            alert('Google Drive conectado! (Modo simulação)');
+        });
+
+        document.getElementById('conectarOneDrive').addEventListener('click', function() {
+            document.getElementById('cloudStatus').innerHTML = '✅ OneDrive conectado (simulação)';
+            alert('OneDrive conectado! (Modo simulação)');
+        });
+
+        document.getElementById('salvarCloud').addEventListener('click', function() {
+            const dados = coletarDadosCurriculo();
+            localStorage.setItem('cloud_curriculo', JSON.stringify(dados));
+            document.getElementById('cloudStatus').innerHTML = '✅ Salvo na nuvem (simulação)';
+            alert('Currículo salvo na nuvem! (Modo simulação)');
+        });
+
+        document.getElementById('abrirCloud').addEventListener('click', function() {
+            const raw = localStorage.getItem('cloud_curriculo');
+            if (raw) {
+                const dados = JSON.parse(raw);
+                preencherFormulario(dados);
+                document.getElementById('cloudStatus').innerHTML = '✅ Carregado da nuvem (simulação)';
+                alert('Currículo carregado da nuvem!');
+                atualizarDataHora(); atualizarDashboard(); atualizarScore();
+            } else {
+                alert('Nenhum currículo salvo na nuvem.');
+            }
+        });
+
+        // ===== NOTIFICAÇÃO PERIÓDICA =====
+        setInterval(verificarNotificacao, 60000);
+        setTimeout(verificarNotificacao, 3000);
 
         // ===== INICIALIZAÇÃO =====
         document.querySelectorAll('.experiencia-card').forEach(card => {
             atualizarLinhaHorizontal(card);
             atualizarObs(card);
-            const obsTextarea = card.querySelector('.exp-obs-textarea');
-            const obsContainer = card.querySelector('.exp-obs-container');
-            if (obsTextarea && obsTextarea.value.trim() !== '' && obsContainer) {
-                obsContainer.style.display = 'block';
-                obsContainer.classList.add('tem-obs');
-                card.querySelector('.btn-obs-toggle')?.classList.add('ativo');
-            }
         });
 
         document.querySelectorAll('input, textarea, select').forEach(el => {
@@ -3289,18 +3419,14 @@ ${nome}`;
                 atualizarDataHora();
                 atualizarDashboard();
                 atualizarScore();
-                if (this.id === 'cargoPretendidoEdit' || this.id === 'cidadeModern' || this.id === 'contatoModern') {
-                    atualizarDestaques();
-                }
+                if (['cargoPretendidoEdit', 'cidadeModern', 'contatoModern'].includes(this.id)) atualizarDestaques();
             });
             el.addEventListener('change', function() {
                 salvarBackupAuto();
                 atualizarDataHora();
                 atualizarDashboard();
                 atualizarScore();
-                if (this.id === 'cargoPretendidoEdit' || this.id === 'cidadeModern' || this.id === 'contatoModern') {
-                    atualizarDestaques();
-                }
+                if (['cargoPretendidoEdit', 'cidadeModern', 'contatoModern'].includes(this.id)) atualizarDestaques();
             });
         });
 
@@ -3310,13 +3436,11 @@ ${nome}`;
         setTimeout(salvarBackupAuto, 500);
         renderizarListaCurriculos();
 
-        document.querySelector('.aba-btn-modern[data-aba="preview"]').addEventListener('click', function() {
-            setTimeout(atualizarPreview, 100);
+        document.querySelector('.aba-btn-modern[data-aba="ferramentas"]').addEventListener('click', function() {
+            setTimeout(gerarQRCode, 100);
         });
 
-        console.log('🚀 Currículo Pro · Sistema Avançado carregado com sucesso!');
-        console.log('📊 Dashboard, Score, Validações, Drag & Drop, Carta e Prévia ativos!');
-        console.log('📅 Data de nascimento formatada corretamente nos arquivos PDF e Word');
+        console.log('🚀 Currículo Pro · Sistema Avançado - Espaçamentos otimizados para uma folha!');
     })();
 </script>
 </body>
