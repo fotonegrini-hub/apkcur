@@ -640,6 +640,46 @@
             color: #b0c4d8;
         }
 
+        /* ===== OBS - CURSOS DO CONDUTOR (ABAIXO DA CNH) ===== */
+        .obs-cursos-row {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            padding: 4px 0;
+            border-top: 1px solid #eef3f9;
+            margin-top: 2px;
+            padding-top: 6px;
+        }
+
+        .obs-cursos-row label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #1a334b;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .obs-cursos-row .valor {
+            font-size: 0.85rem;
+            color: #0b1f33;
+            flex: 1;
+            padding: 1px 4px;
+            border-bottom: 2px solid transparent;
+            cursor: text;
+            min-height: 20px;
+            outline: none;
+        }
+
+        .obs-cursos-row .valor:focus {
+            border-bottom-color: #2a7de1;
+        }
+
+        .obs-cursos-row .valor:empty::before {
+            content: "Cursos, especializações, treinamentos...";
+            color: #b0c4d8;
+        }
+
         /* ===== FORMAÇÃO ===== */
         .formacao-area {
             width: 100%;
@@ -1167,6 +1207,14 @@
                 padding: 8px 14px;
             }
 
+            .obs-cursos-row {
+                grid-column: 1 / -1;
+                flex-wrap: wrap;
+            }
+            .obs-cursos-row label {
+                min-width: 100%;
+            }
+
             .experiencia-item {
                 grid-template-columns: 1fr 1fr;
                 gap: 4px 12px;
@@ -1217,6 +1265,14 @@
                 grid-template-columns: 1fr;
                 gap: 3px 0;
                 padding: 8px 14px;
+            }
+
+            .obs-cursos-row {
+                grid-column: 1;
+                flex-wrap: wrap;
+            }
+            .obs-cursos-row label {
+                min-width: 100%;
             }
 
             .nome-foto-section .nome-wrapper h1 {
@@ -1501,6 +1557,11 @@
         <div class="campo-dado">
             <label>CNH</label>
             <div class="valor" contenteditable="true" data-placeholder="A, B, C, D ou E">B</div>
+        </div>
+        <!-- ===== OBS - CURSOS DO CONDUTOR (ABAIXO DA CNH) ===== -->
+        <div class="obs-cursos-row">
+            <label>OBS</label>
+            <div class="valor" contenteditable="true" data-placeholder="Cursos, especializações, treinamentos...">Curso de Direção Defensiva - 2022 | Curso de Atualização para Condutores - 2023</div>
         </div>
     </div>
 
@@ -2015,6 +2076,12 @@
                 if (dados.cnh) camposDados[4].textContent = dados.cnh;
             }
 
+            // OBS - Cursos do condutor
+            const obsCursos = document.querySelector('.obs-cursos-row .valor');
+            if (obsCursos && dados.obsCursos) {
+                obsCursos.textContent = dados.obsCursos;
+            }
+
             const elFormacao = document.getElementById('formacaoArea');
             if (elFormacao && dados.formacao) elFormacao.innerHTML = dados.formacao;
 
@@ -2058,6 +2125,10 @@
             // Dados Pessoais
             const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
             camposDados.forEach(el => el.textContent = '');
+            
+            // OBS - Cursos
+            const obsCursos = document.querySelector('.obs-cursos-row .valor');
+            if (obsCursos) obsCursos.textContent = '';
             
             // Formação
             document.getElementById('formacaoArea').innerHTML = '';
@@ -2253,6 +2324,8 @@
             });
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
+            const obsCursos = document.querySelector('.obs-cursos-row .valor');
+            
             const dados = {
                 nome: document.getElementById('nomeCompleto')?.textContent.trim() || '',
                 cargo: document.getElementById('cargoPretendido')?.textContent.trim() || '',
@@ -2265,6 +2338,7 @@
                 naturalidade: document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '',
                 nacionalidade: document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '',
                 cnh: document.querySelector('.dados-grid .campo-dado:nth-child(5) .valor')?.textContent.trim() || '',
+                obsCursos: obsCursos?.textContent.trim() || '',
                 formacao: document.getElementById('formacaoArea')?.innerHTML || '',
                 experiencias: experiencias,
                 tema: temaAtual
@@ -2302,6 +2376,8 @@
                     .dados { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 30px; background: #fafcff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e8eff5; }
                     .dados div strong { display: block; font-size: 0.7rem; color: #1a334b; }
                     .dados div span { font-size: 0.85rem; }
+                    .obs-row { grid-column: 1 / -1; border-top: 1px solid #e8eff5; padding-top: 6px; margin-top: 2px; }
+                    .obs-row strong { display: inline-block; min-width: 100px; }
                     .exp-item { border-left: 4px solid #1a2f44; padding: 8px 16px; margin-bottom: 12px; background: #f8fafd; }
                     .exp-item strong { display: inline-block; width: 120px; }
                     .formacao { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 60px; }
@@ -2344,6 +2420,7 @@
             const naturalidade = document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '';
             const nacionalidade = document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '';
             const cnh = document.querySelector('.dados-grid .campo-dado:nth-child(5) .valor')?.textContent.trim() || '';
+            const obsCursos = document.querySelector('.obs-cursos-row .valor')?.textContent.trim() || '';
             const formacao = document.getElementById('formacaoArea')?.innerHTML || '';
 
             let experienciasHTML = '';
@@ -2402,6 +2479,7 @@
                         <div><strong>Naturalidade</strong><span>${naturalidade}</span></div>
                         <div><strong>Nacionalidade</strong><span>${nacionalidade}</span></div>
                         <div><strong>CNH</strong><span>${cnh}</span></div>
+                        <div class="obs-row"><strong>OBS</strong><span>${obsCursos}</span></div>
                     </div>
 
                     <div class="secao">🎓 Formação Escolar</div>
@@ -2420,7 +2498,7 @@
             const dados = coletarDados();
             const linhas = [];
             
-            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","formacao","experiencias","tema"');
+            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","obsCursos","formacao","experiencias","tema"');
             
             const expStr = dados.experiencias.map(e => `${e.empresa}|${e.cargo}|${e.periodo}`).join(';');
             
@@ -2436,6 +2514,7 @@
                 dados.naturalidade,
                 dados.nacionalidade,
                 dados.cnh,
+                dados.obsCursos,
                 dados.formacao.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
                 expStr,
                 dados.tema || 'basico'
@@ -2523,6 +2602,7 @@
                     const naturalidade = dados[idx('naturalidade')]?.replace(/^"|"$/g, '') || '';
                     const nacionalidade = dados[idx('nacionalidade')]?.replace(/^"|"$/g, '') || '';
                     const cnh = dados[idx('cnh')]?.replace(/^"|"$/g, '') || '';
+                    const obsCursos = dados[idx('obsCursos')]?.replace(/^"|"$/g, '') || '';
                     const formacao = dados[idx('formacao')]?.replace(/^"|"$/g, '') || '';
                     const expRaw = dados[idx('experiencias')]?.replace(/^"|"$/g, '') || '';
                     const tema = dados[idx('tema')]?.replace(/^"|"$/g, '') || 'basico';
@@ -2554,6 +2634,11 @@
                         if (naturalidade) camposDados[2].textContent = naturalidade;
                         if (nacionalidade) camposDados[3].textContent = nacionalidade;
                         if (cnh) camposDados[4].textContent = cnh;
+                    }
+
+                    const obsCursosEl = document.querySelector('.obs-cursos-row .valor');
+                    if (obsCursosEl && obsCursos) {
+                        obsCursosEl.textContent = obsCursos;
                     }
 
                     const elFormacao = document.getElementById('formacaoArea');
@@ -2649,9 +2734,9 @@
         }, 1000);
 
         console.log('📄 Currículo editável carregado!');
-        console.log('✅ Botão "Novo" adicionado para criar currículo do zero');
-        console.log('✅ Currículos salvos no banco de dados são mantidos');
-        console.log('✅ Campo E-mail já está presente na seção de contato');
+        console.log('✅ Campo "OBS" adicionado abaixo da CNH para cursos do condutor');
+        console.log('✅ Campo em linha horizontal ocupando toda a largura');
+        console.log('✅ Incluído em todas as exportações e no banco de dados');
     })();
 </script>
 
