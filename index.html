@@ -56,6 +56,10 @@
         .tema-basico .formacao-area {
             border: 1px solid #ddd;
         }
+        .tema-basico .obs-rodape {
+            border: 1px solid #ddd;
+            background: #ffffff;
+        }
 
         .tema-premium .experiencia-item {
             border-left: 5px solid #d4af37;
@@ -81,6 +85,10 @@
             color: #d4af37;
         }
         .tema-premium .formacao-area {
+            border: 1px solid #d4af37;
+            background: linear-gradient(135deg, #fdfcf8, #f8f5ee);
+        }
+        .tema-premium .obs-rodape {
             border: 1px solid #d4af37;
             background: linear-gradient(135deg, #fdfcf8, #f8f5ee);
         }
@@ -120,6 +128,9 @@
         .tema-premium .formacao-area:focus {
             border-color: #d4af37;
         }
+        .tema-premium .obs-rodape:focus {
+            border-color: #d4af37;
+        }
         .tema-premium .foto-avatar {
             background: linear-gradient(135deg, #d4af37, #b8960f);
         }
@@ -150,6 +161,11 @@
             color: #00b894;
         }
         .tema-moderno .formacao-area {
+            border: 1px solid #00b894;
+            background: #f0fdfa;
+            border-radius: 16px;
+        }
+        .tema-moderno .obs-rodape {
             border: 1px solid #00b894;
             background: #f0fdfa;
             border-radius: 16px;
@@ -192,6 +208,9 @@
             border-bottom-color: #00b894;
         }
         .tema-moderno .formacao-area:focus {
+            border-color: #00b894;
+        }
+        .tema-moderno .obs-rodape:focus {
             border-color: #00b894;
         }
         .tema-moderno .foto-avatar {
@@ -301,6 +320,14 @@
         }
         .toolbar .btn-tool.new:hover {
             background: #d35400;
+        }
+
+        .toolbar .btn-tool.save-tab {
+            background: #2ecc71;
+            color: white;
+        }
+        .toolbar .btn-tool.save-tab:hover {
+            background: #27ae60;
         }
 
         .toolbar .file-input-wrapper {
@@ -784,6 +811,37 @@
             color: #d32f2f;
             background: #fdeaea;
             transform: scale(1.1);
+        }
+
+        /* ===== OBS RODAPÉ ===== */
+        .secao-obs-rodape {
+            margin-top: 24px;
+        }
+
+        .obs-rodape {
+            width: 100%;
+            min-height: 60px;
+            padding: 12px 16px;
+            border: 2px solid #e8eff5;
+            border-radius: 12px;
+            background: #fafcff;
+            font-size: 0.9rem;
+            color: #0b1f33;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            transition: 0.2s;
+            cursor: text;
+        }
+
+        .obs-rodape:focus {
+            border-color: #2a7de1;
+            background: #f5faff;
+        }
+
+        .obs-rodape:empty::before {
+            content: "Informações adicionais, observações, disponibilidade, etc...";
+            color: #b0c4d8;
         }
 
         /* ===== BOTÃO ADICIONAR EXPERIÊNCIA ===== */
@@ -1360,6 +1418,12 @@
                 min-height: 40px;
             }
 
+            .obs-rodape {
+                border: 1px solid #ddd;
+                background: white;
+                min-height: 40px;
+            }
+
             .contato-grid {
                 background: #f5f8fc !important;
                 -webkit-print-color-adjust: exact !important;
@@ -1475,6 +1539,7 @@
     <!-- ===== BARRA DE FERRAMENTAS ===== -->
     <div class="toolbar">
         <button class="btn-tool new" id="btnNewCurriculum"><i class="fas fa-file"></i> <span>Novo</span></button>
+        <button class="btn-tool save-tab" id="btnSalvar"><i class="fas fa-save"></i> <span>Salvar</span></button>
         <div class="separador-tool"></div>
         <button class="btn-tool primary" id="btnExportWord"><i class="fas fa-file-word"></i> <span>Word</span></button>
         <button class="btn-tool success" id="btnExportPDF"><i class="fas fa-file-pdf"></i> <span>PDF</span></button>
@@ -1619,6 +1684,15 @@
         <span class="badge-count" id="expCount">2</span>
     </button>
 
+    <!-- ===== OBS RODAPÉ (ABAIXO DA EXPERIÊNCIA) ===== -->
+    <div class="secao-titulo secao-obs-rodape">
+        <i class="fas fa-pencil-alt"></i> Observações
+    </div>
+
+    <div class="obs-rodape" contenteditable="true" id="obsRodape">
+        Disponível para início imediato. Possuo veículo próprio e disponibilidade para viagens.
+    </div>
+
     <hr class="separador-final">
 
     <div class="footer-curriculo">
@@ -1729,6 +1803,13 @@
                 statusSalvo.classList.remove('visible');
             }, 2000);
         }
+
+        // ===== BOTÃO SALVAR =====
+        document.getElementById('btnSalvar').addEventListener('click', function() {
+            salvarBackup();
+            mostrarStatusSalvo();
+            alert('✅ Currículo salvo com sucesso!\n\nO currículo foi salvo no banco de dados e no backup local.');
+        });
 
         // ===== ATUALIZAR CONTADOR =====
         function atualizarContador() {
@@ -2076,7 +2157,6 @@
                 if (dados.cnh) camposDados[4].textContent = dados.cnh;
             }
 
-            // OBS - Cursos do condutor
             const obsCursos = document.querySelector('.obs-cursos-row .valor');
             if (obsCursos && dados.obsCursos) {
                 obsCursos.textContent = dados.obsCursos;
@@ -2091,6 +2171,11 @@
                     container.appendChild(criarItemExperiencia(exp.empresa || '', exp.cargo || '', exp.periodo || ''));
                 });
                 atualizarContador();
+            }
+
+            const obsRodape = document.getElementById('obsRodape');
+            if (obsRodape && dados.obsRodape) {
+                obsRodape.innerHTML = dados.obsRodape;
             }
 
             if (dados.foto && dados.foto !== '') {
@@ -2132,6 +2217,9 @@
             
             // Formação
             document.getElementById('formacaoArea').innerHTML = '';
+            
+            // OBS Rodapé
+            document.getElementById('obsRodape').innerHTML = '';
             
             // Experiências - manter apenas uma vazia
             container.innerHTML = '';
@@ -2325,6 +2413,7 @@
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             const obsCursos = document.querySelector('.obs-cursos-row .valor');
+            const obsRodape = document.getElementById('obsRodape');
             
             const dados = {
                 nome: document.getElementById('nomeCompleto')?.textContent.trim() || '',
@@ -2341,6 +2430,7 @@
                 obsCursos: obsCursos?.textContent.trim() || '',
                 formacao: document.getElementById('formacaoArea')?.innerHTML || '',
                 experiencias: experiencias,
+                obsRodape: obsRodape?.innerHTML || '',
                 tema: temaAtual
             };
 
@@ -2381,6 +2471,7 @@
                     .exp-item { border-left: 4px solid #1a2f44; padding: 8px 16px; margin-bottom: 12px; background: #f8fafd; }
                     .exp-item strong { display: inline-block; width: 120px; }
                     .formacao { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 60px; }
+                    .obs-rodape-print { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 60px; margin-top: 8px; }
                     .footer { text-align: center; color: #999; font-size: 0.7rem; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; }
                 </style>
                 </head>
@@ -2422,6 +2513,7 @@
             const cnh = document.querySelector('.dados-grid .campo-dado:nth-child(5) .valor')?.textContent.trim() || '';
             const obsCursos = document.querySelector('.obs-cursos-row .valor')?.textContent.trim() || '';
             const formacao = document.getElementById('formacaoArea')?.innerHTML || '';
+            const obsRodape = document.getElementById('obsRodape')?.innerHTML || '';
 
             let experienciasHTML = '';
             document.querySelectorAll('.experiencia-item').forEach(item => {
@@ -2488,6 +2580,9 @@
                     <div class="secao">💼 Experiência Profissional</div>
                     ${experienciasHTML || '<p style="color:#999;">Nenhuma experiência cadastrada.</p>'}
 
+                    <div class="secao">📝 Observações</div>
+                    <div class="obs-rodape-print">${obsRodape || 'Nenhuma observação adicionada.'}</div>
+
                     <div class="footer">Currículo gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
                 </div>
             `;
@@ -2498,7 +2593,7 @@
             const dados = coletarDados();
             const linhas = [];
             
-            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","obsCursos","formacao","experiencias","tema"');
+            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","obsCursos","formacao","experiencias","obsRodape","tema"');
             
             const expStr = dados.experiencias.map(e => `${e.empresa}|${e.cargo}|${e.periodo}`).join(';');
             
@@ -2517,6 +2612,7 @@
                 dados.obsCursos,
                 dados.formacao.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
                 expStr,
+                dados.obsRodape.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
                 dados.tema || 'basico'
             ].map(v => `"${v}"`);
             
@@ -2605,6 +2701,7 @@
                     const obsCursos = dados[idx('obsCursos')]?.replace(/^"|"$/g, '') || '';
                     const formacao = dados[idx('formacao')]?.replace(/^"|"$/g, '') || '';
                     const expRaw = dados[idx('experiencias')]?.replace(/^"|"$/g, '') || '';
+                    const obsRodape = dados[idx('obsRodape')]?.replace(/^"|"$/g, '') || '';
                     const tema = dados[idx('tema')]?.replace(/^"|"$/g, '') || 'basico';
 
                     const elNome = document.getElementById('nomeCompleto');
@@ -2643,6 +2740,11 @@
 
                     const elFormacao = document.getElementById('formacaoArea');
                     if (elFormacao && formacao) elFormacao.innerHTML = formacao.replace(/\\n/g, '<br>');
+
+                    const obsRodapeEl = document.getElementById('obsRodape');
+                    if (obsRodapeEl && obsRodape) {
+                        obsRodapeEl.innerHTML = obsRodape.replace(/\\n/g, '<br>');
+                    }
 
                     if (expRaw) {
                         const exps = expRaw.split(';').filter(e => e.trim());
@@ -2734,9 +2836,9 @@
         }, 1000);
 
         console.log('📄 Currículo editável carregado!');
-        console.log('✅ Campo "OBS" adicionado abaixo da CNH para cursos do condutor');
-        console.log('✅ Campo em linha horizontal ocupando toda a largura');
-        console.log('✅ Incluído em todas as exportações e no banco de dados');
+        console.log('✅ Botão "Salvar" adicionado no cabeçalho');
+        console.log('✅ Campo "Observações" adicionado no rodapé (abaixo da experiência)');
+        console.log('✅ Ambos integrados com todas as exportações e banco de dados');
     })();
 </script>
 
