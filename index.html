@@ -295,6 +295,14 @@
             background: #732d91;
         }
 
+        .toolbar .btn-tool.new {
+            background: #e67e22;
+            color: white;
+        }
+        .toolbar .btn-tool.new:hover {
+            background: #d35400;
+        }
+
         .toolbar .file-input-wrapper {
             position: relative;
             display: inline-block;
@@ -1410,6 +1418,8 @@
 
     <!-- ===== BARRA DE FERRAMENTAS ===== -->
     <div class="toolbar">
+        <button class="btn-tool new" id="btnNewCurriculum"><i class="fas fa-file"></i> <span>Novo</span></button>
+        <div class="separador-tool"></div>
         <button class="btn-tool primary" id="btnExportWord"><i class="fas fa-file-word"></i> <span>Word</span></button>
         <button class="btn-tool success" id="btnExportPDF"><i class="fas fa-file-pdf"></i> <span>PDF</span></button>
         <div class="separador-tool"></div>
@@ -2035,6 +2045,57 @@
             mostrarStatusSalvo();
         }
 
+        // ===== FUNÇÃO NOVO CURRÍCULO =====
+        function limparCurriculo() {
+            // Nome e Cargo
+            document.getElementById('nomeCompleto').textContent = '';
+            document.getElementById('cargoPretendido').textContent = '';
+            
+            // Contato
+            const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
+            camposContato.forEach(el => el.textContent = '');
+            
+            // Dados Pessoais
+            const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
+            camposDados.forEach(el => el.textContent = '');
+            
+            // Formação
+            document.getElementById('formacaoArea').innerHTML = '';
+            
+            // Experiências - manter apenas uma vazia
+            container.innerHTML = '';
+            container.appendChild(criarItemExperiencia('', '', ''));
+            atualizarContador();
+            
+            // Remover foto
+            fotoPreview.src = '';
+            fotoPreview.style.display = 'none';
+            fotoPlaceholder.style.display = 'flex';
+            fotoRemover.style.display = 'none';
+            localStorage.removeItem('curriculo_foto');
+            gerarAvatar('');
+            atualizarClasseFoto();
+            
+            // Resetar tema para básico
+            aplicarTema('basico');
+            
+            // Atualizar data
+            atualizarDataHora();
+            
+            // Limpar backup
+            localStorage.removeItem('curriculo_backup_editavel');
+            
+            mostrarStatusSalvo();
+        }
+
+        // ===== BOTÃO NOVO CURRÍCULO =====
+        document.getElementById('btnNewCurriculum').addEventListener('click', function() {
+            if (confirm('⚠️ Tem certeza que deseja começar um novo currículo?\n\nO conteúdo atual será apagado, mas os currículos salvos no banco de dados serão mantidos.')) {
+                limparCurriculo();
+                alert('✅ Novo currículo criado com sucesso!\n\nPreencha os dados e salve com Ctrl+S ou via salvamento automático.');
+            }
+        });
+
         function renderDatabaseList(filter = '') {
             const db = getDatabase();
             const list = document.getElementById('dbList');
@@ -2588,8 +2649,9 @@
         }, 1000);
 
         console.log('📄 Currículo editável carregado!');
-        console.log('✅ Campo E-mail adicionado na seção de contato');
-        console.log('✅ Todos os temas e exportações atualizados');
+        console.log('✅ Botão "Novo" adicionado para criar currículo do zero');
+        console.log('✅ Currículos salvos no banco de dados são mantidos');
+        console.log('✅ Campo E-mail já está presente na seção de contato');
     })();
 </script>
 
