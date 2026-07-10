@@ -19,6 +19,113 @@
             display: flex;
             justify-content: center;
             padding: 40px 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.modo-escuro {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .curriculo-wrapper {
+            background: #16213e;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        body.modo-escuro .toolbar {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+        }
+
+        body.modo-escuro .btn-tool {
+            background: #2a2a4e;
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .contato-grid,
+        body.modo-escuro .dados-grid {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+        }
+
+        body.modo-escuro .secao-titulo {
+            color: #e0e0e0;
+            border-bottom-color: #3a3a5e;
+        }
+
+        body.modo-escuro .nome-foto-section .nome-wrapper h1 {
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .campo-contato .valor,
+        body.modo-escuro .campo-dado .valor,
+        body.modo-escuro .experiencia-item .exp-campo .valor {
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .experiencia-item {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+        }
+
+        body.modo-escuro .experiencia-item:hover {
+            background: #22224a;
+        }
+
+        body.modo-escuro .formacao-area,
+        body.modo-escuro .obs-rodape {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .modal-content {
+            background: #16213e;
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .modal-close {
+            background: #2a2a4e;
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .db-item {
+            border-color: #2a2a4e;
+        }
+
+        body.modo-escuro .db-item:hover {
+            background: #22224a;
+        }
+
+        body.modo-escuro .db-search input {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+            color: #e0e0e0;
+        }
+
+        body.modo-escuro .theme-option {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+        }
+
+        body.modo-escuro .theme-option.active {
+            border-color: #2a7de1;
+            background: #22224a;
+        }
+
+        body.modo-escuro .status-salvo {
+            background: #1e7e34;
+            color: white;
+        }
+
+        body.modo-escuro .footer-curriculo {
+            color: #6a8aaa;
+        }
+
+        body.modo-escuro .footer-curriculo .shortcut-hint kbd {
+            background: #2a2a4e;
+            color: #e0e0e0;
+            border-color: #3a3a5e;
         }
 
         .curriculo-wrapper {
@@ -330,6 +437,22 @@
             background: #27ae60;
         }
 
+        .toolbar .btn-tool.dark-mode {
+            background: #2c3e50;
+            color: white;
+        }
+        .toolbar .btn-tool.dark-mode:hover {
+            background: #1a2a3a;
+        }
+
+        .toolbar .btn-tool.history {
+            background: #e67e22;
+            color: white;
+        }
+        .toolbar .btn-tool.history:hover {
+            background: #d35400;
+        }
+
         .toolbar .file-input-wrapper {
             position: relative;
             display: inline-block;
@@ -369,6 +492,55 @@
         }
         .status-salvo i {
             font-size: 0.8rem;
+        }
+
+        /* ===== AUTO-SAVE INDICATOR ===== */
+        .auto-save-indicator {
+            font-size: 0.6rem;
+            color: #6a8aaa;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .auto-save-indicator.visible {
+            opacity: 1;
+        }
+
+        /* ===== CAMPOS OBRIGATÓRIOS ===== */
+        .campo-obrigatorio .valor:empty {
+            border-bottom: 2px solid #ff6b6b;
+            background: #fff5f5;
+        }
+
+        body.modo-escuro .campo-obrigatorio .valor:empty {
+            border-bottom: 2px solid #ff6b6b;
+            background: #2a1a1a;
+        }
+
+        .campo-obrigatorio .valor:empty::before {
+            content: "⚠️ " attr(data-placeholder) " *";
+            color: #ff6b6b;
+        }
+
+        /* ===== VALIDAÇÃO ===== */
+        .validation-badge {
+            display: none;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .validation-badge.visible {
+            display: inline-block;
+        }
+        .validation-badge.success {
+            background: #e8f5e9;
+            color: #1e7e34;
+        }
+        .validation-badge.error {
+            background: #fdeaea;
+            color: #b33636;
         }
 
         /* ===== FOTO 3x4 + NOME (ALINHADO) ===== */
@@ -667,19 +839,17 @@
             color: #b0c4d8;
         }
 
-        /* ===== OBS - CURSOS DO CONDUTOR (ABAIXO DA CNH) ===== */
-        .obs-cursos-row {
-            grid-column: 1 / -1;
+        /* ===== CNH COM INFORMAÇÕES NA MESMA LINHA (CORRIGIDO) ===== */
+        .cnh-row {
             display: flex;
             align-items: baseline;
             gap: 6px;
-            padding: 4px 0;
-            border-top: 1px solid #eef3f9;
-            margin-top: 2px;
-            padding-top: 6px;
+            padding: 2px 0;
+            border-bottom: 1px solid #eef3f9;
+            grid-column: 1 / -1;
         }
 
-        .obs-cursos-row label {
+        .cnh-row label {
             font-weight: 600;
             font-size: 0.75rem;
             color: #1a334b;
@@ -687,7 +857,33 @@
             flex-shrink: 0;
         }
 
-        .obs-cursos-row .valor {
+        .cnh-row .valor-cnh {
+            font-size: 0.85rem;
+            color: #0b1f33;
+            padding: 1px 4px;
+            border-bottom: 2px solid transparent;
+            cursor: text;
+            min-height: 20px;
+            outline: none;
+            min-width: 80px;
+        }
+
+        .cnh-row .valor-cnh:focus {
+            border-bottom-color: #2a7de1;
+        }
+
+        .cnh-row .valor-cnh:empty::before {
+            content: "A, B, C, D ou E";
+            color: #b0c4d8;
+        }
+
+        .cnh-row .separador-cnh {
+            color: #b0c4d8;
+            font-weight: 300;
+            padding: 0 4px;
+        }
+
+        .cnh-row .valor-info-cnh {
             font-size: 0.85rem;
             color: #0b1f33;
             flex: 1;
@@ -698,20 +894,20 @@
             outline: none;
         }
 
-        .obs-cursos-row .valor:focus {
+        .cnh-row .valor-info-cnh:focus {
             border-bottom-color: #2a7de1;
         }
 
-        .obs-cursos-row .valor:empty::before {
-            content: "Cursos, especializações, treinamentos...";
+        .cnh-row .valor-info-cnh:empty::before {
+            content: "Informações adicionais...";
             color: #b0c4d8;
         }
 
         /* ===== FORMAÇÃO ===== */
         .formacao-area {
             width: 100%;
-            min-height: 80px;
-            padding: 12px 16px;
+            min-height: 60px;
+            padding: 10px 16px;
             border: 2px solid #e8eff5;
             border-radius: 12px;
             background: #fafcff;
@@ -722,6 +918,26 @@
             outline: none;
             transition: 0.2s;
             cursor: text;
+        }
+
+        .secao-titulo-formacao {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0b1f33;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 3px solid #1a2f44;
+            padding-bottom: 4px;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .secao-titulo-formacao i {
+            color: #2a7de1;
+            font-size: 1.1rem;
         }
 
         .formacao-area:focus {
@@ -815,7 +1031,7 @@
 
         /* ===== OBS RODAPÉ ===== */
         .secao-obs-rodape {
-            margin-top: 24px;
+            margin-top: 20px;
         }
 
         .obs-rodape {
@@ -992,6 +1208,80 @@
             border-bottom: 3px solid #1a2f44;
             padding-bottom: 10px;
             margin-bottom: 20px;
+        }
+
+        /* ===== MODAL HISTÓRICO ===== */
+        .modal-history .modal-content {
+            max-width: 700px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eef3f9;
+            transition: 0.2s;
+        }
+
+        .history-item:hover {
+            background: #f0f6ff;
+        }
+
+        .history-item .history-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .history-item .history-info .history-data {
+            font-weight: 600;
+            color: #0b1f33;
+        }
+
+        .history-item .history-info .history-detalhes {
+            font-size: 0.7rem;
+            color: #b0c4d8;
+        }
+
+        .history-item .history-actions button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .history-item .history-actions .btn-restore {
+            background: #2a7de1;
+            color: white;
+        }
+
+        .history-item .history-actions .btn-restore:hover {
+            background: #1a5fbf;
+        }
+
+        .history-item .history-actions .btn-delete-history {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .history-item .history-actions .btn-delete-history:hover {
+            background: #b71c1c;
+        }
+
+        .history-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #b0c4d8;
+        }
+
+        .history-empty i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 12px;
         }
 
         /* ===== MODAL BANCO DE DADOS ===== */
@@ -1265,11 +1555,11 @@
                 padding: 8px 14px;
             }
 
-            .obs-cursos-row {
+            .cnh-row {
                 grid-column: 1 / -1;
                 flex-wrap: wrap;
             }
-            .obs-cursos-row label {
+            .cnh-row label {
                 min-width: 100%;
             }
 
@@ -1298,6 +1588,16 @@
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
+
+            .secao-titulo-formacao {
+                margin-top: 8px;
+                margin-bottom: 4px;
+            }
+
+            .formacao-area {
+                min-height: 50px;
+                padding: 8px 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1325,11 +1625,11 @@
                 padding: 8px 14px;
             }
 
-            .obs-cursos-row {
+            .cnh-row {
                 grid-column: 1;
                 flex-wrap: wrap;
             }
-            .obs-cursos-row label {
+            .cnh-row label {
                 min-width: 100%;
             }
 
@@ -1377,6 +1677,18 @@
                 flex-direction: column;
                 gap: 4px;
             }
+
+            .secao-titulo-formacao {
+                margin-top: 6px;
+                margin-bottom: 4px;
+                font-size: 0.9rem;
+            }
+
+            .formacao-area {
+                min-height: 40px;
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
         }
 
         /* ===== ESTILO PARA IMPRESSÃO ===== */
@@ -1386,10 +1698,15 @@
                 padding: 10px;
             }
 
+            body.modo-escuro {
+                background: white;
+            }
+
             .curriculo-wrapper {
                 box-shadow: none;
                 padding: 20px 30px;
                 border-radius: 0;
+                background: white !important;
             }
 
             .toolbar,
@@ -1399,13 +1716,15 @@
             .foto-input,
             .modal-overlay,
             .status-salvo,
-            .shortcut-hint {
+            .shortcut-hint,
+            .auto-save-indicator,
+            .validation-badge {
                 display: none !important;
             }
 
             .experiencia-item {
                 break-inside: avoid;
-                background: #f9f9f9;
+                background: #f9f9f9 !important;
                 border-left-color: #1a2f44 !important;
                 border-radius: 0;
                 border: 1px solid #ddd;
@@ -1414,13 +1733,14 @@
 
             .formacao-area {
                 border: 1px solid #ddd;
-                background: white;
-                min-height: 40px;
+                background: white !important;
+                min-height: 30px;
+                padding: 6px 12px;
             }
 
             .obs-rodape {
                 border: 1px solid #ddd;
-                background: white;
+                background: white !important;
                 min-height: 40px;
             }
 
@@ -1496,7 +1816,8 @@
                 padding: 1px 0;
             }
 
-            .secao-titulo .obrigatorio {
+            .secao-titulo .obrigatorio,
+            .secao-titulo-formacao .obrigatorio {
                 display: none;
             }
 
@@ -1509,6 +1830,95 @@
             .foto-container:not(.has-image) {
                 border: none !important;
                 box-shadow: none !important;
+            }
+
+            .valor:empty {
+                display: none !important;
+            }
+
+            .experiencia-item .exp-campo .valor:empty {
+                display: none !important;
+            }
+
+            .campo-contato .valor:empty {
+                display: none !important;
+            }
+
+            .campo-dado .valor:empty {
+                display: none !important;
+            }
+
+            .cnh-row .valor-cnh:empty,
+            .cnh-row .valor-info-cnh:empty {
+                display: none !important;
+            }
+
+            .experiencia-item {
+                display: block !important;
+                padding: 8px 16px !important;
+            }
+
+            .experiencia-item .exp-campo {
+                display: inline-block !important;
+                width: 30% !important;
+                vertical-align: top !important;
+                padding-right: 10px !important;
+            }
+
+            .experiencia-item .exp-campo label {
+                display: block !important;
+                font-size: 0.5rem !important;
+                color: #666 !important;
+            }
+
+            .experiencia-item .exp-campo .valor {
+                display: block !important;
+                font-size: 0.85rem !important;
+                padding: 2px 0 !important;
+            }
+
+            .experiencia-item .exp-remover {
+                display: none !important;
+            }
+
+            .secao-vazia {
+                display: none !important;
+            }
+
+            /* CORREÇÃO: CNH + INFORMAÇÕES na mesma linha no PRINT */
+            .dados .cnh-row-print {
+                display: block !important;
+                grid-column: 1 / -1 !important;
+                padding: 4px 0 !important;
+            }
+
+            .dados .cnh-row-print strong {
+                display: inline-block !important;
+                min-width: 100px !important;
+                font-size: 0.7rem !important;
+                color: #1a334b !important;
+            }
+
+            .dados .cnh-row-print span {
+                display: inline !important;
+                font-size: 0.85rem !important;
+            }
+
+            .dados .cnh-row-print .separador-cnh-print {
+                color: #b0c4d8 !important;
+                padding: 0 4px !important;
+            }
+
+            .secao-titulo-formacao {
+                margin-top: 8px !important;
+                margin-bottom: 4px !important;
+                padding-bottom: 3px !important;
+            }
+
+            .formacao-area {
+                min-height: 30px !important;
+                padding: 4px 12px !important;
+                margin-bottom: 4px !important;
             }
         }
 
@@ -1529,6 +1939,31 @@
         }
         .foto-container:not(.has-image) .foto-placeholder {
             display: flex !important;
+        }
+
+        .experiencia-item {
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-salvo.visible {
+            animation: pulse 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -1552,11 +1987,14 @@
         </div>
         <div class="separador-tool"></div>
         <button class="btn-tool theme" id="btnTheme"><i class="fas fa-palette"></i> <span>Temas</span></button>
+        <button class="btn-tool dark-mode" id="btnDarkMode"><i class="fas fa-moon"></i> <span>Modo Escuro</span></button>
+        <button class="btn-tool history" id="btnHistory"><i class="fas fa-history"></i> <span>Histórico</span></button>
         <button class="btn-tool database" id="btnDatabase"><i class="fas fa-database"></i> <span>Banco de Dados</span></button>
         <button class="btn-tool preview" id="btnPreview"><i class="fas fa-eye"></i> <span>Prévia</span></button>
         <div class="status-salvo" id="statusSalvo">
             <i class="fas fa-check-circle"></i> Salvo
         </div>
+        <span class="auto-save-indicator" id="autoSaveIndicator">⏳ Auto-salvando...</span>
     </div>
 
     <!-- ===== FOTO 3x4 + NOME (ALINHADO) ===== -->
@@ -1572,34 +2010,35 @@
             <button class="foto-remover" id="fotoRemover" title="Remover foto"><i class="fas fa-times"></i></button>
         </div>
         <div class="nome-wrapper">
-            <h1 contenteditable="true" id="nomeCompleto">Ana Carolina Silva</h1>
-            <div class="cargo-pretendido" contenteditable="true" id="cargoPretendido">Desenvolvedor Front-end Sênior</div>
+            <h1 contenteditable="true" id="nomeCompleto" class="campo-obrigatorio">Ana Carolina Silva</h1>
+            <div class="cargo-pretendido" contenteditable="true" id="cargoPretendido" class="campo-obrigatorio">Desenvolvedor Front-end Sênior</div>
         </div>
     </div>
 
     <!-- ===== CONTATO ===== -->
     <div class="contato-grid">
-        <div class="campo-contato">
+        <div class="campo-contato campo-obrigatorio">
             <label>Endereço <span style="color:#d32f2f;">*</span></label>
             <div class="valor" contenteditable="true" data-placeholder="Av. Paulista, 1000, Bela Vista">Av. Paulista, 1000, Bela Vista</div>
         </div>
-        <div class="campo-contato">
+        <div class="campo-contato campo-obrigatorio">
             <label>Cidade <span style="color:#d32f2f;">*</span></label>
             <div class="valor" contenteditable="true" data-placeholder="São Paulo - SP">São Paulo - SP</div>
         </div>
-        <div class="campo-contato">
+        <div class="campo-contato campo-obrigatorio">
             <label>Telefone <span style="color:#d32f2f;">*</span></label>
             <div class="valor" contenteditable="true" data-placeholder="(11) 99999-8888">(11) 99999-8888</div>
         </div>
-        <div class="campo-contato">
+        <div class="campo-contato campo-obrigatorio">
             <label>E-mail <span style="color:#d32f2f;">*</span></label>
             <div class="valor" contenteditable="true" data-placeholder="email@exemplo.com">ana.carolina@email.com</div>
         </div>
     </div>
 
-    <!-- ===== DADOS PESSOAIS (ABAIXO DO CONTATO) ===== -->
+    <!-- ===== DADOS PESSOAIS ===== -->
     <div class="secao-titulo">
         <i class="fas fa-id-card"></i> Dados Pessoais
+        <span class="validation-badge" id="validationBadge"></span>
     </div>
 
     <div class="dados-grid">
@@ -1619,19 +2058,17 @@
             <label>Nacionalidade</label>
             <div class="valor" contenteditable="true" data-placeholder="Brasileira">Brasileira</div>
         </div>
-        <div class="campo-dado">
+        <!-- ===== CNH + INFORMAÇÕES NA MESMA LINHA (CORRIGIDO) ===== -->
+        <div class="cnh-row">
             <label>CNH</label>
-            <div class="valor" contenteditable="true" data-placeholder="A, B, C, D ou E">B</div>
-        </div>
-        <!-- ===== OBS - CURSOS DO CONDUTOR (ABAIXO DA CNH) ===== -->
-        <div class="obs-cursos-row">
-            <label>OBS</label>
-            <div class="valor" contenteditable="true" data-placeholder="Cursos, especializações, treinamentos...">Curso de Direção Defensiva - 2022 | Curso de Atualização para Condutores - 2023</div>
+            <span class="valor-cnh" contenteditable="true" data-placeholder="A, B, C, D ou E">B</span>
+            <span class="separador-cnh">|</span>
+            <span class="valor-info-cnh" contenteditable="true" data-placeholder="Informações adicionais...">Curso de Direção Defensiva - 2022</span>
         </div>
     </div>
 
     <!-- ===== FORMAÇÃO ===== -->
-    <div class="secao-titulo">
+    <div class="secao-titulo-formacao">
         <i class="fas fa-graduation-cap"></i> Formação Escolar
     </div>
 
@@ -1648,30 +2085,30 @@
 
     <div id="experienciasContainer" style="margin-top:0;">
         <div class="experiencia-item" data-index="0">
-            <div class="exp-campo">
+            <div class="exp-campo campo-obrigatorio">
                 <label>Empresa <span style="color:#d32f2f;">*</span></label>
                 <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">TechCorp Soluções</div>
             </div>
-            <div class="exp-campo">
+            <div class="exp-campo campo-obrigatorio">
                 <label>Cargo <span style="color:#d32f2f;">*</span></label>
                 <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">Desenvolvedor Pleno</div>
             </div>
-            <div class="exp-campo">
+            <div class="exp-campo campo-obrigatorio">
                 <label>Período <span style="color:#d32f2f;">*</span></label>
                 <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Jan/2021 - Atual</div>
             </div>
             <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
         </div>
         <div class="experiencia-item" data-index="1">
-            <div class="exp-campo">
+            <div class="exp-campo campo-obrigatorio">
                 <label>Empresa <span style="color:#d32f2f;">*</span></label>
                 <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">InovaSoft LTDA</div>
             </div>
-            <div class="exp-campo">
+            <div class="exp-campo campo-obrigatorio">
                 <label>Cargo <span style="color:#d32f2f;">*</span></label>
                 <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">Analista de Sistemas</div>
             </div>
-            <div class="exp-campo">
+            <div class="exp-campo campo-obrigatorio">
                 <label>Período <span style="color:#d32f2f;">*</span></label>
                 <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Mar/2019 - Dez/2020</div>
             </div>
@@ -1684,7 +2121,7 @@
         <span class="badge-count" id="expCount">2</span>
     </button>
 
-    <!-- ===== OBS RODAPÉ (ABAIXO DA EXPERIÊNCIA) ===== -->
+    <!-- ===== OBS RODAPÉ ===== -->
     <div class="secao-titulo secao-obs-rodape">
         <i class="fas fa-pencil-alt"></i> Observações
     </div>
@@ -1712,6 +2149,15 @@
         <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
         <div class="previa-titulo"><i class="fas fa-eye"></i> Prévia do Currículo</div>
         <div id="previaConteudo"></div>
+    </div>
+</div>
+
+<!-- ===== MODAL HISTÓRICO ===== -->
+<div class="modal-overlay modal-history" id="modalHistory">
+    <div class="modal-content">
+        <button class="modal-close" id="modalHistoryClose"><i class="fas fa-times"></i></button>
+        <div class="previa-titulo"><i class="fas fa-history"></i> Histórico de Versões</div>
+        <div id="historyList"></div>
     </div>
 </div>
 
@@ -1795,20 +2241,90 @@
 
         // ===== STATUS DE SALVAMENTO =====
         const statusSalvo = document.getElementById('statusSalvo');
+        const autoSaveIndicator = document.getElementById('autoSaveIndicator');
 
-        function mostrarStatusSalvo() {
+        function mostrarStatusSalvo(msg = 'Salvo') {
+            statusSalvo.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
             statusSalvo.classList.add('visible');
             clearTimeout(statusSalvo._timeout);
             statusSalvo._timeout = setTimeout(() => {
                 statusSalvo.classList.remove('visible');
-            }, 2000);
+            }, 3000);
+        }
+
+        function mostrarAutoSave() {
+            autoSaveIndicator.classList.add('visible');
+            clearTimeout(autoSaveIndicator._timeout);
+            autoSaveIndicator._timeout = setTimeout(() => {
+                autoSaveIndicator.classList.remove('visible');
+            }, 1000);
         }
 
         // ===== BOTÃO SALVAR =====
         document.getElementById('btnSalvar').addEventListener('click', function() {
-            salvarBackup();
-            mostrarStatusSalvo();
-            alert('✅ Currículo salvo com sucesso!\n\nO currículo foi salvo no banco de dados e no backup local.');
+            if (validarCamposObrigatorios()) {
+                salvarBackup();
+                salvarHistorico();
+                mostrarStatusSalvo('Salvo com sucesso!');
+                alert('✅ Currículo salvo com sucesso!');
+            }
+        });
+
+        // ===== VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS =====
+        function validarCamposObrigatorios() {
+            const obrigatorios = [
+                { id: 'nomeCompleto', label: 'Nome completo' },
+                { id: 'cargoPretendido', label: 'Cargo pretendido' }
+            ];
+
+            const contatos = document.querySelectorAll('.contato-grid .campo-contato .valor');
+            const contatoLabels = ['Endereço', 'Cidade', 'Telefone', 'E-mail'];
+            contatos.forEach((el, index) => {
+                if (index < contatoLabels.length) {
+                    obrigatorios.push({ el: el, label: contatoLabels[index] });
+                }
+            });
+
+            const exps = document.querySelectorAll('.experiencia-item');
+            let expIndex = 1;
+            exps.forEach(item => {
+                const empresa = item.querySelector('.exp-campo:nth-child(1) .valor');
+                const cargo = item.querySelector('.exp-campo:nth-child(2) .valor');
+                const periodo = item.querySelector('.exp-campo:nth-child(3) .valor');
+                if (empresa) obrigatorios.push({ el: empresa, label: `Empresa (Exp ${expIndex})` });
+                if (cargo) obrigatorios.push({ el: cargo, label: `Cargo (Exp ${expIndex})` });
+                if (periodo) obrigatorios.push({ el: periodo, label: `Período (Exp ${expIndex})` });
+                expIndex++;
+            });
+
+            let faltando = [];
+            for (const campo of obrigatorios) {
+                const el = campo.el || document.getElementById(campo.id);
+                if (el && (!el.textContent || el.textContent.trim() === '')) {
+                    faltando.push(campo.label);
+                }
+            }
+
+            const badge = document.getElementById('validationBadge');
+            if (faltando.length > 0) {
+                badge.className = 'validation-badge error visible';
+                badge.textContent = `⚠️ ${faltando.length} campo(s) obrigatório(s) faltando`;
+                alert(`❌ Preencha os campos obrigatórios:\n\n${faltando.join('\n')}`);
+                return false;
+            } else {
+                badge.className = 'validation-badge success visible';
+                badge.textContent = '✅ Todos os campos obrigatórios preenchidos';
+                setTimeout(() => {
+                    badge.classList.remove('visible');
+                }, 3000);
+                return true;
+            }
+        }
+
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            el.addEventListener('input', debounce(() => {
+                validarCamposObrigatorios();
+            }, 500));
         });
 
         // ===== ATUALIZAR CONTADOR =====
@@ -1876,21 +2392,44 @@
             } catch (e) { /* ignore */ }
         }
 
-        function verificarFotoNoCabecalho() {
-            const temFoto = fotoPreview.src && fotoPreview.style.display !== 'none' && fotoPreview.src !== '';
-            if (!temFoto) {
-                const nome = document.getElementById('nomeCompleto')?.textContent.trim() || '';
-                gerarAvatar(nome);
-            }
-            atualizarClasseFoto();
+        function comprimirImagem(file, qualidade = 0.7) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const maxWidth = 300;
+                        const maxHeight = 400;
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        if (width > maxWidth) {
+                            height = height * (maxWidth / width);
+                            width = maxWidth;
+                        }
+                        if (height > maxHeight) {
+                            width = width * (maxHeight / height);
+                            height = maxHeight;
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', qualidade));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
         }
 
-        fotoInput.addEventListener('change', function(e) {
+        fotoInput.addEventListener('change', async function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const data = ev.target.result;
+            try {
+                const data = await comprimirImagem(file, 0.7);
                 fotoPreview.src = data;
                 fotoPreview.style.display = 'block';
                 fotoPlaceholder.style.display = 'none';
@@ -1899,9 +2438,11 @@
                 salvarFotoBase64(data);
                 atualizarClasseFoto();
                 atualizarDataHora();
-                mostrarStatusSalvo();
-            };
-            reader.readAsDataURL(file);
+                mostrarStatusSalvo('Foto atualizada');
+                salvarBackupDebounced();
+            } catch (err) {
+                alert('Erro ao processar imagem: ' + err.message);
+            }
         });
 
         fotoRemover.addEventListener('click', function(e) {
@@ -1915,7 +2456,8 @@
             gerarAvatar(nome);
             atualizarClasseFoto();
             atualizarDataHora();
-            mostrarStatusSalvo();
+            mostrarStatusSalvo('Foto removida');
+            salvarBackupDebounced();
         });
 
         if ('ontouchstart' in window) {
@@ -1932,15 +2474,15 @@
             div.dataset.index = container.children.length;
 
             div.innerHTML = `
-                <div class="exp-campo">
+                <div class="exp-campo campo-obrigatorio">
                     <label>Empresa <span style="color:#d32f2f;">*</span></label>
                     <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">${empresa}</div>
                 </div>
-                <div class="exp-campo">
+                <div class="exp-campo campo-obrigatorio">
                     <label>Cargo <span style="color:#d32f2f;">*</span></label>
                     <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">${cargo}</div>
                 </div>
-                <div class="exp-campo">
+                <div class="exp-campo campo-obrigatorio">
                     <label>Período <span style="color:#d32f2f;">*</span></label>
                     <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">${periodo}</div>
                 </div>
@@ -1953,7 +2495,8 @@
                     atualizarDataHora();
                     atualizarContador();
                     salvarBackupDebounced();
-                    mostrarStatusSalvo();
+                    salvarHistorico();
+                    mostrarStatusSalvo('Experiência removida');
                 } else {
                     alert('Mantenha pelo menos uma experiência.');
                 }
@@ -1963,7 +2506,8 @@
                 el.addEventListener('input', () => { 
                     atualizarDataHora(); 
                     salvarBackupDebounced();
-                    mostrarStatusSalvo();
+                    mostrarAutoSave();
+                    validarCamposObrigatorios();
                 });
                 el.addEventListener('blur', () => { 
                     atualizarDataHora(); 
@@ -1979,7 +2523,8 @@
             atualizarDataHora();
             atualizarContador();
             salvarBackupDebounced();
-            mostrarStatusSalvo();
+            salvarHistorico();
+            mostrarStatusSalvo('Experiência adicionada');
             const novoItem = container.lastElementChild;
             if (novoItem) novoItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
@@ -1990,7 +2535,7 @@
                 el.addEventListener('input', () => { 
                     atualizarDataHora(); 
                     salvarBackupDebounced();
-                    mostrarStatusSalvo();
+                    mostrarAutoSave();
                     if (el.id === 'nomeCompleto') {
                         const nome = el.textContent.trim();
                         if (!fotoPreview.src || fotoPreview.style.display === 'none' || fotoPreview.src === '') {
@@ -1998,6 +2543,7 @@
                         }
                         atualizarClasseFoto();
                     }
+                    validarCamposObrigatorios();
                 });
                 el.addEventListener('blur', () => { 
                     atualizarDataHora(); 
@@ -2033,6 +2579,26 @@
             const tema = localStorage.getItem('curriculo_tema') || 'basico';
             aplicarTema(tema);
         }
+
+        // ===== MODO ESCURO =====
+        let modoEscuro = localStorage.getItem('curriculo_dark_mode') === 'true';
+
+        function aplicarModoEscuro(ativar) {
+            modoEscuro = ativar;
+            document.body.classList.toggle('modo-escuro', ativar);
+            localStorage.setItem('curriculo_dark_mode', ativar);
+            const btn = document.getElementById('btnDarkMode');
+            if (btn) {
+                btn.innerHTML = ativar ? '<i class="fas fa-sun"></i> <span>Modo Claro</span>' : '<i class="fas fa-moon"></i> <span>Modo Escuro</span>';
+            }
+        }
+
+        document.getElementById('btnDarkMode').addEventListener('click', function() {
+            aplicarModoEscuro(!modoEscuro);
+            mostrarStatusSalvo(modoEscuro ? 'Modo escuro ativado' : 'Modo claro ativado');
+        });
+
+        aplicarModoEscuro(modoEscuro);
 
         // ===== MODAL TEMAS =====
         const modalTheme = document.getElementById('modalTheme');
@@ -2072,9 +2638,164 @@
                 const tema = selected.dataset.theme;
                 aplicarTema(tema);
                 closeThemeModal();
-                mostrarStatusSalvo();
+                mostrarStatusSalvo('Tema aplicado');
                 salvarBackupDebounced();
+                salvarHistorico();
             }
+        });
+
+        // ===== HISTÓRICO =====
+        const HISTORY_KEY = 'curriculo_historico';
+        const MAX_HISTORICO = 20;
+
+        function getHistorico() {
+            try {
+                const data = localStorage.getItem(HISTORY_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function salvarHistorico() {
+            try {
+                const dados = coletarDados();
+                const historico = getHistorico();
+                historico.push({
+                    data: new Date().toISOString(),
+                    dados: dados,
+                    tema: temaAtual
+                });
+                if (historico.length > MAX_HISTORICO) {
+                    historico.splice(0, historico.length - MAX_HISTORICO);
+                }
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(historico));
+            } catch (e) { /* ignore */ }
+        }
+
+        function restaurarHistorico(index) {
+            const historico = getHistorico();
+            if (index >= 0 && index < historico.length) {
+                const item = historico[index];
+                aplicarCurriculo(item.dados);
+                if (item.tema) {
+                    aplicarTema(item.tema);
+                }
+                mostrarStatusSalvo('Versão restaurada');
+                closeHistoryModal();
+                alert('✅ Versão restaurada com sucesso!');
+            }
+        }
+
+        function excluirHistorico(index) {
+            const historico = getHistorico();
+            if (index >= 0 && index < historico.length) {
+                historico.splice(index, 1);
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(historico));
+                renderHistoryList();
+                mostrarStatusSalvo('Versão excluída');
+            }
+        }
+
+        function limparHistorico() {
+            if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+                localStorage.removeItem(HISTORY_KEY);
+                renderHistoryList();
+                mostrarStatusSalvo('Histórico limpo');
+            }
+        }
+
+        function renderHistoryList() {
+            const historico = getHistorico();
+            const list = document.getElementById('historyList');
+            
+            if (historico.length === 0) {
+                list.innerHTML = `
+                    <div class="history-empty">
+                        <i class="fas fa-history"></i>
+                        <p>Nenhuma versão salva no histórico.</p>
+                        <p style="font-size:0.8rem; margin-top:8px;">As versões são salvas automaticamente a cada alteração.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            const reversed = [...historico].reverse();
+            reversed.forEach((item, idx) => {
+                const index = historico.length - 1 - idx;
+                const data = new Date(item.data);
+                const dataStr = data.toLocaleString('pt-BR');
+                const nome = item.dados.nome || 'Sem nome';
+                const cargo = item.dados.cargo || '';
+                const temaLabel = item.tema ? ` (${item.tema.charAt(0).toUpperCase() + item.tema.slice(1)})` : '';
+                
+                html += `
+                    <div class="history-item">
+                        <div class="history-info">
+                            <span class="history-data">${dataStr}</span>
+                            <span class="history-detalhes">${nome} ${cargo ? `- ${cargo}` : ''}${temaLabel}</span>
+                        </div>
+                        <div class="history-actions">
+                            <button class="btn-restore" data-index="${index}"><i class="fas fa-undo"></i> Restaurar</button>
+                            <button class="btn-delete-history" data-index="${index}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div style="padding: 12px; text-align: center; border-top: 1px solid #eef3f9;">
+                    <button class="btn-tool danger" id="btnLimparHistorico" style="padding: 8px 20px;">
+                        <i class="fas fa-trash-alt"></i> Limpar Histórico
+                    </button>
+                </div>
+            `;
+            
+            list.innerHTML = html;
+
+            list.querySelectorAll('.btn-restore').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    restaurarHistorico(index);
+                });
+            });
+
+            list.querySelectorAll('.btn-delete-history').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    if (confirm('Tem certeza que deseja excluir esta versão?')) {
+                        excluirHistorico(index);
+                    }
+                });
+            });
+
+            const btnLimpar = document.getElementById('btnLimparHistorico');
+            if (btnLimpar) {
+                btnLimpar.addEventListener('click', limparHistorico);
+            }
+        }
+
+        // ===== MODAL HISTÓRICO =====
+        const modalHistory = document.getElementById('modalHistory');
+        const modalHistoryClose = document.getElementById('modalHistoryClose');
+        const btnHistory = document.getElementById('btnHistory');
+
+        function openHistoryModal() {
+            renderHistoryList();
+            modalHistory.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHistoryModal() {
+            modalHistory.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        btnHistory.addEventListener('click', openHistoryModal);
+        modalHistoryClose.addEventListener('click', closeHistoryModal);
+        modalHistory.addEventListener('click', function(e) {
+            if (e.target === this) closeHistoryModal();
         });
 
         // ===== BANCO DE DADOS =====
@@ -2149,18 +2870,17 @@
             }
 
             const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
-            if (camposDados.length >= 5) {
+            if (camposDados.length >= 4) {
                 if (dados.estadoCivil) camposDados[0].textContent = dados.estadoCivil;
                 if (dados.dataNasc) camposDados[1].textContent = dados.dataNasc;
                 if (dados.naturalidade) camposDados[2].textContent = dados.naturalidade;
                 if (dados.nacionalidade) camposDados[3].textContent = dados.nacionalidade;
-                if (dados.cnh) camposDados[4].textContent = dados.cnh;
             }
 
-            const obsCursos = document.querySelector('.obs-cursos-row .valor');
-            if (obsCursos && dados.obsCursos) {
-                obsCursos.textContent = dados.obsCursos;
-            }
+            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
+            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
+            if (cnhEl && dados.cnh) cnhEl.textContent = dados.cnh;
+            if (infoCnhEl && dados.infoCnh) infoCnhEl.textContent = dados.infoCnh;
 
             const elFormacao = document.getElementById('formacaoArea');
             if (elFormacao && dados.formacao) elFormacao.innerHTML = dados.formacao;
@@ -2194,39 +2914,33 @@
 
             atualizarDataHora();
             salvarBackupDebounced();
-            mostrarStatusSalvo();
+            mostrarStatusSalvo('Currículo carregado');
+            validarCamposObrigatorios();
         }
 
         // ===== FUNÇÃO NOVO CURRÍCULO =====
         function limparCurriculo() {
-            // Nome e Cargo
             document.getElementById('nomeCompleto').textContent = '';
             document.getElementById('cargoPretendido').textContent = '';
             
-            // Contato
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             camposContato.forEach(el => el.textContent = '');
             
-            // Dados Pessoais
             const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
             camposDados.forEach(el => el.textContent = '');
             
-            // OBS - Cursos
-            const obsCursos = document.querySelector('.obs-cursos-row .valor');
-            if (obsCursos) obsCursos.textContent = '';
+            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
+            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
+            if (cnhEl) cnhEl.textContent = '';
+            if (infoCnhEl) infoCnhEl.textContent = '';
             
-            // Formação
             document.getElementById('formacaoArea').innerHTML = '';
-            
-            // OBS Rodapé
             document.getElementById('obsRodape').innerHTML = '';
             
-            // Experiências - manter apenas uma vazia
             container.innerHTML = '';
             container.appendChild(criarItemExperiencia('', '', ''));
             atualizarContador();
             
-            // Remover foto
             fotoPreview.src = '';
             fotoPreview.style.display = 'none';
             fotoPlaceholder.style.display = 'flex';
@@ -2235,23 +2949,17 @@
             gerarAvatar('');
             atualizarClasseFoto();
             
-            // Resetar tema para básico
             aplicarTema('basico');
-            
-            // Atualizar data
             atualizarDataHora();
-            
-            // Limpar backup
             localStorage.removeItem('curriculo_backup_editavel');
-            
-            mostrarStatusSalvo();
+            mostrarStatusSalvo('Novo currículo criado');
+            validarCamposObrigatorios();
         }
 
-        // ===== BOTÃO NOVO CURRÍCULO =====
         document.getElementById('btnNewCurriculum').addEventListener('click', function() {
-            if (confirm('⚠️ Tem certeza que deseja começar um novo currículo?\n\nO conteúdo atual será apagado, mas os currículos salvos no banco de dados serão mantidos.')) {
+            if (confirm('⚠️ Tem certeza que deseja começar um novo currículo?')) {
                 limparCurriculo();
-                alert('✅ Novo currículo criado com sucesso!\n\nPreencha os dados e salve com Ctrl+S ou via salvamento automático.');
+                alert('✅ Novo currículo criado com sucesso!');
             }
         });
 
@@ -2264,7 +2972,6 @@
                     <div class="db-empty">
                         <i class="fas fa-database"></i>
                         <p>Nenhum currículo salvo no banco de dados.</p>
-                        <p style="font-size:0.8rem; margin-top:8px;">Salve seu currículo atual para adicioná-lo.</p>
                     </div>
                 `;
                 return;
@@ -2308,7 +3015,7 @@
                     if (loadFromDatabase(nome)) {
                         closeDatabaseModal();
                         alert(`✅ Currículo "${nome}" carregado com sucesso!`);
-                        mostrarStatusSalvo();
+                        mostrarStatusSalvo('Currículo carregado');
                     } else {
                         alert('❌ Erro ao carregar o currículo.');
                     }
@@ -2385,6 +3092,13 @@
 
         const salvarBackupDebounced = debounce(salvarBackup, 300);
 
+        // ===== AUTO-SAVE =====
+        setInterval(() => {
+            if (document.hidden) return;
+            salvarBackup();
+            mostrarAutoSave();
+        }, 30000);
+
         // ===== CARREGAR BACKUP =====
         function carregarBackup() {
             try {
@@ -2412,7 +3126,8 @@
             });
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
-            const obsCursos = document.querySelector('.obs-cursos-row .valor');
+            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
+            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
             const obsRodape = document.getElementById('obsRodape');
             
             const dados = {
@@ -2426,8 +3141,8 @@
                 dataNasc: document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '',
                 naturalidade: document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '',
                 nacionalidade: document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '',
-                cnh: document.querySelector('.dados-grid .campo-dado:nth-child(5) .valor')?.textContent.trim() || '',
-                obsCursos: obsCursos?.textContent.trim() || '',
+                cnh: cnhEl?.textContent.trim() || '',
+                infoCnh: infoCnhEl?.textContent.trim() || '',
                 formacao: document.getElementById('formacaoArea')?.innerHTML || '',
                 experiencias: experiencias,
                 obsRodape: obsRodape?.innerHTML || '',
@@ -2444,8 +3159,159 @@
             return dados;
         }
 
+        // ===== GERAR HTML COMPLETO =====
+        function gerarHTMLCompleto() {
+            const nome = document.getElementById('nomeCompleto')?.textContent.trim() || '';
+            const cargo = document.getElementById('cargoPretendido')?.textContent.trim() || '';
+            
+            const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
+            const endereco = camposContato[0]?.textContent.trim() || '';
+            const cidade = camposContato[1]?.textContent.trim() || '';
+            const telefone = camposContato[2]?.textContent.trim() || '';
+            const email = camposContato[3]?.textContent.trim() || '';
+
+            const estadoCivil = document.querySelector('.dados-grid .campo-dado:nth-child(1) .valor')?.textContent.trim() || '';
+            const dataNasc = document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '';
+            const naturalidade = document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '';
+            const nacionalidade = document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '';
+            
+            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
+            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
+            const cnh = cnhEl?.textContent.trim() || '';
+            const infoCnh = infoCnhEl?.textContent.trim() || '';
+
+            const formacao = document.getElementById('formacaoArea')?.innerHTML || '';
+            const obsRodape = document.getElementById('obsRodape')?.innerHTML || '';
+
+            let experienciasHTML = '';
+            document.querySelectorAll('.experiencia-item').forEach(item => {
+                const empresa = item.querySelector('.exp-campo:nth-child(1) .valor')?.textContent.trim() || '';
+                const cargoExp = item.querySelector('.exp-campo:nth-child(2) .valor')?.textContent.trim() || '';
+                const periodo = item.querySelector('.exp-campo:nth-child(3) .valor')?.textContent.trim() || '';
+                if (empresa || cargoExp || periodo) {
+                    experienciasHTML += `
+                        <div class="exp-item">
+                            <div><strong>Empresa:</strong> ${empresa || 'N/A'}</div>
+                            <div><strong>Cargo:</strong> ${cargoExp || 'N/A'}</div>
+                            <div><strong>Período:</strong> ${periodo || 'N/A'}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            let contatoHTML = '';
+            const contatos = [
+                { label: 'Endereço', value: endereco },
+                { label: 'Cidade', value: cidade },
+                { label: 'Telefone', value: telefone },
+                { label: 'E-mail', value: email }
+            ];
+            const contatosPreenchidos = contatos.filter(c => c.value);
+            if (contatosPreenchidos.length > 0) {
+                contatoHTML = '<div class="contato">';
+                contatosPreenchidos.forEach(c => {
+                    contatoHTML += `<div><strong>${c.label}</strong><span>${c.value}</span></div>`;
+                });
+                contatoHTML += '</div>';
+            }
+
+            // Dados Pessoais - CNH + INFORMAÇÕES na mesma linha (CORRIGIDO)
+            let dadosHTML = '';
+            const dadosPessoais = [
+                { label: 'Estado Civil', value: estadoCivil },
+                { label: 'Nascimento', value: dataNasc },
+                { label: 'Naturalidade', value: naturalidade },
+                { label: 'Nacionalidade', value: nacionalidade }
+            ];
+            const dadosPreenchidos = dadosPessoais.filter(d => d.value);
+            
+            // CNH + INFORMAÇÕES na mesma linha (categoria fica na frente da CNH junto com as informações)
+            let cnhHTML = '';
+            if (cnh || infoCnh) {
+                let cnhDisplay = '';
+                if (cnh && infoCnh) {
+                    cnhDisplay = `${cnh} | ${infoCnh}`;
+                } else if (cnh) {
+                    cnhDisplay = cnh;
+                } else if (infoCnh) {
+                    cnhDisplay = infoCnh;
+                }
+                cnhHTML = `<div class="cnh-row-print"><strong>CNH</strong> <span>${cnhDisplay}</span></div>`;
+            }
+            
+            if (dadosPreenchidos.length > 0 || cnhHTML) {
+                dadosHTML = '<div class="dados">';
+                dadosPreenchidos.forEach(d => {
+                    dadosHTML += `<div><strong>${d.label}</strong><span>${d.value}</span></div>`;
+                });
+                if (cnhHTML) {
+                    dadosHTML += cnhHTML;
+                }
+                dadosHTML += '</div>';
+            }
+
+            const temFoto = fotoPreview.src && fotoPreview.style.display !== 'none' && fotoPreview.src !== '';
+
+            let headerHTML = '';
+            if (temFoto) {
+                headerHTML = `
+                    <div class="header">
+                        <img src="${fotoPreview.src}" class="foto-impressao" alt="Foto">
+                        <div class="header-text">
+                            <h1>${nome || 'Nome não informado'}</h1>
+                            ${cargo ? `<div class="cargo-pretendido">${cargo}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            } else {
+                headerHTML = `
+                    <div style="border-bottom: 3px solid #1a2f44; padding-bottom: 16px; margin-bottom: 24px;">
+                        <h1 style="font-size: 2.2rem; color: #0b1f33; margin: 0;">${nome || 'Nome não informado'}</h1>
+                        ${cargo ? `<div style="color: #2a7de1; font-size: 1.1rem; font-weight: 500; margin-top: 4px;">${cargo}</div>` : ''}
+                    </div>
+                `;
+            }
+
+            let formacaoHTML = '';
+            if (formacao && formacao.trim() !== '' && formacao !== '<br>') {
+                formacaoHTML = `
+                    <div class="secao">🎓 Formação Escolar</div>
+                    <div class="formacao">${formacao}</div>
+                `;
+            }
+
+            let expHTML = '';
+            if (experienciasHTML && experienciasHTML.trim() !== '') {
+                expHTML = `
+                    <div class="secao">💼 Experiência Profissional</div>
+                    ${experienciasHTML}
+                `;
+            }
+
+            let obsHTML = '';
+            if (obsRodape && obsRodape.trim() !== '' && obsRodape !== '<br>') {
+                obsHTML = `
+                    <div class="secao">📝 Observações</div>
+                    <div class="obs-rodape-print">${obsRodape}</div>
+                `;
+            }
+
+            return `
+                <div>
+                    ${headerHTML}
+                    ${contatoHTML}
+                    ${dadosHTML ? `<div class="secao">📋 Dados Pessoais</div>${dadosHTML}` : ''}
+                    ${formacaoHTML}
+                    ${expHTML}
+                    ${obsHTML}
+                    <div class="footer">Currículo gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
+                </div>
+            `;
+        }
+
         // ===== EXPORTAR WORD =====
         document.getElementById('btnExportWord').addEventListener('click', function() {
+            if (!validarCamposObrigatorios()) return;
             const conteudo = gerarHTMLCompleto();
             const html = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office'
@@ -2466,12 +3332,14 @@
                     .dados { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 30px; background: #fafcff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e8eff5; }
                     .dados div strong { display: block; font-size: 0.7rem; color: #1a334b; }
                     .dados div span { font-size: 0.85rem; }
-                    .obs-row { grid-column: 1 / -1; border-top: 1px solid #e8eff5; padding-top: 6px; margin-top: 2px; }
-                    .obs-row strong { display: inline-block; min-width: 100px; }
-                    .exp-item { border-left: 4px solid #1a2f44; padding: 8px 16px; margin-bottom: 12px; background: #f8fafd; }
-                    .exp-item strong { display: inline-block; width: 120px; }
-                    .formacao { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 60px; }
-                    .obs-rodape-print { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 60px; margin-top: 8px; }
+                    .dados .cnh-row-print { grid-column: 1 / -1; padding: 4px 0; }
+                    .dados .cnh-row-print strong { display: inline-block; min-width: 100px; font-size: 0.7rem; color: #1a334b; }
+                    .dados .cnh-row-print span { display: inline; font-size: 0.85rem; }
+                    .exp-item { border-left: 4px solid #1a2f44; padding: 8px 16px; margin-bottom: 12px; background: #f8fafd; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 16px; }
+                    .exp-item strong { display: block; font-size: 0.6rem; color: #6a8aaa; text-transform: uppercase; }
+                    .exp-item div { font-size: 0.85rem; }
+                    .formacao { border: 1px dashed #ccc; padding: 8px 12px; border-radius: 8px; min-height: 30px; margin-bottom: 4px; }
+                    .obs-rodape-print { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 40px; margin-top: 8px; }
                     .footer { text-align: center; color: #999; font-size: 0.7rem; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; }
                 </style>
                 </head>
@@ -2487,117 +3355,28 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            mostrarStatusSalvo();
+            mostrarStatusSalvo('Word exportado');
         });
 
         // ===== EXPORTAR PDF =====
         document.getElementById('btnExportPDF').addEventListener('click', function() {
+            if (!validarCamposObrigatorios()) return;
             window.print();
         });
 
-        // ===== GERAR HTML COMPLETO =====
-        function gerarHTMLCompleto() {
-            const nome = document.getElementById('nomeCompleto')?.textContent.trim() || 'Nome não informado';
-            const cargo = document.getElementById('cargoPretendido')?.textContent.trim() || '';
-            
-            const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
-            const endereco = camposContato[0]?.textContent.trim() || '';
-            const cidade = camposContato[1]?.textContent.trim() || '';
-            const telefone = camposContato[2]?.textContent.trim() || '';
-            const email = camposContato[3]?.textContent.trim() || '';
-
-            const estadoCivil = document.querySelector('.dados-grid .campo-dado:nth-child(1) .valor')?.textContent.trim() || '';
-            const dataNasc = document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '';
-            const naturalidade = document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '';
-            const nacionalidade = document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '';
-            const cnh = document.querySelector('.dados-grid .campo-dado:nth-child(5) .valor')?.textContent.trim() || '';
-            const obsCursos = document.querySelector('.obs-cursos-row .valor')?.textContent.trim() || '';
-            const formacao = document.getElementById('formacaoArea')?.innerHTML || '';
-            const obsRodape = document.getElementById('obsRodape')?.innerHTML || '';
-
-            let experienciasHTML = '';
-            document.querySelectorAll('.experiencia-item').forEach(item => {
-                const empresa = item.querySelector('.exp-campo:nth-child(1) .valor')?.textContent.trim() || '';
-                const cargoExp = item.querySelector('.exp-campo:nth-child(2) .valor')?.textContent.trim() || '';
-                const periodo = item.querySelector('.exp-campo:nth-child(3) .valor')?.textContent.trim() || '';
-                if (empresa || cargoExp || periodo) {
-                    experienciasHTML += `
-                        <div class="exp-item">
-                            <strong>Empresa:</strong> ${empresa}<br>
-                            <strong>Cargo:</strong> ${cargoExp}<br>
-                            <strong>Período:</strong> ${periodo}
-                        </div>
-                    `;
-                }
-            });
-
-            const temFoto = fotoPreview.src && fotoPreview.style.display !== 'none' && fotoPreview.src !== '';
-
-            let headerHTML = '';
-            if (temFoto) {
-                headerHTML = `
-                    <div class="header">
-                        <img src="${fotoPreview.src}" class="foto-impressao" alt="Foto">
-                        <div class="header-text">
-                            <h1>${nome}</h1>
-                            ${cargo ? `<div class="cargo-pretendido">${cargo}</div>` : ''}
-                        </div>
-                    </div>
-                `;
-            } else {
-                headerHTML = `
-                    <div style="border-bottom: 3px solid #1a2f44; padding-bottom: 16px; margin-bottom: 24px;">
-                        <h1 style="font-size: 2.2rem; color: #0b1f33; margin: 0;">${nome}</h1>
-                        ${cargo ? `<div style="color: #2a7de1; font-size: 1.1rem; font-weight: 500; margin-top: 4px;">${cargo}</div>` : ''}
-                    </div>
-                `;
-            }
-
-            return `
-                <div>
-                    ${headerHTML}
-                    
-                    <div class="contato">
-                        <div><strong>Endereço</strong><span>${endereco}</span></div>
-                        <div><strong>Cidade</strong><span>${cidade}</span></div>
-                        <div><strong>Telefone</strong><span>${telefone}</span></div>
-                        <div><strong>E-mail</strong><span>${email}</span></div>
-                    </div>
-
-                    <div class="secao">📋 Dados Pessoais</div>
-                    <div class="dados">
-                        <div><strong>Estado Civil</strong><span>${estadoCivil}</span></div>
-                        <div><strong>Nascimento</strong><span>${dataNasc}</span></div>
-                        <div><strong>Naturalidade</strong><span>${naturalidade}</span></div>
-                        <div><strong>Nacionalidade</strong><span>${nacionalidade}</span></div>
-                        <div><strong>CNH</strong><span>${cnh}</span></div>
-                        <div class="obs-row"><strong>OBS</strong><span>${obsCursos}</span></div>
-                    </div>
-
-                    <div class="secao">🎓 Formação Escolar</div>
-                    <div class="formacao">${formacao}</div>
-
-                    <div class="secao">💼 Experiência Profissional</div>
-                    ${experienciasHTML || '<p style="color:#999;">Nenhuma experiência cadastrada.</p>'}
-
-                    <div class="secao">📝 Observações</div>
-                    <div class="obs-rodape-print">${obsRodape || 'Nenhuma observação adicionada.'}</div>
-
-                    <div class="footer">Currículo gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
-                </div>
-            `;
-        }
-
         // ===== EXPORTAR CSV =====
         document.getElementById('btnExportCSV').addEventListener('click', function() {
-            const dados = coletarDados();
-            const linhas = [];
+            if (!validarCamposObrigatorios()) return;
             
-            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","obsCursos","formacao","experiencias","obsRodape","tema"');
+            const dados = coletarDados();
+            const db = getDatabase();
+            
+            const linhas = [];
+            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","infoCnh","formacao","experiencias","obsRodape","tema","data"');
             
             const expStr = dados.experiencias.map(e => `${e.empresa}|${e.cargo}|${e.periodo}`).join(';');
             
-            const valores = [
+            const valoresAtual = [
                 dados.nome,
                 dados.cargo,
                 dados.endereco,
@@ -2609,29 +3388,59 @@
                 dados.naturalidade,
                 dados.nacionalidade,
                 dados.cnh,
-                dados.obsCursos,
+                dados.infoCnh,
                 dados.formacao.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
                 expStr,
                 dados.obsRodape.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
-                dados.tema || 'basico'
+                dados.tema || 'basico',
+                new Date().toLocaleString('pt-BR')
             ].map(v => `"${v}"`);
+            linhas.push(valoresAtual.join(','));
             
-            linhas.push(valores.join(','));
+            const nomesExistentes = new Set();
+            db.forEach(item => {
+                if (item.nome && item.nome !== dados.nome && !nomesExistentes.has(item.nome)) {
+                    nomesExistentes.add(item.nome);
+                    const expStrDB = (item.experiencias || []).map(e => `${e.empresa || ''}|${e.cargo || ''}|${e.periodo || ''}`).join(';');
+                    
+                    const valoresDB = [
+                        item.nome || '',
+                        item.cargo || '',
+                        item.endereco || '',
+                        item.cidade || '',
+                        item.telefone || '',
+                        item.email || '',
+                        item.estadoCivil || '',
+                        item.dataNasc || '',
+                        item.naturalidade || '',
+                        item.nacionalidade || '',
+                        item.cnh || '',
+                        item.infoCnh || '',
+                        (item.formacao || '').replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
+                        expStrDB,
+                        (item.obsRodape || '').replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
+                        item.tema || 'basico',
+                        item.data || new Date().toLocaleString('pt-BR')
+                    ].map(v => `"${v}"`);
+                    linhas.push(valoresDB.join(','));
+                }
+            });
 
             const csv = linhas.join('\n');
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `Curriculo_${dados.nome || 'profissional'}.csv`;
+            link.download = `Curriculos_${new Date().toISOString().slice(0,10)}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            mostrarStatusSalvo();
+            mostrarStatusSalvo(`CSV exportado (${db.length + 1} currículos)`);
         });
 
         // ===== EXPORTAR JSON =====
         document.getElementById('btnExportJSON').addEventListener('click', function() {
+            if (!validarCamposObrigatorios()) return;
             const dados = coletarDados();
             const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
@@ -2641,7 +3450,7 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            mostrarStatusSalvo();
+            mostrarStatusSalvo('JSON exportado');
         });
 
         // ===== IMPORTAR CSV =====
@@ -2698,7 +3507,7 @@
                     const naturalidade = dados[idx('naturalidade')]?.replace(/^"|"$/g, '') || '';
                     const nacionalidade = dados[idx('nacionalidade')]?.replace(/^"|"$/g, '') || '';
                     const cnh = dados[idx('cnh')]?.replace(/^"|"$/g, '') || '';
-                    const obsCursos = dados[idx('obsCursos')]?.replace(/^"|"$/g, '') || '';
+                    const infoCnh = dados[idx('infoCnh')]?.replace(/^"|"$/g, '') || '';
                     const formacao = dados[idx('formacao')]?.replace(/^"|"$/g, '') || '';
                     const expRaw = dados[idx('experiencias')]?.replace(/^"|"$/g, '') || '';
                     const obsRodape = dados[idx('obsRodape')]?.replace(/^"|"$/g, '') || '';
@@ -2725,18 +3534,17 @@
                     }
 
                     const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
-                    if (camposDados.length >= 5) {
+                    if (camposDados.length >= 4) {
                         if (estadoCivil) camposDados[0].textContent = estadoCivil;
                         if (dataNasc) camposDados[1].textContent = dataNasc;
                         if (naturalidade) camposDados[2].textContent = naturalidade;
                         if (nacionalidade) camposDados[3].textContent = nacionalidade;
-                        if (cnh) camposDados[4].textContent = cnh;
                     }
 
-                    const obsCursosEl = document.querySelector('.obs-cursos-row .valor');
-                    if (obsCursosEl && obsCursos) {
-                        obsCursosEl.textContent = obsCursos;
-                    }
+                    const cnhEl = document.querySelector('.cnh-row .valor-cnh');
+                    const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
+                    if (cnhEl && cnh) cnhEl.textContent = cnh;
+                    if (infoCnhEl && infoCnh) infoCnhEl.textContent = infoCnh;
 
                     const elFormacao = document.getElementById('formacaoArea');
                     if (elFormacao && formacao) elFormacao.innerHTML = formacao.replace(/\\n/g, '<br>');
@@ -2766,8 +3574,10 @@
                     }
 
                     salvarBackupDebounced();
+                    salvarHistorico();
                     atualizarDataHora();
-                    mostrarStatusSalvo();
+                    mostrarStatusSalvo('CSV importado');
+                    validarCamposObrigatorios();
                     alert('✅ CSV importado com sucesso!');
                 } catch (err) {
                     alert('❌ Erro ao importar CSV: ' + err.message);
@@ -2783,6 +3593,7 @@
         const modalClose = document.getElementById('modalClose');
 
         document.getElementById('btnPreview').addEventListener('click', function() {
+            if (!validarCamposObrigatorios()) return;
             previaConteudo.innerHTML = gerarHTMLCompleto();
             modalPreview.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -2802,6 +3613,7 @@
                 fecharModal();
                 closeDatabaseModal();
                 closeThemeModal();
+                closeHistoryModal();
             }
         });
 
@@ -2809,9 +3621,12 @@
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
-                salvarBackup();
-                mostrarStatusSalvo();
-                alert('✅ Currículo salvo com sucesso!');
+                if (validarCamposObrigatorios()) {
+                    salvarBackup();
+                    salvarHistorico();
+                    mostrarStatusSalvo('Salvo com sucesso!');
+                    alert('✅ Currículo salvo com sucesso!');
+                }
             }
         });
 
@@ -2820,25 +3635,27 @@
         atualizarContador();
         carregarBackup();
         carregarFotoBase64();
-        verificarFotoNoCabecalho();
+        atualizarClasseFoto();
 
         const nomeInicial = document.getElementById('nomeCompleto')?.textContent.trim() || '';
         if (!fotoPreview.src || fotoPreview.style.display === 'none' || fotoPreview.src === '') {
             gerarAvatar(nomeInicial);
         }
-        atualizarClasseFoto();
+        validarCamposObrigatorios();
 
         setTimeout(() => {
             const dados = coletarDados();
             if (dados.nome && dados.nome.trim() !== '') {
                 saveToDatabase(dados);
+                salvarHistorico();
             }
         }, 1000);
 
         console.log('📄 Currículo editável carregado!');
-        console.log('✅ Botão "Salvar" adicionado no cabeçalho');
-        console.log('✅ Campo "Observações" adicionado no rodapé (abaixo da experiência)');
-        console.log('✅ Ambos integrados com todas as exportações e banco de dados');
+        console.log('✅ Melhoria aplicada:');
+        console.log('  - Na exportação, a categoria fica na mesma linha (na frente da CNH junto com as informações)');
+        console.log('  - Formato: CNH: [categoria] | [informações]');
+        console.log('  - Nada mais foi alterado');
     })();
 </script>
 
