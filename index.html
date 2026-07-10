@@ -681,7 +681,7 @@
         }
 
         .nome-foto-section .nome-wrapper h1:empty::before {
-            content: "Digite seu nome completo*";
+            content: "Digite seu nome completo";
             color: #b0c4d8;
             font-weight: 400;
         }
@@ -706,6 +706,37 @@
             content: "Cargo pretendido";
             color: #b0c4d8;
             font-weight: 400;
+        }
+
+        /* ===== CNH NO CABEÇALHO ===== */
+        .nome-foto-section .nome-wrapper .cnh-header {
+            font-size: 0.85rem;
+            color: #1a334b;
+            font-weight: 500;
+            margin-top: 6px;
+            padding: 4px 12px;
+            background: #f0f6ff;
+            border-radius: 20px;
+            display: inline-block;
+            border: 1px solid #d8e2ed;
+        }
+
+        body.modo-escuro .nome-foto-section .nome-wrapper .cnh-header {
+            background: #2a2a4e;
+            color: #e0e0e0;
+            border-color: #3a3a5e;
+        }
+
+        .tema-premium .nome-foto-section .nome-wrapper .cnh-header {
+            background: #f8f5ee;
+            border-color: #d4af37;
+            color: #1a334b;
+        }
+
+        .tema-moderno .nome-foto-section .nome-wrapper .cnh-header {
+            background: #e0faf5;
+            border-color: #00b894;
+            color: #1a334b;
         }
 
         /* ===== INFORMAÇÕES DE CONTATO ===== */
@@ -836,70 +867,6 @@
 
         .campo-dado .valor:empty::before {
             content: attr(data-placeholder);
-            color: #b0c4d8;
-        }
-
-        /* ===== CNH COM INFORMAÇÕES NA MESMA LINHA (CORRIGIDO) ===== */
-        .cnh-row {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-            padding: 2px 0;
-            border-bottom: 1px solid #eef3f9;
-            grid-column: 1 / -1;
-        }
-
-        .cnh-row label {
-            font-weight: 600;
-            font-size: 0.75rem;
-            color: #1a334b;
-            min-width: 100px;
-            flex-shrink: 0;
-        }
-
-        .cnh-row .valor-cnh {
-            font-size: 0.85rem;
-            color: #0b1f33;
-            padding: 1px 4px;
-            border-bottom: 2px solid transparent;
-            cursor: text;
-            min-height: 20px;
-            outline: none;
-            min-width: 80px;
-        }
-
-        .cnh-row .valor-cnh:focus {
-            border-bottom-color: #2a7de1;
-        }
-
-        .cnh-row .valor-cnh:empty::before {
-            content: "A, B, C, D ou E";
-            color: #b0c4d8;
-        }
-
-        .cnh-row .separador-cnh {
-            color: #b0c4d8;
-            font-weight: 300;
-            padding: 0 4px;
-        }
-
-        .cnh-row .valor-info-cnh {
-            font-size: 0.85rem;
-            color: #0b1f33;
-            flex: 1;
-            padding: 1px 4px;
-            border-bottom: 2px solid transparent;
-            cursor: text;
-            min-height: 20px;
-            outline: none;
-        }
-
-        .cnh-row .valor-info-cnh:focus {
-            border-bottom-color: #2a7de1;
-        }
-
-        .cnh-row .valor-info-cnh:empty::before {
-            content: "Informações adicionais...";
             color: #b0c4d8;
         }
 
@@ -1534,6 +1501,10 @@
             .nome-foto-section .nome-wrapper .cargo-pretendido {
                 text-align: center;
             }
+            .nome-foto-section .nome-wrapper .cnh-header {
+                text-align: center;
+                display: inline-block;
+            }
             .foto-container {
                 width: 100px;
                 height: 133px;
@@ -1553,14 +1524,6 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 3px 16px;
                 padding: 8px 14px;
-            }
-
-            .cnh-row {
-                grid-column: 1 / -1;
-                flex-wrap: wrap;
-            }
-            .cnh-row label {
-                min-width: 100%;
             }
 
             .experiencia-item {
@@ -1623,14 +1586,6 @@
                 grid-template-columns: 1fr;
                 gap: 3px 0;
                 padding: 8px 14px;
-            }
-
-            .cnh-row {
-                grid-column: 1;
-                flex-wrap: wrap;
-            }
-            .cnh-row label {
-                min-width: 100%;
             }
 
             .nome-foto-section .nome-wrapper h1 {
@@ -1809,6 +1764,14 @@
                 text-align: left !important;
             }
 
+            .nome-foto-section .nome-wrapper .cnh-header {
+                text-align: left !important;
+                background: #f0f6ff !important;
+                border-color: #d8e2ed !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
             .dados-grid {
                 gap: 2px 30px;
             }
@@ -1848,11 +1811,6 @@
                 display: none !important;
             }
 
-            .cnh-row .valor-cnh:empty,
-            .cnh-row .valor-info-cnh:empty {
-                display: none !important;
-            }
-
             .experiencia-item {
                 display: block !important;
                 padding: 8px 16px !important;
@@ -1883,30 +1841,6 @@
 
             .secao-vazia {
                 display: none !important;
-            }
-
-            /* CORREÇÃO: CNH + INFORMAÇÕES na mesma linha no PRINT */
-            .dados .cnh-row-print {
-                display: block !important;
-                grid-column: 1 / -1 !important;
-                padding: 4px 0 !important;
-            }
-
-            .dados .cnh-row-print strong {
-                display: inline-block !important;
-                min-width: 100px !important;
-                font-size: 0.7rem !important;
-                color: #1a334b !important;
-            }
-
-            .dados .cnh-row-print span {
-                display: inline !important;
-                font-size: 0.85rem !important;
-            }
-
-            .dados .cnh-row-print .separador-cnh-print {
-                color: #b0c4d8 !important;
-                padding: 0 4px !important;
             }
 
             .secao-titulo-formacao {
@@ -2010,23 +1944,25 @@
             <button class="foto-remover" id="fotoRemover" title="Remover foto"><i class="fas fa-times"></i></button>
         </div>
         <div class="nome-wrapper">
-            <h1 contenteditable="true" id="nomeCompleto" class="campo-obrigatorio">Ana Carolina Silva</h1>
-            <div class="cargo-pretendido" contenteditable="true" id="cargoPretendido" class="campo-obrigatorio">Desenvolvedor Front-end Sênior</div>
+            <h1 contenteditable="true" id="nomeCompleto">Ana Carolina Silva</h1>
+            <div class="cargo-pretendido" contenteditable="true" id="cargoPretendido">Desenvolvedor Front-end Sênior</div>
+            <!-- CNH no cabeçalho (aparece apenas quando preenchida) -->
+            <div class="cnh-header" id="cnhHeader" contenteditable="true" data-placeholder="CNH: A, B, C, D ou E">CNH: B</div>
         </div>
     </div>
 
     <!-- ===== CONTATO ===== -->
     <div class="contato-grid">
-        <div class="campo-contato campo-obrigatorio">
-            <label>Endereço <span style="color:#d32f2f;">*</span></label>
+        <div class="campo-contato">
+            <label>Endereço</label>
             <div class="valor" contenteditable="true" data-placeholder="Av. Paulista, 1000, Bela Vista">Av. Paulista, 1000, Bela Vista</div>
         </div>
-        <div class="campo-contato campo-obrigatorio">
-            <label>Cidade <span style="color:#d32f2f;">*</span></label>
+        <div class="campo-contato">
+            <label>Cidade</label>
             <div class="valor" contenteditable="true" data-placeholder="São Paulo - SP">São Paulo - SP</div>
         </div>
-        <div class="campo-contato campo-obrigatorio">
-            <label>Telefone <span style="color:#d32f2f;">*</span></label>
+        <div class="campo-contato">
+            <label>Telefone</label>
             <div class="valor" contenteditable="true" data-placeholder="(11) 99999-8888">(11) 99999-8888</div>
         </div>
         <div class="campo-contato">
@@ -2058,13 +1994,7 @@
             <label>Nacionalidade</label>
             <div class="valor" contenteditable="true" data-placeholder="Brasileira">Brasileira</div>
         </div>
-        <!-- ===== CNH + INFORMAÇÕES NA MESMA LINHA (CORRIGIDO) ===== -->
-        <div class="cnh-row">
-            <label>CNH</label>
-            <span class="valor-cnh" contenteditable="true" data-placeholder="A, B, C, D ou E">B</span>
-            <span class="separador-cnh">|</span>
-            <span class="valor-info-cnh" contenteditable="true" data-placeholder="Informações adicionais...">Curso de Direção Defensiva - 2022</span>
-        </div>
+        <!-- CNH removida daqui - agora está no cabeçalho -->
     </div>
 
     <!-- ===== FORMAÇÃO ===== -->
@@ -2085,31 +2015,31 @@
 
     <div id="experienciasContainer" style="margin-top:0;">
         <div class="experiencia-item" data-index="0">
-            <div class="exp-campo campo-obrigatorio">
-                <label>Empresa <span style="color:#d32f2f;">*</span></label>
+            <div class="exp-campo">
+                <label>Empresa</label>
                 <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">TechCorp Soluções</div>
             </div>
-            <div class="exp-campo campo-obrigatorio">
-                <label>Cargo <span style="color:#d32f2f;">*</span></label>
+            <div class="exp-campo">
+                <label>Cargo</label>
                 <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">Desenvolvedor Pleno</div>
             </div>
-            <div class="exp-campo campo-obrigatorio">
-                <label>Período <span style="color:#d32f2f;">*</span></label>
+            <div class="exp-campo">
+                <label>Período</label>
                 <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Jan/2021 - Atual</div>
             </div>
             <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
         </div>
         <div class="experiencia-item" data-index="1">
-            <div class="exp-campo campo-obrigatorio">
-                <label>Empresa <span style="color:#d32f2f;">*</span></label>
+            <div class="exp-campo">
+                <label>Empresa</label>
                 <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">InovaSoft LTDA</div>
             </div>
-            <div class="exp-campo campo-obrigatorio">
-                <label>Cargo <span style="color:#d32f2f;">*</span></label>
+            <div class="exp-campo">
+                <label>Cargo</label>
                 <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">Analista de Sistemas</div>
             </div>
-            <div class="exp-campo campo-obrigatorio">
-                <label>Período <span style="color:#d32f2f;">*</span></label>
+            <div class="exp-campo">
+                <label>Período</label>
                 <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Mar/2019 - Dez/2020</div>
             </div>
             <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
@@ -2262,63 +2192,21 @@
 
         // ===== BOTÃO SALVAR =====
         document.getElementById('btnSalvar').addEventListener('click', function() {
-            if (validarCamposObrigatorios()) {
-                salvarBackup();
-                salvarHistorico();
-                mostrarStatusSalvo('Salvo com sucesso!');
-                alert('✅ Currículo salvo com sucesso!');
-            }
+            salvarBackup();
+            salvarHistorico();
+            mostrarStatusSalvo('Salvo com sucesso!');
+            alert('✅ Currículo salvo com sucesso!');
         });
 
-        // ===== VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS =====
+        // ===== VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS (TODOS LIVRES) =====
         function validarCamposObrigatorios() {
-            const obrigatorios = [
-                { id: 'nomeCompleto', label: 'Nome completo' },
-                { id: 'cargoPretendido', label: 'Cargo pretendido' }
-            ];
-
-            const contatos = document.querySelectorAll('.contato-grid .campo-contato .valor');
-            const contatoLabels = ['Endereço', 'Cidade', 'Telefone'];
-            contatos.forEach((el, index) => {
-                if (index < contatoLabels.length) {
-                    obrigatorios.push({ el: el, label: contatoLabels[index] });
-                }
-            });
-
-            const exps = document.querySelectorAll('.experiencia-item');
-            let expIndex = 1;
-            exps.forEach(item => {
-                const empresa = item.querySelector('.exp-campo:nth-child(1) .valor');
-                const cargo = item.querySelector('.exp-campo:nth-child(2) .valor');
-                const periodo = item.querySelector('.exp-campo:nth-child(3) .valor');
-                if (empresa) obrigatorios.push({ el: empresa, label: `Empresa (Exp ${expIndex})` });
-                if (cargo) obrigatorios.push({ el: cargo, label: `Cargo (Exp ${expIndex})` });
-                if (periodo) obrigatorios.push({ el: periodo, label: `Período (Exp ${expIndex})` });
-                expIndex++;
-            });
-
-            let faltando = [];
-            for (const campo of obrigatorios) {
-                const el = campo.el || document.getElementById(campo.id);
-                if (el && (!el.textContent || el.textContent.trim() === '')) {
-                    faltando.push(campo.label);
-                }
-            }
-
             const badge = document.getElementById('validationBadge');
-            if (faltando.length > 0) {
-                badge.className = 'validation-badge error visible';
-                badge.textContent = `⚠️ ${faltando.length} campo(s) obrigatório(s) faltando`;
-                alert(`❌ Preencha os campos obrigatórios:\n\n${faltando.join('\n')}`);
-                return false;
-            } else {
-                badge.className = 'validation-badge success visible';
-                badge.textContent = '✅ Todos os campos obrigatórios preenchidos';
-                setTimeout(() => {
-                    badge.classList.remove('visible');
-                }, 3000);
-                return true;
-            }
+            badge.className = 'validation-badge success visible';
+            badge.textContent = '✅ Todos os campos são livres (opcionais)';
+            setTimeout(() => {
+                badge.classList.remove('visible');
+            }, 3000);
+            return true;
         }
 
         document.querySelectorAll('[contenteditable="true"]').forEach(el => {
@@ -2474,16 +2362,16 @@
             div.dataset.index = container.children.length;
 
             div.innerHTML = `
-                <div class="exp-campo campo-obrigatorio">
-                    <label>Empresa <span style="color:#d32f2f;">*</span></label>
+                <div class="exp-campo">
+                    <label>Empresa</label>
                     <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">${empresa}</div>
                 </div>
-                <div class="exp-campo campo-obrigatorio">
-                    <label>Cargo <span style="color:#d32f2f;">*</span></label>
+                <div class="exp-campo">
+                    <label>Cargo</label>
                     <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">${cargo}</div>
                 </div>
-                <div class="exp-campo campo-obrigatorio">
-                    <label>Período <span style="color:#d32f2f;">*</span></label>
+                <div class="exp-campo">
+                    <label>Período</label>
                     <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">${periodo}</div>
                 </div>
                 <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
@@ -2861,6 +2749,12 @@
             const elCargo = document.getElementById('cargoPretendido');
             if (elCargo && dados.cargo) elCargo.textContent = dados.cargo;
 
+            // CNH no cabeçalho
+            const cnhHeader = document.getElementById('cnhHeader');
+            if (cnhHeader && dados.cnh) {
+                cnhHeader.textContent = dados.cnh;
+            }
+
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             if (camposContato.length >= 4) {
                 if (dados.endereco) camposContato[0].textContent = dados.endereco;
@@ -2876,11 +2770,6 @@
                 if (dados.naturalidade) camposDados[2].textContent = dados.naturalidade;
                 if (dados.nacionalidade) camposDados[3].textContent = dados.nacionalidade;
             }
-
-            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
-            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
-            if (cnhEl && dados.cnh) cnhEl.textContent = dados.cnh;
-            if (infoCnhEl && dados.infoCnh) infoCnhEl.textContent = dados.infoCnh;
 
             const elFormacao = document.getElementById('formacaoArea');
             if (elFormacao && dados.formacao) elFormacao.innerHTML = dados.formacao;
@@ -2922,17 +2811,13 @@
         function limparCurriculo() {
             document.getElementById('nomeCompleto').textContent = '';
             document.getElementById('cargoPretendido').textContent = '';
+            document.getElementById('cnhHeader').textContent = '';
             
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             camposContato.forEach(el => el.textContent = '');
             
             const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
             camposDados.forEach(el => el.textContent = '');
-            
-            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
-            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
-            if (cnhEl) cnhEl.textContent = '';
-            if (infoCnhEl) infoCnhEl.textContent = '';
             
             document.getElementById('formacaoArea').innerHTML = '';
             document.getElementById('obsRodape').innerHTML = '';
@@ -3126,13 +3011,13 @@
             });
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
-            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
-            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
+            const cnhHeader = document.getElementById('cnhHeader');
             const obsRodape = document.getElementById('obsRodape');
             
             const dados = {
                 nome: document.getElementById('nomeCompleto')?.textContent.trim() || '',
                 cargo: document.getElementById('cargoPretendido')?.textContent.trim() || '',
+                cnh: cnhHeader?.textContent.trim() || '',
                 endereco: camposContato[0]?.textContent.trim() || '',
                 cidade: camposContato[1]?.textContent.trim() || '',
                 telefone: camposContato[2]?.textContent.trim() || '',
@@ -3141,8 +3026,6 @@
                 dataNasc: document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '',
                 naturalidade: document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '',
                 nacionalidade: document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '',
-                cnh: cnhEl?.textContent.trim() || '',
-                infoCnh: infoCnhEl?.textContent.trim() || '',
                 formacao: document.getElementById('formacaoArea')?.innerHTML || '',
                 experiencias: experiencias,
                 obsRodape: obsRodape?.innerHTML || '',
@@ -3163,6 +3046,7 @@
         function gerarHTMLCompleto() {
             const nome = document.getElementById('nomeCompleto')?.textContent.trim() || '';
             const cargo = document.getElementById('cargoPretendido')?.textContent.trim() || '';
+            const cnh = document.getElementById('cnhHeader')?.textContent.trim() || '';
             
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             const endereco = camposContato[0]?.textContent.trim() || '';
@@ -3174,11 +3058,6 @@
             const dataNasc = document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '';
             const naturalidade = document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '';
             const nacionalidade = document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '';
-            
-            const cnhEl = document.querySelector('.cnh-row .valor-cnh');
-            const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
-            const cnh = cnhEl?.textContent.trim() || '';
-            const infoCnh = infoCnhEl?.textContent.trim() || '';
 
             const formacao = document.getElementById('formacaoArea')?.innerHTML || '';
             const obsRodape = document.getElementById('obsRodape')?.innerHTML || '';
@@ -3215,7 +3094,7 @@
                 contatoHTML += '</div>';
             }
 
-            // Dados Pessoais - CNH + INFORMAÇÕES na mesma linha (CORRIGIDO)
+            // Dados Pessoais (CNH removida daqui)
             let dadosHTML = '';
             const dadosPessoais = [
                 { label: 'Estado Civil', value: estadoCivil },
@@ -3225,28 +3104,11 @@
             ];
             const dadosPreenchidos = dadosPessoais.filter(d => d.value);
             
-            // CNH + INFORMAÇÕES na mesma linha (categoria fica na frente da CNH junto com as informações)
-            let cnhHTML = '';
-            if (cnh || infoCnh) {
-                let cnhDisplay = '';
-                if (cnh && infoCnh) {
-                    cnhDisplay = `${cnh} | ${infoCnh}`;
-                } else if (cnh) {
-                    cnhDisplay = cnh;
-                } else if (infoCnh) {
-                    cnhDisplay = infoCnh;
-                }
-                cnhHTML = `<div class="cnh-row-print"><strong>CNH</strong> <span>${cnhDisplay}</span></div>`;
-            }
-            
-            if (dadosPreenchidos.length > 0 || cnhHTML) {
+            if (dadosPreenchidos.length > 0) {
                 dadosHTML = '<div class="dados">';
                 dadosPreenchidos.forEach(d => {
                     dadosHTML += `<div><strong>${d.label}</strong><span>${d.value}</span></div>`;
                 });
-                if (cnhHTML) {
-                    dadosHTML += cnhHTML;
-                }
                 dadosHTML += '</div>';
             }
 
@@ -3260,6 +3122,7 @@
                         <div class="header-text">
                             <h1>${nome || 'Nome não informado'}</h1>
                             ${cargo ? `<div class="cargo-pretendido">${cargo}</div>` : ''}
+                            ${cnh ? `<div class="cnh-header">${cnh}</div>` : ''}
                         </div>
                     </div>
                 `;
@@ -3268,6 +3131,7 @@
                     <div style="border-bottom: 3px solid #1a2f44; padding-bottom: 16px; margin-bottom: 24px;">
                         <h1 style="font-size: 2.2rem; color: #0b1f33; margin: 0;">${nome || 'Nome não informado'}</h1>
                         ${cargo ? `<div style="color: #2a7de1; font-size: 1.1rem; font-weight: 500; margin-top: 4px;">${cargo}</div>` : ''}
+                        ${cnh ? `<div style="margin-top: 6px; font-size: 0.85rem; color: #1a334b; font-weight: 500; padding: 4px 12px; background: #f0f6ff; border-radius: 20px; display: inline-block; border: 1px solid #d8e2ed;">${cnh}</div>` : ''}
                     </div>
                 `;
             }
@@ -3311,7 +3175,6 @@
 
         // ===== EXPORTAR WORD =====
         document.getElementById('btnExportWord').addEventListener('click', function() {
-            if (!validarCamposObrigatorios()) return;
             const conteudo = gerarHTMLCompleto();
             const html = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office'
@@ -3325,6 +3188,7 @@
                     .header-text { flex: 1; }
                     h1 { font-size: 2.2rem; color: #0b1f33; margin: 0; }
                     .cargo-pretendido { color: #2a7de1; font-size: 1.1rem; font-weight: 500; margin-top: 4px; }
+                    .cnh-header { margin-top: 6px; font-size: 0.85rem; color: #1a334b; font-weight: 500; padding: 4px 12px; background: #f0f6ff; border-radius: 20px; display: inline-block; border: 1px solid #d8e2ed; }
                     .contato { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; background: #f7faff; padding: 12px 18px; border-radius: 8px; margin: 16px 0; }
                     .contato div strong { display: block; font-size: 0.65rem; color: #6a8aaa; text-transform: uppercase; }
                     .contato div span { font-size: 0.9rem; }
@@ -3332,9 +3196,6 @@
                     .dados { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 30px; background: #fafcff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e8eff5; }
                     .dados div strong { display: block; font-size: 0.7rem; color: #1a334b; }
                     .dados div span { font-size: 0.85rem; }
-                    .dados .cnh-row-print { grid-column: 1 / -1; padding: 4px 0; }
-                    .dados .cnh-row-print strong { display: inline-block; min-width: 100px; font-size: 0.7rem; color: #1a334b; }
-                    .dados .cnh-row-print span { display: inline; font-size: 0.85rem; }
                     .exp-item { border-left: 4px solid #1a2f44; padding: 8px 16px; margin-bottom: 12px; background: #f8fafd; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 16px; }
                     .exp-item strong { display: block; font-size: 0.6rem; color: #6a8aaa; text-transform: uppercase; }
                     .exp-item div { font-size: 0.85rem; }
@@ -3360,25 +3221,23 @@
 
         // ===== EXPORTAR PDF =====
         document.getElementById('btnExportPDF').addEventListener('click', function() {
-            if (!validarCamposObrigatorios()) return;
             window.print();
         });
 
         // ===== EXPORTAR CSV =====
         document.getElementById('btnExportCSV').addEventListener('click', function() {
-            if (!validarCamposObrigatorios()) return;
-            
             const dados = coletarDados();
             const db = getDatabase();
             
             const linhas = [];
-            linhas.push('"nome","cargo","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","cnh","infoCnh","formacao","experiencias","obsRodape","tema","data"');
+            linhas.push('"nome","cargo","cnh","endereco","cidade","telefone","email","estadoCivil","dataNasc","naturalidade","nacionalidade","formacao","experiencias","obsRodape","tema","data"');
             
             const expStr = dados.experiencias.map(e => `${e.empresa}|${e.cargo}|${e.periodo}`).join(';');
             
             const valoresAtual = [
                 dados.nome,
                 dados.cargo,
+                dados.cnh,
                 dados.endereco,
                 dados.cidade,
                 dados.telefone,
@@ -3387,8 +3246,6 @@
                 dados.dataNasc,
                 dados.naturalidade,
                 dados.nacionalidade,
-                dados.cnh,
-                dados.infoCnh,
                 dados.formacao.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
                 expStr,
                 dados.obsRodape.replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
@@ -3406,6 +3263,7 @@
                     const valoresDB = [
                         item.nome || '',
                         item.cargo || '',
+                        item.cnh || '',
                         item.endereco || '',
                         item.cidade || '',
                         item.telefone || '',
@@ -3414,8 +3272,6 @@
                         item.dataNasc || '',
                         item.naturalidade || '',
                         item.nacionalidade || '',
-                        item.cnh || '',
-                        item.infoCnh || '',
                         (item.formacao || '').replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
                         expStrDB,
                         (item.obsRodape || '').replace(/<br\s*\/?>/gi, ' ').replace(/,/g, ' ').replace(/"/g, '""'),
@@ -3440,7 +3296,6 @@
 
         // ===== EXPORTAR JSON =====
         document.getElementById('btnExportJSON').addEventListener('click', function() {
-            if (!validarCamposObrigatorios()) return;
             const dados = coletarDados();
             const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
@@ -3498,6 +3353,7 @@
                     
                     const nome = dados[idx('nome')]?.replace(/^"|"$/g, '') || '';
                     const cargo = dados[idx('cargo')]?.replace(/^"|"$/g, '') || '';
+                    const cnh = dados[idx('cnh')]?.replace(/^"|"$/g, '') || '';
                     const endereco = dados[idx('endereco')]?.replace(/^"|"$/g, '') || '';
                     const cidade = dados[idx('cidade')]?.replace(/^"|"$/g, '') || '';
                     const telefone = dados[idx('telefone')]?.replace(/^"|"$/g, '') || '';
@@ -3506,8 +3362,6 @@
                     const dataNasc = dados[idx('dataNasc')]?.replace(/^"|"$/g, '') || '';
                     const naturalidade = dados[idx('naturalidade')]?.replace(/^"|"$/g, '') || '';
                     const nacionalidade = dados[idx('nacionalidade')]?.replace(/^"|"$/g, '') || '';
-                    const cnh = dados[idx('cnh')]?.replace(/^"|"$/g, '') || '';
-                    const infoCnh = dados[idx('infoCnh')]?.replace(/^"|"$/g, '') || '';
                     const formacao = dados[idx('formacao')]?.replace(/^"|"$/g, '') || '';
                     const expRaw = dados[idx('experiencias')]?.replace(/^"|"$/g, '') || '';
                     const obsRodape = dados[idx('obsRodape')]?.replace(/^"|"$/g, '') || '';
@@ -3525,6 +3379,9 @@
                     const elCargo = document.getElementById('cargoPretendido');
                     if (elCargo && cargo) elCargo.textContent = cargo;
 
+                    const cnhHeader = document.getElementById('cnhHeader');
+                    if (cnhHeader && cnh) cnhHeader.textContent = cnh;
+
                     const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
                     if (camposContato.length >= 4) {
                         if (endereco) camposContato[0].textContent = endereco;
@@ -3540,11 +3397,6 @@
                         if (naturalidade) camposDados[2].textContent = naturalidade;
                         if (nacionalidade) camposDados[3].textContent = nacionalidade;
                     }
-
-                    const cnhEl = document.querySelector('.cnh-row .valor-cnh');
-                    const infoCnhEl = document.querySelector('.cnh-row .valor-info-cnh');
-                    if (cnhEl && cnh) cnhEl.textContent = cnh;
-                    if (infoCnhEl && infoCnh) infoCnhEl.textContent = infoCnh;
 
                     const elFormacao = document.getElementById('formacaoArea');
                     if (elFormacao && formacao) elFormacao.innerHTML = formacao.replace(/\\n/g, '<br>');
@@ -3593,7 +3445,6 @@
         const modalClose = document.getElementById('modalClose');
 
         document.getElementById('btnPreview').addEventListener('click', function() {
-            if (!validarCamposObrigatorios()) return;
             previaConteudo.innerHTML = gerarHTMLCompleto();
             modalPreview.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -3621,12 +3472,10 @@
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
-                if (validarCamposObrigatorios()) {
-                    salvarBackup();
-                    salvarHistorico();
-                    mostrarStatusSalvo('Salvo com sucesso!');
-                    alert('✅ Currículo salvo com sucesso!');
-                }
+                salvarBackup();
+                salvarHistorico();
+                mostrarStatusSalvo('Salvo com sucesso!');
+                alert('✅ Currículo salvo com sucesso!');
             }
         });
 
@@ -3652,10 +3501,11 @@
         }, 1000);
 
         console.log('📄 Currículo editável carregado!');
-        console.log('✅ Melhoria aplicada:');
-        console.log('  - Na exportação, a categoria fica na mesma linha (na frente da CNH junto com as informações)');
-        console.log('  - Formato: CNH: [categoria] | [informações]');
-        console.log('  - O campo E-mail agora é opcional (sem asterisco e sem validação obrigatória)');
+        console.log('✅ Melhorias aplicadas:');
+        console.log('  - CNH movida para o cabeçalho (ao lado do nome e cargo)');
+        console.log('  - Campo CNH removido da seção "Dados Pessoais"');
+        console.log('  - Na exportação, a CNH aparece no cabeçalho quando preenchida');
+        console.log('  - Todos os campos continuam livres (opcionais)');
         console.log('  - Nada mais foi alterado');
     })();
 </script>
