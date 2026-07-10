@@ -2029,8 +2029,8 @@
             <label>Telefone <span style="color:#d32f2f;">*</span></label>
             <div class="valor" contenteditable="true" data-placeholder="(11) 99999-8888">(11) 99999-8888</div>
         </div>
-        <div class="campo-contato campo-obrigatorio">
-            <label>E-mail <span style="color:#d32f2f;">*</span></label>
+        <div class="campo-contato">
+            <label>E-mail</label>
             <div class="valor" contenteditable="true" data-placeholder="email@exemplo.com">ana.carolina@email.com</div>
         </div>
     </div>
@@ -2278,7 +2278,7 @@
             ];
 
             const contatos = document.querySelectorAll('.contato-grid .campo-contato .valor');
-            const contatoLabels = ['Endereço', 'Cidade', 'Telefone', 'E-mail'];
+            const contatoLabels = ['Endereço', 'Cidade', 'Telefone'];
             contatos.forEach((el, index) => {
                 if (index < contatoLabels.length) {
                     obrigatorios.push({ el: el, label: contatoLabels[index] });
@@ -3655,6 +3655,7 @@
         console.log('✅ Melhoria aplicada:');
         console.log('  - Na exportação, a categoria fica na mesma linha (na frente da CNH junto com as informações)');
         console.log('  - Formato: CNH: [categoria] | [informações]');
+        console.log('  - O campo E-mail agora é opcional (sem asterisco e sem validação obrigatória)');
         console.log('  - Nada mais foi alterado');
     })();
 </script>
