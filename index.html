@@ -73,7 +73,8 @@
         }
 
         body.modo-escuro .formacao-area,
-        body.modo-escuro .obs-rodape {
+        body.modo-escuro .obs-rodape,
+        body.modo-escuro .cnh-area {
             background: #1a1a2e;
             border-color: #2a2a4e;
             color: #e0e0e0;
@@ -167,6 +168,10 @@
             border: 1px solid #ddd;
             background: #ffffff;
         }
+        .tema-basico .cnh-area {
+            border: 1px solid #ddd;
+            background: #ffffff;
+        }
 
         .tema-premium .experiencia-item {
             border-left: 5px solid #d4af37;
@@ -196,6 +201,10 @@
             background: linear-gradient(135deg, #fdfcf8, #f8f5ee);
         }
         .tema-premium .obs-rodape {
+            border: 1px solid #d4af37;
+            background: linear-gradient(135deg, #fdfcf8, #f8f5ee);
+        }
+        .tema-premium .cnh-area {
             border: 1px solid #d4af37;
             background: linear-gradient(135deg, #fdfcf8, #f8f5ee);
         }
@@ -238,6 +247,9 @@
         .tema-premium .obs-rodape:focus {
             border-color: #d4af37;
         }
+        .tema-premium .cnh-area:focus {
+            border-color: #d4af37;
+        }
         .tema-premium .foto-avatar {
             background: linear-gradient(135deg, #d4af37, #b8960f);
         }
@@ -273,6 +285,11 @@
             border-radius: 16px;
         }
         .tema-moderno .obs-rodape {
+            border: 1px solid #00b894;
+            background: #f0fdfa;
+            border-radius: 16px;
+        }
+        .tema-moderno .cnh-area {
             border: 1px solid #00b894;
             background: #f0fdfa;
             border-radius: 16px;
@@ -318,6 +335,9 @@
             border-color: #00b894;
         }
         .tema-moderno .obs-rodape:focus {
+            border-color: #00b894;
+        }
+        .tema-moderno .cnh-area:focus {
             border-color: #00b894;
         }
         .tema-moderno .foto-avatar {
@@ -708,37 +728,6 @@
             font-weight: 400;
         }
 
-        /* ===== CNH NO CABEÇALHO ===== */
-        .nome-foto-section .nome-wrapper .cnh-header {
-            font-size: 0.85rem;
-            color: #1a334b;
-            font-weight: 500;
-            margin-top: 6px;
-            padding: 4px 12px;
-            background: #f0f6ff;
-            border-radius: 20px;
-            display: inline-block;
-            border: 1px solid #d8e2ed;
-        }
-
-        body.modo-escuro .nome-foto-section .nome-wrapper .cnh-header {
-            background: #2a2a4e;
-            color: #e0e0e0;
-            border-color: #3a3a5e;
-        }
-
-        .tema-premium .nome-foto-section .nome-wrapper .cnh-header {
-            background: #f8f5ee;
-            border-color: #d4af37;
-            color: #1a334b;
-        }
-
-        .tema-moderno .nome-foto-section .nome-wrapper .cnh-header {
-            background: #e0faf5;
-            border-color: #00b894;
-            color: #1a334b;
-        }
-
         /* ===== INFORMAÇÕES DE CONTATO ===== */
         .contato-grid {
             display: grid;
@@ -873,8 +862,8 @@
         /* ===== FORMAÇÃO ===== */
         .formacao-area {
             width: 100%;
-            min-height: 60px;
-            padding: 10px 16px;
+            min-height: 40px;
+            padding: 6px 16px;
             border: 2px solid #e8eff5;
             border-radius: 12px;
             background: #fafcff;
@@ -895,8 +884,8 @@
             letter-spacing: 0.8px;
             border-bottom: 3px solid #1a2f44;
             padding-bottom: 4px;
-            margin-top: 12px;
-            margin-bottom: 6px;
+            margin-top: 8px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -914,6 +903,53 @@
 
         .formacao-area:empty::before {
             content: "Descreva sua formação acadêmica, cursos, certificações...";
+            color: #b0c4d8;
+        }
+
+        /* ===== CNH ===== */
+        .cnh-area {
+            width: 100%;
+            min-height: 50px;
+            padding: 8px 16px;
+            border: 2px solid #e8eff5;
+            border-radius: 12px;
+            background: #fafcff;
+            font-size: 0.9rem;
+            color: #0b1f33;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            transition: 0.2s;
+            cursor: text;
+        }
+
+        .secao-titulo-cnh {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0b1f33;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 3px solid #1a2f44;
+            padding-bottom: 4px;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .secao-titulo-cnh i {
+            color: #2a7de1;
+            font-size: 1.1rem;
+        }
+
+        .cnh-area:focus {
+            border-color: #2a7de1;
+            background: #f5faff;
+        }
+
+        .cnh-area:empty::before {
+            content: "Informe sua CNH (ex: Categoria B, CNH válida até 00/00/0000)";
             color: #b0c4d8;
         }
 
@@ -1501,10 +1537,6 @@
             .nome-foto-section .nome-wrapper .cargo-pretendido {
                 text-align: center;
             }
-            .nome-foto-section .nome-wrapper .cnh-header {
-                text-align: center;
-                display: inline-block;
-            }
             .foto-container {
                 width: 100px;
                 height: 133px;
@@ -1552,14 +1584,16 @@
                 gap: 12px;
             }
 
-            .secao-titulo-formacao {
-                margin-top: 8px;
-                margin-bottom: 4px;
+            .secao-titulo-formacao,
+            .secao-titulo-cnh {
+                margin-top: 6px;
+                margin-bottom: 3px;
             }
 
-            .formacao-area {
-                min-height: 50px;
-                padding: 8px 12px;
+            .formacao-area,
+            .cnh-area {
+                min-height: 36px;
+                padding: 5px 12px;
             }
         }
 
@@ -1633,15 +1667,17 @@
                 gap: 4px;
             }
 
-            .secao-titulo-formacao {
-                margin-top: 6px;
-                margin-bottom: 4px;
+            .secao-titulo-formacao,
+            .secao-titulo-cnh {
+                margin-top: 4px;
+                margin-bottom: 2px;
                 font-size: 0.9rem;
             }
 
-            .formacao-area {
-                min-height: 40px;
-                padding: 6px 10px;
+            .formacao-area,
+            .cnh-area {
+                min-height: 32px;
+                padding: 4px 10px;
                 font-size: 0.8rem;
             }
         }
@@ -1686,11 +1722,12 @@
                 border-left: 5px solid #1a2f44 !important;
             }
 
-            .formacao-area {
+            .formacao-area,
+            .cnh-area {
                 border: 1px solid #ddd;
                 background: white !important;
                 min-height: 30px;
-                padding: 6px 12px;
+                padding: 4px 12px;
             }
 
             .obs-rodape {
@@ -1764,14 +1801,6 @@
                 text-align: left !important;
             }
 
-            .nome-foto-section .nome-wrapper .cnh-header {
-                text-align: left !important;
-                background: #f0f6ff !important;
-                border-color: #d8e2ed !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
             .dados-grid {
                 gap: 2px 30px;
             }
@@ -1780,7 +1809,8 @@
             }
 
             .secao-titulo .obrigatorio,
-            .secao-titulo-formacao .obrigatorio {
+            .secao-titulo-formacao .obrigatorio,
+            .secao-titulo-cnh .obrigatorio {
                 display: none;
             }
 
@@ -1843,16 +1873,18 @@
                 display: none !important;
             }
 
-            .secao-titulo-formacao {
-                margin-top: 8px !important;
-                margin-bottom: 4px !important;
-                padding-bottom: 3px !important;
+            .secao-titulo-formacao,
+            .secao-titulo-cnh {
+                margin-top: 6px !important;
+                margin-bottom: 3px !important;
+                padding-bottom: 2px !important;
             }
 
-            .formacao-area {
-                min-height: 30px !important;
-                padding: 4px 12px !important;
-                margin-bottom: 4px !important;
+            .formacao-area,
+            .cnh-area {
+                min-height: 24px !important;
+                padding: 3px 12px !important;
+                margin-bottom: 2px !important;
             }
         }
 
@@ -1946,8 +1978,6 @@
         <div class="nome-wrapper">
             <h1 contenteditable="true" id="nomeCompleto">Ana Carolina Silva</h1>
             <div class="cargo-pretendido" contenteditable="true" id="cargoPretendido">Desenvolvedor Front-end Sênior</div>
-            <!-- CNH no cabeçalho (aparece apenas quando preenchida) -->
-            <div class="cnh-header" id="cnhHeader" contenteditable="true" data-placeholder="CNH: A, B, C, D ou E">CNH: B</div>
         </div>
     </div>
 
@@ -1959,7 +1989,7 @@
         </div>
         <div class="campo-contato">
             <label>Cidade</label>
-            <div class="valor" contenteditable="true" data-placeholder="São Paulo - SP">São Paulo - SP</div>
+            <div class="valor" contenteditable="true" data-placeholder="São Paulo - SP">Espírito Santo do Turvo/SP</div>
         </div>
         <div class="campo-contato">
             <label>Telefone</label>
@@ -1980,7 +2010,7 @@
     <div class="dados-grid">
         <div class="campo-dado">
             <label>Estado Civil</label>
-            <div class="valor" contenteditable="true" data-placeholder="Solteiro(a)">Solteira</div>
+            <div class="valor" contenteditable="true" data-placeholder="Solteiro/Solteira/Casado/Casada/União Estável">Solteira</div>
         </div>
         <div class="campo-dado">
             <label>Data de Nascimento</label>
@@ -1992,9 +2022,8 @@
         </div>
         <div class="campo-dado">
             <label>Nacionalidade</label>
-            <div class="valor" contenteditable="true" data-placeholder="Brasileira">Brasileira</div>
+            <div class="valor" contenteditable="true" data-placeholder="Brasileiro/Brasileira">Brasileira</div>
         </div>
-        <!-- CNH removida daqui - agora está no cabeçalho -->
     </div>
 
     <!-- ===== FORMAÇÃO ===== -->
@@ -2006,6 +2035,15 @@
         Bacharelado em Ciência da Computação - USP (2014-2018)<br>
         MBA em Gestão de Projetos - FGV (2021-2022)<br>
         Certificação Scrum Master (2023)
+    </div>
+
+    <!-- ===== CNH ===== -->
+    <div class="secao-titulo-cnh">
+        <i class="fas fa-id-card"></i> CNH
+    </div>
+
+    <div class="cnh-area" contenteditable="true" id="cnhArea">
+        Categoria B - Válida até 10/2026
     </div>
 
     <!-- ===== EXPERIÊNCIA PROFISSIONAL ===== -->
@@ -2065,9 +2103,6 @@
     <div class="footer-curriculo">
         <div class="shortcut-hint">
             <kbd>Ctrl+S</kbd> Salvar &bull; <kbd>Ctrl+P</kbd> Imprimir/PDF &bull; <kbd>Esc</kbd> Fechar prévia
-        </div>
-        <div>
-            Última atualização: <span id="dataAtualizacao">--/--/---- --:--</span>
         </div>
     </div>
 
@@ -2158,16 +2193,6 @@
                 timeout = setTimeout(() => func.apply(this, args), wait);
             };
         }
-
-        // ===== ATUALIZAR DATA/HORA =====
-        function atualizarDataHora() {
-            const agora = new Date();
-            const dataStr = agora.toLocaleDateString('pt-BR') + ' ' + 
-                            agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const el = document.getElementById('dataAtualizacao');
-            if (el) el.textContent = dataStr;
-        }
-        atualizarDataHora();
 
         // ===== STATUS DE SALVAMENTO =====
         const statusSalvo = document.getElementById('statusSalvo');
@@ -2325,7 +2350,6 @@
                 fotoRemover.style.display = 'flex';
                 salvarFotoBase64(data);
                 atualizarClasseFoto();
-                atualizarDataHora();
                 mostrarStatusSalvo('Foto atualizada');
                 salvarBackupDebounced();
             } catch (err) {
@@ -2343,7 +2367,6 @@
             const nome = document.getElementById('nomeCompleto')?.textContent.trim() || '';
             gerarAvatar(nome);
             atualizarClasseFoto();
-            atualizarDataHora();
             mostrarStatusSalvo('Foto removida');
             salvarBackupDebounced();
         });
@@ -2380,7 +2403,6 @@
             div.querySelector('.exp-remover').addEventListener('click', function() {
                 if (container.children.length > 1) {
                     div.remove();
-                    atualizarDataHora();
                     atualizarContador();
                     salvarBackupDebounced();
                     salvarHistorico();
@@ -2392,13 +2414,11 @@
 
             div.querySelectorAll('.valor').forEach(el => {
                 el.addEventListener('input', () => { 
-                    atualizarDataHora(); 
                     salvarBackupDebounced();
                     mostrarAutoSave();
                     validarCamposObrigatorios();
                 });
                 el.addEventListener('blur', () => { 
-                    atualizarDataHora(); 
                     salvarBackupDebounced();
                 });
             });
@@ -2408,7 +2428,6 @@
 
         btnAdicionar.addEventListener('click', function() {
             container.appendChild(criarItemExperiencia('', '', ''));
-            atualizarDataHora();
             atualizarContador();
             salvarBackupDebounced();
             salvarHistorico();
@@ -2421,7 +2440,6 @@
         function setupEditableListeners() {
             document.querySelectorAll('[contenteditable="true"]').forEach(el => {
                 el.addEventListener('input', () => { 
-                    atualizarDataHora(); 
                     salvarBackupDebounced();
                     mostrarAutoSave();
                     if (el.id === 'nomeCompleto') {
@@ -2434,7 +2452,6 @@
                     validarCamposObrigatorios();
                 });
                 el.addEventListener('blur', () => { 
-                    atualizarDataHora(); 
                     salvarBackupDebounced();
                     if (el.id === 'nomeCompleto') {
                         const nome = el.textContent.trim();
@@ -2749,10 +2766,10 @@
             const elCargo = document.getElementById('cargoPretendido');
             if (elCargo && dados.cargo) elCargo.textContent = dados.cargo;
 
-            // CNH no cabeçalho
-            const cnhHeader = document.getElementById('cnhHeader');
-            if (cnhHeader && dados.cnh) {
-                cnhHeader.textContent = dados.cnh;
+            // CNH
+            const cnhArea = document.getElementById('cnhArea');
+            if (cnhArea && dados.cnh) {
+                cnhArea.innerHTML = dados.cnh;
             }
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
@@ -2801,7 +2818,6 @@
                 atualizarClasseFoto();
             }
 
-            atualizarDataHora();
             salvarBackupDebounced();
             mostrarStatusSalvo('Currículo carregado');
             validarCamposObrigatorios();
@@ -2811,7 +2827,7 @@
         function limparCurriculo() {
             document.getElementById('nomeCompleto').textContent = '';
             document.getElementById('cargoPretendido').textContent = '';
-            document.getElementById('cnhHeader').textContent = '';
+            document.getElementById('cnhArea').innerHTML = '';
             
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             camposContato.forEach(el => el.textContent = '');
@@ -2835,7 +2851,6 @@
             atualizarClasseFoto();
             
             aplicarTema('basico');
-            atualizarDataHora();
             localStorage.removeItem('curriculo_backup_editavel');
             mostrarStatusSalvo('Novo currículo criado');
             validarCamposObrigatorios();
@@ -3011,13 +3026,13 @@
             });
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
-            const cnhHeader = document.getElementById('cnhHeader');
+            const cnhArea = document.getElementById('cnhArea');
             const obsRodape = document.getElementById('obsRodape');
             
             const dados = {
                 nome: document.getElementById('nomeCompleto')?.textContent.trim() || '',
                 cargo: document.getElementById('cargoPretendido')?.textContent.trim() || '',
-                cnh: cnhHeader?.textContent.trim() || '',
+                cnh: cnhArea?.innerHTML || '',
                 endereco: camposContato[0]?.textContent.trim() || '',
                 cidade: camposContato[1]?.textContent.trim() || '',
                 telefone: camposContato[2]?.textContent.trim() || '',
@@ -3046,7 +3061,7 @@
         function gerarHTMLCompleto() {
             const nome = document.getElementById('nomeCompleto')?.textContent.trim() || '';
             const cargo = document.getElementById('cargoPretendido')?.textContent.trim() || '';
-            const cnh = document.getElementById('cnhHeader')?.textContent.trim() || '';
+            const cnh = document.getElementById('cnhArea')?.innerHTML || '';
             
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             const endereco = camposContato[0]?.textContent.trim() || '';
@@ -3094,7 +3109,6 @@
                 contatoHTML += '</div>';
             }
 
-            // Dados Pessoais (CNH removida daqui)
             let dadosHTML = '';
             const dadosPessoais = [
                 { label: 'Estado Civil', value: estadoCivil },
@@ -3122,7 +3136,6 @@
                         <div class="header-text">
                             <h1>${nome || 'Nome não informado'}</h1>
                             ${cargo ? `<div class="cargo-pretendido">${cargo}</div>` : ''}
-                            ${cnh ? `<div class="cnh-header">${cnh}</div>` : ''}
                         </div>
                     </div>
                 `;
@@ -3131,7 +3144,6 @@
                     <div style="border-bottom: 3px solid #1a2f44; padding-bottom: 16px; margin-bottom: 24px;">
                         <h1 style="font-size: 2.2rem; color: #0b1f33; margin: 0;">${nome || 'Nome não informado'}</h1>
                         ${cargo ? `<div style="color: #2a7de1; font-size: 1.1rem; font-weight: 500; margin-top: 4px;">${cargo}</div>` : ''}
-                        ${cnh ? `<div style="margin-top: 6px; font-size: 0.85rem; color: #1a334b; font-weight: 500; padding: 4px 12px; background: #f0f6ff; border-radius: 20px; display: inline-block; border: 1px solid #d8e2ed;">${cnh}</div>` : ''}
                     </div>
                 `;
             }
@@ -3141,6 +3153,14 @@
                 formacaoHTML = `
                     <div class="secao">🎓 Formação Escolar</div>
                     <div class="formacao">${formacao}</div>
+                `;
+            }
+
+            let cnhHTML = '';
+            if (cnh && cnh.trim() !== '' && cnh !== '<br>') {
+                cnhHTML = `
+                    <div class="secao">🪪 CNH</div>
+                    <div class="cnh">${cnh}</div>
                 `;
             }
 
@@ -3166,6 +3186,7 @@
                     ${contatoHTML}
                     ${dadosHTML ? `<div class="secao">📋 Dados Pessoais</div>${dadosHTML}` : ''}
                     ${formacaoHTML}
+                    ${cnhHTML}
                     ${expHTML}
                     ${obsHTML}
                     <div class="footer">Currículo gerado em ${new Date().toLocaleDateString('pt-BR')}</div>
@@ -3188,7 +3209,6 @@
                     .header-text { flex: 1; }
                     h1 { font-size: 2.2rem; color: #0b1f33; margin: 0; }
                     .cargo-pretendido { color: #2a7de1; font-size: 1.1rem; font-weight: 500; margin-top: 4px; }
-                    .cnh-header { margin-top: 6px; font-size: 0.85rem; color: #1a334b; font-weight: 500; padding: 4px 12px; background: #f0f6ff; border-radius: 20px; display: inline-block; border: 1px solid #d8e2ed; }
                     .contato { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; background: #f7faff; padding: 12px 18px; border-radius: 8px; margin: 16px 0; }
                     .contato div strong { display: block; font-size: 0.65rem; color: #6a8aaa; text-transform: uppercase; }
                     .contato div span { font-size: 0.9rem; }
@@ -3200,6 +3220,7 @@
                     .exp-item strong { display: block; font-size: 0.6rem; color: #6a8aaa; text-transform: uppercase; }
                     .exp-item div { font-size: 0.85rem; }
                     .formacao { border: 1px dashed #ccc; padding: 8px 12px; border-radius: 8px; min-height: 30px; margin-bottom: 4px; }
+                    .cnh { border: 1px dashed #ccc; padding: 8px 12px; border-radius: 8px; min-height: 30px; margin-bottom: 4px; }
                     .obs-rodape-print { border: 1px dashed #ccc; padding: 12px; border-radius: 8px; min-height: 40px; margin-top: 8px; }
                     .footer { text-align: center; color: #999; font-size: 0.7rem; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px; }
                 </style>
@@ -3379,8 +3400,8 @@
                     const elCargo = document.getElementById('cargoPretendido');
                     if (elCargo && cargo) elCargo.textContent = cargo;
 
-                    const cnhHeader = document.getElementById('cnhHeader');
-                    if (cnhHeader && cnh) cnhHeader.textContent = cnh;
+                    const cnhArea = document.getElementById('cnhArea');
+                    if (cnhArea && cnh) cnhArea.innerHTML = cnh.replace(/\\n/g, '<br>');
 
                     const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
                     if (camposContato.length >= 4) {
@@ -3427,7 +3448,6 @@
 
                     salvarBackupDebounced();
                     salvarHistorico();
-                    atualizarDataHora();
                     mostrarStatusSalvo('CSV importado');
                     validarCamposObrigatorios();
                     alert('✅ CSV importado com sucesso!');
@@ -3502,10 +3522,13 @@
 
         console.log('📄 Currículo editável carregado!');
         console.log('✅ Melhorias aplicadas:');
-        console.log('  - CNH movida para o cabeçalho (ao lado do nome e cargo)');
-        console.log('  - Campo CNH removido da seção "Dados Pessoais"');
-        console.log('  - Na exportação, a CNH aparece no cabeçalho quando preenchida');
-        console.log('  - Todos os campos continuam livres (opcionais)');
+        console.log('  - CNH removida do cabeçalho');
+        console.log('  - Nova aba "CNH" adicionada entre Formação e Experiência');
+        console.log('  - Cidade pré-salva: Espírito Santo do Turvo/SP');
+        console.log('  - Estado Civil com placeholders: Solteiro/Solteira/Casado/Casada/União Estável');
+        console.log('  - Nacionalidade com placeholders: Brasileiro/Brasileira');
+        console.log('  - Espaço da Formação Escolar reduzido');
+        console.log('  - Data/Hora removida do rodapé');
         console.log('  - Nada mais foi alterado');
     })();
 </script>
