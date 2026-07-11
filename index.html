@@ -859,6 +859,64 @@
             color: #b0c4d8;
         }
 
+        /* ===== AUTOCOMPLETE ===== */
+        .autocomplete-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .autocomplete-wrapper .valor {
+            width: 100%;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        body.modo-escuro .autocomplete-list {
+            background: #1a1a2e;
+            border-color: #2a2a4e;
+        }
+
+        .autocomplete-list.active {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.15s;
+        }
+
+        .autocomplete-item:hover {
+            background: #f0f6ff;
+        }
+
+        body.modo-escuro .autocomplete-item:hover {
+            background: #2a2a4e;
+        }
+
+        .autocomplete-item .highlight {
+            font-weight: 700;
+            color: #2a7de1;
+        }
+
+        body.modo-escuro .autocomplete-item .highlight {
+            color: #4a9df1;
+        }
+
         /* ===== FORMAÇÃO ===== */
         .formacao-area {
             width: 100%;
@@ -1001,6 +1059,7 @@
             cursor: text;
             min-height: 22px;
             outline: none;
+            transition: 0.15s;
         }
 
         .experiencia-item .exp-campo .valor:focus {
@@ -1011,6 +1070,60 @@
             content: attr(data-placeholder);
             color: #b0c4d8;
             font-weight: 400;
+        }
+
+        /* ===== DESTAQUE PARA COPIAR ===== */
+        .exp-campo .valor.dblclick-copy {
+            position: relative;
+        }
+
+        .exp-campo .valor.dblclick-copy::after {
+            content: "📋";
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .exp-campo .valor.dblclick-copy:hover::after {
+            opacity: 0.5;
+        }
+
+        .exp-campo .valor.dblclick-copy.copied::after {
+            content: "✅";
+            opacity: 1;
+        }
+
+        /* ===== TOAST DE CÓPIA ===== */
+        .toast-copy {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a2f44;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .toast-copy.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        body.modo-escuro .toast-copy {
+            background: #2a2a4e;
+            color: #e0e0e0;
         }
 
         .experiencia-item .exp-remover {
@@ -1709,7 +1822,8 @@
             .status-salvo,
             .shortcut-hint,
             .auto-save-indicator,
-            .validation-badge {
+            .validation-badge,
+            .autocomplete-list {
                 display: none !important;
             }
 
@@ -1886,6 +2000,10 @@
                 padding: 3px 12px !important;
                 margin-bottom: 2px !important;
             }
+
+            .exp-campo .valor.dblclick-copy::after {
+                display: none !important;
+            }
         }
 
         .foto-container.has-image .foto-placeholder {
@@ -1989,7 +2107,10 @@
         </div>
         <div class="campo-contato">
             <label>Cidade</label>
-            <div class="valor" contenteditable="true" data-placeholder="São Paulo - SP">Espírito Santo do Turvo/SP</div>
+            <div class="autocomplete-wrapper">
+                <div class="valor" contenteditable="true" data-placeholder="São Paulo - SP" id="cidadeInput">Espírito Santo do Turvo/SP</div>
+                <div class="autocomplete-list" id="cidadeAutocomplete"></div>
+            </div>
         </div>
         <div class="campo-contato">
             <label>Telefone</label>
@@ -2010,7 +2131,10 @@
     <div class="dados-grid">
         <div class="campo-dado">
             <label>Estado Civil</label>
-            <div class="valor" contenteditable="true" data-placeholder="Solteiro/Solteira/Casado/Casada/União Estável">Solteira</div>
+            <div class="autocomplete-wrapper">
+                <div class="valor" contenteditable="true" data-placeholder="Solteiro/Solteira/Casado/Casada/União Estável" id="estadoCivilInput">Solteira</div>
+                <div class="autocomplete-list" id="estadoCivilAutocomplete"></div>
+            </div>
         </div>
         <div class="campo-dado">
             <label>Data de Nascimento</label>
@@ -2022,7 +2146,10 @@
         </div>
         <div class="campo-dado">
             <label>Nacionalidade</label>
-            <div class="valor" contenteditable="true" data-placeholder="Brasileiro/Brasileira">Brasileira</div>
+            <div class="autocomplete-wrapper">
+                <div class="valor" contenteditable="true" data-placeholder="Brasileiro/Brasileira" id="nacionalidadeInput">Brasileira</div>
+                <div class="autocomplete-list" id="nacionalidadeAutocomplete"></div>
+            </div>
         </div>
     </div>
 
@@ -2049,36 +2176,37 @@
     <!-- ===== EXPERIÊNCIA PROFISSIONAL ===== -->
     <div class="secao-titulo">
         <i class="fas fa-briefcase"></i> Experiência Profissional
+        <span style="font-size:0.6rem; font-weight:400; text-transform:none; color:#6a8aaa; margin-left:auto;">Duplo clique para copiar</span>
     </div>
 
     <div id="experienciasContainer" style="margin-top:0;">
         <div class="experiencia-item" data-index="0">
             <div class="exp-campo">
                 <label>Empresa</label>
-                <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">TechCorp Soluções</div>
+                <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Nome da empresa">TechCorp Soluções</div>
             </div>
             <div class="exp-campo">
                 <label>Cargo</label>
-                <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">Desenvolvedor Pleno</div>
+                <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Cargo ocupado">Desenvolvedor Pleno</div>
             </div>
             <div class="exp-campo">
                 <label>Período</label>
-                <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Jan/2021 - Atual</div>
+                <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Jan/2021 - Atual</div>
             </div>
             <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
         </div>
         <div class="experiencia-item" data-index="1">
             <div class="exp-campo">
                 <label>Empresa</label>
-                <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">InovaSoft LTDA</div>
+                <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Nome da empresa">InovaSoft LTDA</div>
             </div>
             <div class="exp-campo">
                 <label>Cargo</label>
-                <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">Analista de Sistemas</div>
+                <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Cargo ocupado">Analista de Sistemas</div>
             </div>
             <div class="exp-campo">
                 <label>Período</label>
-                <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Mar/2019 - Dez/2020</div>
+                <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">Mar/2019 - Dez/2020</div>
             </div>
             <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
         </div>
@@ -2107,6 +2235,9 @@
     </div>
 
 </div>
+
+<!-- ===== TOAST DE CÓPIA ===== -->
+<div class="toast-copy" id="toastCopy">📋 Texto copiado!</div>
 
 <!-- ===== MODAL PRÉVIA ===== -->
 <div class="modal-overlay" id="modalPreview">
@@ -2184,6 +2315,228 @@
 <script>
     (function() {
         'use strict';
+
+        // ===== AUTOCOMPLETE =====
+        const autocompleteData = {
+            cidade: [
+                'Espírito Santo do Turvo/SP',
+                'São Paulo/SP',
+                'Rio de Janeiro/RJ',
+                'Belo Horizonte/MG',
+                'Curitiba/PR',
+                'Porto Alegre/RS',
+                'Salvador/BA',
+                'Fortaleza/CE',
+                'Brasília/DF',
+                'Recife/PE',
+                'Manaus/AM',
+                'Belém/PA',
+                'Goiânia/GO',
+                'Campinas/SP',
+                'Santos/SP',
+                'Ribeirão Preto/SP',
+                'São José dos Campos/SP',
+                'Sorocaba/SP',
+                'Jundiaí/SP',
+                'Santo André/SP',
+                'Osasco/SP',
+                'Guarulhos/SP'
+            ],
+            estadoCivil: [
+                'Solteira',
+                'Solteiro',
+                'Casada',
+                'Casado',
+                'União Estável',
+                'Divorciada',
+                'Divorciado',
+                'Viúva',
+                'Viúvo'
+            ],
+            nacionalidade: [
+                'Brasileira',
+                'Brasileiro',
+                'Portuguesa',
+                'Português',
+                'Espanhola',
+                'Espanhol',
+                'Italiana',
+                'Italiano',
+                'Francesa',
+                'Francês',
+                'Alemã',
+                'Alemão',
+                'Inglesa',
+                'Inglês',
+                'Estadunidense',
+                'Canadense',
+                'Argentina',
+                'Argentino',
+                'Chilena',
+                'Chileno',
+                'Uruguaia',
+                'Uruguaio',
+                'Paraguaia',
+                'Paraguaio',
+                'Boliviana',
+                'Boliviano',
+                'Peruana',
+                'Peruano'
+            ]
+        };
+
+        function setupAutocomplete(inputId, listId, dataKey) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+            if (!input || !list) return;
+
+            let isNavigating = false;
+
+            function showSuggestions(filter) {
+                const filtered = autocompleteData[dataKey].filter(item => 
+                    item.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filtered.length === 0 || filter === '') {
+                    list.classList.remove('active');
+                    return;
+                }
+
+                list.innerHTML = '';
+                filtered.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    const idx = item.toLowerCase().indexOf(filter.toLowerCase());
+                    if (idx >= 0) {
+                        const before = item.substring(0, idx);
+                        const highlight = item.substring(idx, idx + filter.length);
+                        const after = item.substring(idx + filter.length);
+                        div.innerHTML = before + '<span class="highlight">' + highlight + '</span>' + after;
+                    } else {
+                        div.textContent = item;
+                    }
+                    div.addEventListener('click', function() {
+                        input.textContent = item;
+                        list.classList.remove('active');
+                        input.dispatchEvent(new Event('input'));
+                        input.dispatchEvent(new Event('blur'));
+                        salvarBackupDebounced();
+                    });
+                    list.appendChild(div);
+                });
+                list.classList.add('active');
+            }
+
+            input.addEventListener('input', function() {
+                const text = this.textContent || '';
+                showSuggestions(text);
+                salvarBackupDebounced();
+            });
+
+            input.addEventListener('focus', function() {
+                const text = this.textContent || '';
+                if (text.trim() !== '') {
+                    showSuggestions(text);
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                setTimeout(() => {
+                    list.classList.remove('active');
+                }, 200);
+            });
+
+            input.addEventListener('keydown', function(e) {
+                const items = list.querySelectorAll('.autocomplete-item');
+                if (items.length === 0) return;
+
+                let currentIndex = -1;
+                items.forEach((item, idx) => {
+                    if (item.classList.contains('active')) {
+                        currentIndex = idx;
+                    }
+                });
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    isNavigating = true;
+                    const newIndex = Math.min(currentIndex + 1, items.length - 1);
+                    items.forEach(item => item.classList.remove('active'));
+                    items[newIndex].classList.add('active');
+                    items[newIndex].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    isNavigating = true;
+                    const newIndex = Math.max(currentIndex - 1, 0);
+                    items.forEach(item => item.classList.remove('active'));
+                    items[newIndex].classList.add('active');
+                    items[newIndex].scrollIntoView({ block: 'nearest' });
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const activeItem = list.querySelector('.autocomplete-item.active');
+                    if (activeItem) {
+                        activeItem.click();
+                    } else if (items.length > 0) {
+                        items[0].click();
+                    }
+                } else if (e.key === 'Escape') {
+                    list.classList.remove('active');
+                } else {
+                    isNavigating = false;
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target) && !list.contains(e.target)) {
+                    list.classList.remove('active');
+                }
+            });
+        }
+
+        setupAutocomplete('cidadeInput', 'cidadeAutocomplete', 'cidade');
+        setupAutocomplete('estadoCivilInput', 'estadoCivilAutocomplete', 'estadoCivil');
+        setupAutocomplete('nacionalidadeInput', 'nacionalidadeAutocomplete', 'nacionalidade');
+
+        // ===== DUPLO CLIQUE PARA COPIAR =====
+        const toast = document.getElementById('toastCopy');
+        let toastTimeout;
+
+        function showToast(message) {
+            toast.textContent = message || '📋 Texto copiado!';
+            toast.classList.add('visible');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('visible');
+            }, 2000);
+        }
+
+        document.querySelectorAll('.exp-campo .valor.dblclick-copy').forEach(el => {
+            el.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                const text = this.textContent.trim();
+                if (text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.classList.add('copied');
+                        showToast('📋 "' + text + '" copiado!');
+                        setTimeout(() => {
+                            this.classList.remove('copied');
+                        }, 1500);
+                    }).catch(() => {
+                        // Fallback
+                        const range = document.createRange();
+                        range.selectNode(this);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(range);
+                        document.execCommand('copy');
+                        this.classList.add('copied');
+                        showToast('📋 "' + text + '" copiado!');
+                        setTimeout(() => {
+                            this.classList.remove('copied');
+                        }, 1500);
+                    });
+                }
+            });
+        });
 
         // ===== DEBOUNCE =====
         function debounce(func, wait) {
@@ -2387,18 +2740,46 @@
             div.innerHTML = `
                 <div class="exp-campo">
                     <label>Empresa</label>
-                    <div class="valor" contenteditable="true" data-placeholder="Nome da empresa">${empresa}</div>
+                    <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Nome da empresa">${empresa}</div>
                 </div>
                 <div class="exp-campo">
                     <label>Cargo</label>
-                    <div class="valor" contenteditable="true" data-placeholder="Cargo ocupado">${cargo}</div>
+                    <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Cargo ocupado">${cargo}</div>
                 </div>
                 <div class="exp-campo">
                     <label>Período</label>
-                    <div class="valor" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">${periodo}</div>
+                    <div class="valor dblclick-copy" contenteditable="true" data-placeholder="Mês/Ano - Mês/Ano">${periodo}</div>
                 </div>
                 <button class="exp-remover" title="Remover experiência"><i class="fas fa-times-circle"></i></button>
             `;
+
+            // Adicionar evento de duplo clique para copiar
+            div.querySelectorAll('.valor.dblclick-copy').forEach(el => {
+                el.addEventListener('dblclick', function(e) {
+                    e.preventDefault();
+                    const text = this.textContent.trim();
+                    if (text) {
+                        navigator.clipboard.writeText(text).then(() => {
+                            this.classList.add('copied');
+                            showToast('📋 "' + text + '" copiado!');
+                            setTimeout(() => {
+                                this.classList.remove('copied');
+                            }, 1500);
+                        }).catch(() => {
+                            const range = document.createRange();
+                            range.selectNode(this);
+                            window.getSelection().removeAllRanges();
+                            window.getSelection().addRange(range);
+                            document.execCommand('copy');
+                            this.classList.add('copied');
+                            showToast('📋 "' + text + '" copiado!');
+                            setTimeout(() => {
+                                this.classList.remove('copied');
+                            }, 1500);
+                        });
+                    }
+                });
+            });
 
             div.querySelector('.exp-remover').addEventListener('click', function() {
                 if (container.children.length > 1) {
@@ -2766,7 +3147,6 @@
             const elCargo = document.getElementById('cargoPretendido');
             if (elCargo && dados.cargo) elCargo.textContent = dados.cargo;
 
-            // CNH
             const cnhArea = document.getElementById('cnhArea');
             if (cnhArea && dados.cnh) {
                 cnhArea.innerHTML = dados.cnh;
@@ -2775,17 +3155,26 @@
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             if (camposContato.length >= 4) {
                 if (dados.endereco) camposContato[0].textContent = dados.endereco;
-                if (dados.cidade) camposContato[1].textContent = dados.cidade;
+                if (dados.cidade) {
+                    const cidadeInput = document.getElementById('cidadeInput');
+                    if (cidadeInput) cidadeInput.textContent = dados.cidade;
+                }
                 if (dados.telefone) camposContato[2].textContent = dados.telefone;
                 if (dados.email) camposContato[3].textContent = dados.email;
             }
 
             const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
             if (camposDados.length >= 4) {
-                if (dados.estadoCivil) camposDados[0].textContent = dados.estadoCivil;
+                if (dados.estadoCivil) {
+                    const ecInput = document.getElementById('estadoCivilInput');
+                    if (ecInput) ecInput.textContent = dados.estadoCivil;
+                }
                 if (dados.dataNasc) camposDados[1].textContent = dados.dataNasc;
                 if (dados.naturalidade) camposDados[2].textContent = dados.naturalidade;
-                if (dados.nacionalidade) camposDados[3].textContent = dados.nacionalidade;
+                if (dados.nacionalidade) {
+                    const nacInput = document.getElementById('nacionalidadeInput');
+                    if (nacInput) nacInput.textContent = dados.nacionalidade;
+                }
             }
 
             const elFormacao = document.getElementById('formacaoArea');
@@ -2831,6 +3220,15 @@
             
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             camposContato.forEach(el => el.textContent = '');
+            
+            const cidadeInput = document.getElementById('cidadeInput');
+            if (cidadeInput) cidadeInput.textContent = '';
+            
+            const ecInput = document.getElementById('estadoCivilInput');
+            if (ecInput) ecInput.textContent = '';
+            
+            const nacInput = document.getElementById('nacionalidadeInput');
+            if (nacInput) nacInput.textContent = '';
             
             const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
             camposDados.forEach(el => el.textContent = '');
@@ -3026,6 +3424,9 @@
             });
 
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
+            const cidadeInput = document.getElementById('cidadeInput');
+            const ecInput = document.getElementById('estadoCivilInput');
+            const nacInput = document.getElementById('nacionalidadeInput');
             const cnhArea = document.getElementById('cnhArea');
             const obsRodape = document.getElementById('obsRodape');
             
@@ -3034,13 +3435,13 @@
                 cargo: document.getElementById('cargoPretendido')?.textContent.trim() || '',
                 cnh: cnhArea?.innerHTML || '',
                 endereco: camposContato[0]?.textContent.trim() || '',
-                cidade: camposContato[1]?.textContent.trim() || '',
+                cidade: cidadeInput?.textContent.trim() || '',
                 telefone: camposContato[2]?.textContent.trim() || '',
                 email: camposContato[3]?.textContent.trim() || '',
-                estadoCivil: document.querySelector('.dados-grid .campo-dado:nth-child(1) .valor')?.textContent.trim() || '',
+                estadoCivil: ecInput?.textContent.trim() || '',
                 dataNasc: document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '',
                 naturalidade: document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '',
-                nacionalidade: document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '',
+                nacionalidade: nacInput?.textContent.trim() || '',
                 formacao: document.getElementById('formacaoArea')?.innerHTML || '',
                 experiencias: experiencias,
                 obsRodape: obsRodape?.innerHTML || '',
@@ -3063,16 +3464,20 @@
             const cargo = document.getElementById('cargoPretendido')?.textContent.trim() || '';
             const cnh = document.getElementById('cnhArea')?.innerHTML || '';
             
+            const cidadeInput = document.getElementById('cidadeInput');
+            const ecInput = document.getElementById('estadoCivilInput');
+            const nacInput = document.getElementById('nacionalidadeInput');
+            
             const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
             const endereco = camposContato[0]?.textContent.trim() || '';
-            const cidade = camposContato[1]?.textContent.trim() || '';
+            const cidade = cidadeInput?.textContent.trim() || '';
             const telefone = camposContato[2]?.textContent.trim() || '';
             const email = camposContato[3]?.textContent.trim() || '';
 
-            const estadoCivil = document.querySelector('.dados-grid .campo-dado:nth-child(1) .valor')?.textContent.trim() || '';
+            const estadoCivil = ecInput?.textContent.trim() || '';
             const dataNasc = document.querySelector('.dados-grid .campo-dado:nth-child(2) .valor')?.textContent.trim() || '';
             const naturalidade = document.querySelector('.dados-grid .campo-dado:nth-child(3) .valor')?.textContent.trim() || '';
-            const nacionalidade = document.querySelector('.dados-grid .campo-dado:nth-child(4) .valor')?.textContent.trim() || '';
+            const nacionalidade = nacInput?.textContent.trim() || '';
 
             const formacao = document.getElementById('formacaoArea')?.innerHTML || '';
             const obsRodape = document.getElementById('obsRodape')?.innerHTML || '';
@@ -3403,20 +3808,26 @@
                     const cnhArea = document.getElementById('cnhArea');
                     if (cnhArea && cnh) cnhArea.innerHTML = cnh.replace(/\\n/g, '<br>');
 
+                    const cidadeInput = document.getElementById('cidadeInput');
+                    if (cidadeInput && cidade) cidadeInput.textContent = cidade;
+
+                    const ecInput = document.getElementById('estadoCivilInput');
+                    if (ecInput && estadoCivil) ecInput.textContent = estadoCivil;
+
+                    const nacInput = document.getElementById('nacionalidadeInput');
+                    if (nacInput && nacionalidade) nacInput.textContent = nacionalidade;
+
                     const camposContato = document.querySelectorAll('.contato-grid .campo-contato .valor');
                     if (camposContato.length >= 4) {
                         if (endereco) camposContato[0].textContent = endereco;
-                        if (cidade) camposContato[1].textContent = cidade;
                         if (telefone) camposContato[2].textContent = telefone;
                         if (email) camposContato[3].textContent = email;
                     }
 
                     const camposDados = document.querySelectorAll('.dados-grid .campo-dado .valor');
                     if (camposDados.length >= 4) {
-                        if (estadoCivil) camposDados[0].textContent = estadoCivil;
                         if (dataNasc) camposDados[1].textContent = dataNasc;
                         if (naturalidade) camposDados[2].textContent = naturalidade;
-                        if (nacionalidade) camposDados[3].textContent = nacionalidade;
                     }
 
                     const elFormacao = document.getElementById('formacaoArea');
@@ -3522,13 +3933,11 @@
 
         console.log('📄 Currículo editável carregado!');
         console.log('✅ Melhorias aplicadas:');
-        console.log('  - CNH removida do cabeçalho');
-        console.log('  - Nova aba "CNH" adicionada entre Formação e Experiência');
-        console.log('  - Cidade pré-salva: Espírito Santo do Turvo/SP');
-        console.log('  - Estado Civil com placeholders: Solteiro/Solteira/Casado/Casada/União Estável');
-        console.log('  - Nacionalidade com placeholders: Brasileiro/Brasileira');
-        console.log('  - Espaço da Formação Escolar reduzido');
-        console.log('  - Data/Hora removida do rodapé');
+        console.log('  - Autocomplete para Cidade (digitar "Espír" já mostra sugestões)');
+        console.log('  - Autocomplete para Estado Civil (digitar "Sol" já mostra sugestões)');
+        console.log('  - Autocomplete para Nacionalidade (digitar "Bras" já mostra sugestões)');
+        console.log('  - Duplo clique em Empresa/Cargo/Período copia o texto');
+        console.log('  - Toast visual ao copiar');
         console.log('  - Nada mais foi alterado');
     })();
 </script>
