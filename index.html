@@ -2004,6 +2004,70 @@
             .exp-campo .valor.dblclick-copy::after {
                 display: none !important;
             }
+
+            /* ===== OCULTAR SEÇÕES VAZIAS NA IMPRESSÃO ===== */
+            .contato-grid:has(.valor:empty:not(:has(*))) {
+                display: none !important;
+            }
+
+            /* Oculta o grid de contato se todos os campos estiverem vazios */
+            .contato-grid:has(.valor:empty) {
+                display: none !important;
+            }
+
+            /* Oculta campos de contato individuais vazios */
+            .campo-contato:has(.valor:empty) {
+                display: none !important;
+            }
+
+            /* Oculta dados pessoais vazios */
+            .campo-dado:has(.valor:empty) {
+                display: none !important;
+            }
+
+            /* Oculta o grid de dados se todos estiverem vazios */
+            .dados-grid:has(.campo-dado .valor:empty) {
+                display: none !important;
+            }
+
+            /* Oculta formação se vazia */
+            .formacao-area:empty {
+                display: none !important;
+            }
+            .secao-titulo-formacao:has(+ .formacao-area:empty) {
+                display: none !important;
+            }
+
+            /* Oculta CNH se vazia */
+            .cnh-area:empty {
+                display: none !important;
+            }
+            .secao-titulo-cnh:has(+ .cnh-area:empty) {
+                display: none !important;
+            }
+
+            /* Oculta observações se vazias */
+            .obs-rodape:empty {
+                display: none !important;
+            }
+            .secao-obs-rodape:has(+ .obs-rodape:empty) {
+                display: none !important;
+            }
+
+            /* Oculta experiências vazias */
+            .experiencia-item:has(.exp-campo .valor:empty) {
+                display: none !important;
+            }
+
+            /* Oculta o título de experiência se não houver itens válidos */
+            .secao-titulo:has(+ #experienciasContainer:not(:has(.experiencia-item:not(:has(.valor:empty))))) {
+                display: none !important;
+            }
+
+            /* Oculta o container de experiências se não houver itens válidos */
+            #experienciasContainer:not(:has(.experiencia-item:not(:has(.valor:empty)))) {
+                display: none !important;
+            }
         }
 
         .foto-container.has-image .foto-placeholder {
